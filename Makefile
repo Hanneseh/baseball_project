@@ -142,3 +142,15 @@ help:
 		printf "\n"; \
 	}' \
 	| more $(shell test $(shell uname) = Darwin && echo '--no-init --raw-control-chars')
+
+# activate the environment
+. baseball-env/bin/activate
+
+# install all needed requirements
+python3 -m pip install --upgrade -r requirements.txt
+
+# setting the project up for development?
+pip install -e .
+
+# save new requirements
+pip freeze > requirements.txt
