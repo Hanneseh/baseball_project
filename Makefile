@@ -143,7 +143,7 @@ help:
 	}' \
 	| more $(shell test $(shell uname) = Darwin && echo '--no-init --raw-control-chars')
 
-	
+
 # activate the environment
 . baseball-env/bin/activate
 
