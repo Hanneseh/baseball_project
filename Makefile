@@ -143,9 +143,105 @@ help:
 	}' \
 	| more $(shell test $(shell uname) = Darwin && echo '--no-init --raw-control-chars')
 
-	
-# activate the environment
+
+#################################################################################
+# Here are some commeands and procedures that you will need to use many times 
+# while developing. This file seves as a "Cheat Sheet" for you to look for those 
+# commands and procedures. But of course there are many diffrent possible situations
+# and I cant provide a standardized procedure for all of them, thats why a I recommend 
+# googling or maybe looking at these links for help when you encounter problems:
+#
+# https://dev.to/dhruv/essential-git-commands-every-developer-should-know-2fl
+
+
+#################################################################################
+# PLEASE ALWAYS BE AWARE OF WHAT YOU ARE DOING. IF YOU DONT KNOW WHAT YOUR ARE DOING,
+# ASK ME OR GOOGLE YOURSELF
+
+# Everything that is not a comment in here is a command you can copy to the terminal.
+# Squared Brackeds [] mean that you need to replace that part of the command with your
+# own information
+#################################################################################
+
+
+#################################################################################
+# STARTING DEVELOPMENT:
+
+# 1. Open the folder with the two subfolders: "baseball-env" and "baseballmd" in VSCode
+
+# 2. open a new terminal in VSCode
+
+# 3. activate the virtual environment by typing this: 
 . baseball-env/bin/activate
+# it was a success when the terminal line now starts with "(baseball-env)
+
+# 4. navigate to the project folder "baseballmd" by typing:
+cd baseballmd 
+# it was a success when the last word in the new terminal line says "baseballmd"
+
+# 5. check what branch you are on by typing:
+git branch
+# this commands lists all your local branches and marks the one you are on
+
+# 5.1 in case you are on a wrong branch, switch to the right branch with this command:
+git checkout [YOUR BRANCH NAME]
+
+# 5.1.1 in case this is not possible because you have uncomitted changes either commit them 
+# or delete them. If you want neither of this you can stash them. Please google what this is
+# or ask me
+
+# 6. make sure you have the latest version of that branch by typing:
+git pull
+
+# 7. make sure all dependencis are up to date by typing:
+python3 -m pip install --upgrade -r requirements.txt
+
+# 8. make sure your environment runs the latest installation of all dependecies by typing:
+pip install -e .
+
+# now you are ready to start developing. 
+# Make sure to follow the the COMMIT Procedure during development
+# Make sure to end devolping with the END DEVELOPIG procedure
+#################################################################################
+
+
+#################################################################################
+# COMMIT procedure
+# Why and then do this?
+# -> We do this whenever we were successfull in developing something. This can be as
+# little as adding one line of code to a file. So basically whenever your code reaches
+# a state that YOU want to safe, in case you ever want to go back to that state.
+
+# An example: The web scrapper works for one specific website perfectly. You commit that 
+# state. Now you try to make the scapper work as well for another website. You all the sudden
+# need to edit the code you wrote earlier in order to achieve your goal. You fuck something 
+# up because you are a noob. You try to fix the error that is now appearing for no reason.
+# the error doesnt go away anymore. You start loosing your mind because you messed up 
+# a perfectly working code. You become sad. You cant fix the mess. You start crying.
+# You start tying the rope. BUT WAIT! There is hope! You remember that you have COMMITED
+# the code earlier. With a few simple commands in the terminal, you can go back to that commit
+# and you have the working code again! You are happy, you can now start messing everything up agiain.
+# But remember: This was only possible because you committed the code! So always commit!
+
+# So how do we commit?
+
+# 1. start by typing:
+git add .
+# this command adds all changed files to the staging area. 
+# the staging area is a virtual space for all the files that need to go in one commit. 
+
+# 2. now commit by typing:
+git commit -m "[YOUR COMMIT MESSAGE]"
+# this commits all the files that are in the staging area. 
+# the message in the "" is visible to all developers and should explain the changes
+# that you have made in the commit. 
+
+
+
+
+
+# activate the environment
+
 
 # install all needed requirements
 python3 -m pip install --upgrade -r requirements.txt
