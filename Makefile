@@ -151,7 +151,7 @@ help:
 # and I cant provide a standardized procedure for all of them, thats why a I recommend 
 # googling or maybe looking at these links for help when you encounter problems:
 #
-# https://dev.to/dhruv/essential-git-commands-every-developer-should-know-2fl
+# https://github.com/joshnh/Git-Commands
 
 
 #################################################################################
@@ -182,6 +182,7 @@ cd baseballmd
 # 5. check what branch you are on by typing:
 git branch
 # this commands lists all your local branches and marks the one you are on
+# NEVER WORK ON MASTER BRANCH!!
 
 # 5.1 in case you are on a wrong branch, switch to the right branch with this command:
 git checkout [YOUR BRANCH NAME]
@@ -234,20 +235,105 @@ git add .
 git commit -m "[YOUR COMMIT MESSAGE]"
 # this commits all the files that are in the staging area. 
 # the message in the "" is visible to all developers and should explain the changes
-# that you have made in the commit. 
+# that you have made in the commit, but keep it short (10 words max!)
+
+# now you have successfully made a commit. This commit is only on your computer tho.
+# you need to push your commit to the remote repository in order to share it with others
+# you dont need to push every commit right away, but do at least one push before you stop
+# working-
+
+# 3. to push the commit type:
+git push
+
+#################################################################################
 
 
+#################################################################################
+# STOPING DEVELOPMENT
 
+# Whenever you are done with devoloping for the day, follow these steps in order 
+# to have a clean end
 
+# 1. Make sure all the files you have worked on are saved. (Hit cmd+s or strg+s)
+# VScode marks and tells you which files are not safed.
+# you can even use the command "git status" to see which files are modified
 
-# activate the environment
+# 2. open a new terminal and make sure you are in the "baseballmd" folder
+# you can see that you are in the folder by checking tha last word in the latest 
+# terminal line. If it says "basvallmd" ten you are in the correct folder
+# otherwise navigate to it with the "cd" command
 
-
-# install all needed requirements
-python3 -m pip install --upgrade -r requirements.txt
-
-# setting the project up for development?
-pip install -e .
-
-# save new requirements
+# 3. safe all current dependencies by typing this in the terminal:
 pip freeze > requirements.txt
+
+# 4. do a commit and push by doning these commands one by one:
+git add .
+git commit -m "[YOUR COMMIT MESSAGE]"
+git push
+# see explanation to these commands in COMMIT procedure
+
+# 5. deactivate the virtual environment by typing this in the terminal
+deactivate
+
+# you are now done.
+
+#################################################################################
+
+
+#################################################################################
+# CREATING NEW BRANCH: procedure
+# You will not use this procedure on a daily bases, but also requalary and its super
+# important that use it. But it is even more important that you know why you use it
+# and what you are doing. If you have any questions blease ask google or me! 
+
+# short definitions:
+# Commit: is a safed. "froozen" state of the project
+# Branch: is a copy of the entire project
+# master: The master branch is a base branch, never touch it! Only copy it! 
+
+# WHEN do we create a new branch?
+# Whenever we start a new development task like developing a feature, fixing a bug etc.
+
+# 1. Make sure the virtual environment is running and that your terminal is in the baseballmd folder
+# see STARTING DEVELOPMENT procedure if you dont know how. 
+
+# 2. Checkout on what branch you are on by typing:
+git branch
+
+# 3. switch to the master branch by typing:
+git checkout master
+
+# 4. make sure you have the latest version of the master branch by pulling. Type:
+git pull
+
+# 5. now initiate the new branch. Read NAMING CONVENTIONS first!
+# NAMING CONVENTIONS: aways start name so that we know who made tha branch end what it is for
+# so start with your name, then type a keyword either "feature" or "bugfix" followed by a shor describtion
+# IN GERNAL: [YOUR NAME]_[KEY WORD]_[PURPOSE OF THE BRANCH]
+# AN EXAMPLE: hannes_feature_settingUpBasicDashboard
+git checkout -b [yourName_KeyWord_Pupose]
+# after this command, you have created a new local branch. You are also on that branch
+# you can check that by typing "git branch"
+# the branch you have created is only on your PC availible and not yet accessible to us
+
+# 6. therefore push that branch to the remote repository with this command:
+git push origin [name of the branch you have just created]
+
+# 7. then, use this command to push the current branch and set the remote as upstream
+git push --set-upstream origin hannes_feature_settingUpBasicDashboard
+
+# the new branch you have just created, is a copy of the master branch
+# if you dont like that and you want it to be a copy of some other branch 
+# you can use the merge function to copy all changes form that branch to yours.
+# be carefull with this tho. This is something you do rather rarly and 
+# errors can occure. The basic command is this:
+git merge [branch name]
+# this command merges the branch you have namend in the command into the brach you are currently on
+# so make sure to be on the branch you want to merge in, before you type the command!
+# never merge anything into master without asking me!
+
+# You can also use this. 
+git merge [source branch] [target branch]
+
+# we will use merge requests on git lab tho to merge into the master. Never merge into master by yourself!
+
