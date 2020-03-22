@@ -197,7 +197,7 @@ git pull
 # 7. make sure all dependencis are up to date by typing:
 python3 -m pip install --upgrade -r requirements.txt
 
-# 8. make sure your environment runs the latest installation of all dependecies by typing:
+# 8. install all our own python packages in such way that edits are effectiv by typing:
 pip install -e .
 
 # now you are ready to start developing. 
@@ -320,7 +320,7 @@ git checkout -b [yourName_KeyWord_Pupose]
 git push origin [name of the branch you have just created]
 
 # 7. then, use this command to push the current branch and set the remote as upstream
-git push --set-upstream origin hannes_feature_settingUpBasicDashboard
+git push --set-upstream origin [NAME OF THE BRANCH]
 
 # the new branch you have just created, is a copy of the master branch
 # if you dont like that and you want it to be a copy of some other branch 
