@@ -16,6 +16,6 @@ python-dateutil==2.8.1
 pytz==2019.3
 requests==2.23.0
 six==1.14.0
--e git+git@gitlab.fdmci.hva.nl:ehringh/baseballmd.git@cad47edd8b412c8ace074efce925cd0427ddcb37#egg=src
+-e git+git@gitlab.fdmci.hva.nl:ehringh/baseballmd.git@dc6ac9e93384a0def3c8e3c217168c7955badd5f#egg=src
 urllib3==1.25.8
 whichcraft==0.6.1

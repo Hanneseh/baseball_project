@@ -145,7 +145,7 @@ help:
 
 
 #################################################################################
-# Here are some commeands and procedures that you will need to use many times 
+# Here are some commands and procedures that you will need to use many times 
 # while developing. This file seves as a "Cheat Sheet" for you to look for those 
 # commands and procedures. But of course there are many diffrent possible situations
 # and I cant provide a standardized procedure for all of them, thats why a I recommend 
@@ -195,10 +195,7 @@ git checkout [YOUR BRANCH NAME]
 git pull
 
 # 7. make sure all dependencis are up to date by typing:
-python3 -m pip install --upgrade -r requirements.txt
-
-# 8. install all our own python packages in such way that edits are effectiv by typing:
-pip install -e .
+pip install --upgrade -r requirements.txt
 
 # now you are ready to start developing. 
 # Make sure to follow the the COMMIT Procedure during development
