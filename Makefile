@@ -194,8 +194,13 @@ git checkout [YOUR BRANCH NAME]
 # 6. make sure you have the latest version of that branch by typing:
 git pull
 
-# 7. make sure all dependencis are up to date by typing:
+# 7. make sure all dependencis are up to date by typing: (*)
 pip install --upgrade -r requirements.txt
+# ignore possible warnings for now. 
+
+# 8. install all our own python packages in such way that edits are effectiv by typing: (*)
+pip install -e .
+
 
 # now you are ready to start developing. 
 # Make sure to follow the the COMMIT Procedure during development
@@ -260,11 +265,10 @@ git push
 # terminal line. If it says "basvallmd" ten you are in the correct folder
 # otherwise navigate to it with the "cd" command
 
-# 3. safe all current dependencies by typing this in the terminal:
-pip freeze > requirements.txt
+# 3. safe all current dependencies by typing this in the terminal: (*)
+pip freeze > requirements.txt 
 
 # 4. do a commit and push by doning these commands one by one:
-git add .
 git commit -m "[YOUR COMMIT MESSAGE]"
 git push
 # see explanation to these commands in COMMIT procedure
@@ -333,4 +337,9 @@ git merge [branch name]
 git merge [source branch] [target branch]
 
 # we will use merge requests on git lab tho to merge into the master. Never merge into master by yourself!
+#################################################################################
+# (*) I am not completly sure if we need this command everytime, but use it for now,
+# because it doesnt mess up anything either. We'll refine our dependency management
+# later on when we start deploying
 
+#################################################################################
