@@ -173,6 +173,7 @@ help:
 
 # 3. activate the virtual environment by typing this: 
 . baseball-env/bin/activate
+#this is my first comment cunts
 # it was a success when the terminal line now starts with "(baseball-env)
 
 # 4. navigate to the project folder "baseballmd" by typing:
