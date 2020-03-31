@@ -1,0 +1,9 @@
+.page {
+    position: relative;
+    width: 310mm;
+    min-height: 793mm;
+    padding: 0mm;
+    margin: 10mm auto;
+    border-radius: 5px;
+    background: white;
+}
