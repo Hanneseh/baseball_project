@@ -147,6 +147,20 @@ help:
 # activate the environment
 . baseball-env/bin/activate
 
+# it was a success when the terminal line now starts with "(baseball-env)
+
+# 4. navigate to the project folder "baseballmd" by typing:
+cd baseballmd 
+# it was a success when the last word in the new terminal line says "baseballmd"
+
+# 5. check what branch you are on by typing:
+git branch
+# this commands lists all your local branches and marks the one you are on
+# NEVER WORK ON MASTER BRANCH!!
+
+# 5.1 in case you are on a wrong branch, switch to the right branch with this command:
+git checkout [YOUR BRANCH NAME]
+
 # install all needed requirements
 python3 -m pip install --upgrade -r requirements.txt
 
