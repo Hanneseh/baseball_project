@@ -1,3 +1,11 @@
+# resources:
+# https://towardsdatascience.com/how-to-build-a-complex-reporting-dashboard-using-dash-and-plotl-4f4257c18a7f
+# https://davidcomfort-dash-app1.herokuapp.com/cc-travel-report/paid-search/
+
+# https://dash.plotly.com/layout
+# https://github.com/davidcomfort/dash_sample_dashboard/blob/master/layouts.py
+# 
+
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
@@ -5,6 +13,7 @@ from dash.dependencies import Input, Output
 from app import app
 from .components import Header
 
+# this is the layout
 layout = html.Div([
     Header(),
 
@@ -18,8 +27,13 @@ layout = html.Div([
         ]
     ),
     html.Div(id='app-1-display-value'),
+    html.Div("hello August")
 ], className="page")
 
+
+
+# https://github.com/davidcomfort/dash_sample_dashboard/blob/master/callbacks.py
+# https://dash.plotly.com/basic-callbacks
 
 @app.callback(
     Output('app-1-display-value', 'children'),

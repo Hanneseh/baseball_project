@@ -1,14 +1,9 @@
-
-
-
 import requests
 import re
 from urllib.parse import urljoin
 from urllib.request import urlopen
 from bs4 import BeautifulSoup as soup
 import pandas as pd
-
-
 
 BBref_URLs = []
 
