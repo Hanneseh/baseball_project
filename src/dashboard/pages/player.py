@@ -5,13 +5,23 @@
 # https://dash.plotly.com/layout
 # https://github.com/davidcomfort/dash_sample_dashboard/blob/master/layouts.py
 # 
-
+import pandas as pd
+import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+import dash_table
 
 from app import app
 from .components import Header
+
+
+
+
+df= pd.read_csv('/Users/Carlsson/Desktop/Webbsite_test/notebooks_playerStats.csv')
+df
+#app=dash.Dash(__name__)
+
 
 # this is the layout
 layout = html.Div([
@@ -27,7 +37,15 @@ layout = html.Div([
         ]
     ),
     html.Div(id='app-1-display-value'),
-    html.Div("hello August")
+    html.Div("Hello Dennis"),
+
+    html.Div(dash_table.DataTable(
+    id='table',
+    columns=[{"name": i, "id":i} for i in df.columns],
+    data=df.to_dict("rows")
+    
+))
+
 ], className="page")
 
 
