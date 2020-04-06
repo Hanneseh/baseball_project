@@ -17,8 +17,8 @@ from .components import Header
 
 
 
-
-df= pd.read_csv('/Users/Carlsson/Desktop/Webbsite_test/notebooks_playerStats.csv')
+#this needs to be edited to the right directory of your computer
+df= pd.read_csv('/Users/Carlsson/Baseball/baseballmd/src/dashboard/pages/datacsv/notebooks_playerStats.csv')
 df
 #app=dash.Dash(__name__)
 
