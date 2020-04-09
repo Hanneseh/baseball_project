@@ -8,6 +8,9 @@ import dash_table
 import plotly.express as px
 df3= pd.read_csv('/Users/Hannes/baseball-project/baseballmd/src/dashboard/pages/datacsv/notebooks_playerStats.csv')
 
+
+#https://dash.plotly.com/dash-core-components/graph
+
 df4 = pd.DataFrame(dict(
     r=[914, 542, 228, 14, 107],
     theta=['Games played','Runs','doubles',

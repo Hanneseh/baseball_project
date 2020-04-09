@@ -47,6 +47,14 @@ layout = html.Div([
 
     
 )),
+
+
+
+], className="page")
+
+
+
+'''
     html.Div(dash_table.DataTable(
     id='table',
     columns=[{"name": i, "id":i} for i in df2.columns],
@@ -56,11 +64,7 @@ layout = html.Div([
 
     
 ))
-
-
-], className="page")
-
-
+'''
 
 # https://github.com/davidcomfort/dash_sample_dashboard/blob/master/callbacks.py
 # https://dash.plotly.com/basic-callbacks
