@@ -20,31 +20,43 @@ from .components import Header
 #this needs to be edited to the right directory of your computer
 df= pd.read_csv('/Users/Carlsson/Baseball/baseballmd/src/dashboard/pages/datacsv/notebooks_playerStats.csv')
 df
+df2=pd.read_csv('/Users/Carlsson/Baseball/baseballmd/notebooks/data19.csv')
 #app=dash.Dash(__name__)
-
 
 # this is the layout
 layout = html.Div([
     Header(),
 
-    html.H3('This is the Player Page'),
+    html.H3('Players'),
     dcc.Dropdown(
         id='app-1-dropdown',
         options=[
             {'label': 'Player - {}'.format(i), 'value': i} for i in [
                 'August','Hannes', 'Marcus', 'Basit'
             ]
-        ]
+        ],
+        placeholder="Select Player" 
     ),
     html.Div(id='app-1-display-value'),
-    html.Div("Hello Dennis"),
 
     html.Div(dash_table.DataTable(
-    id='table',
+    id='table2',
     columns=[{"name": i, "id":i} for i in df.columns],
-    data=df.to_dict("rows")
+    data=df.to_dict("rows"),
+    style_table={'overflowX': 'scroll'},
+
+    
+)),
+    html.Div(dash_table.DataTable(
+    id='table',
+    columns=[{"name": i, "id":i} for i in df2.columns],
+    data=df2.to_dict("rows"),
+    style_table={'overflowX': 'scroll'},
+  
+
     
 ))
+
 
 ], className="page")
 
