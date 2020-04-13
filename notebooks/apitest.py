@@ -31,7 +31,7 @@ statsapi.player_stat_data(593428, group="[hitting,pitching,fielding]", type="car
 
 # retriving player stats by Function: player_data 
 # https://github.com/toddrob99/MLB-StatsAPI/wiki/Function:-player_stats
-statsapi.player_stats(593428, group="[hitting,pitching,fielding]", type="career")
+print(statsapi.player_stats(593428, group="[hitting,pitching,fielding]", type="career"))
 
 # an example how to use player_data to make a more complex requests
 # https://github.com/toddrob99/MLB-StatsAPI/wiki/Function:-player_stats
