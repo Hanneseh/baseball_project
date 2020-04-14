@@ -14,7 +14,7 @@ statsapi.player_stats(next(
             ['people'] if x['fullName']=='Xander Bogaerts'),
              'hitting', 'career')
 
-statsapi.get('sports_players',{'season':2019,'gameType':'R'})['people'] if x['id']==645277),'hitting', 'career')
+statsapi.get('sports_players',{'season':2019,'gameType':'R'})['people'] if x['id']==645277)'hitting', 'career')
 
 statsapi.get('sports_players',{'season':2019,'gameType':'R'})
 
@@ -22,8 +22,8 @@ statsapi.get('people',{'personIds':'645277,593428','hydrate':'stats(group=[hitti
 
 requests.get
 
-
-splitParams = {'personIds':personIds, 'hydrate':'stats(group=[hitting,pitching],type=[statSplits],sitCodes=[vr,vl],season=2019)'}
+personIds = "645277,593428,544369"
+splitParams = {'personIds':personIds, 'hydrate':'stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc,h0],season=2019'}
 people = statsapi.get('people',params)
 people
 
