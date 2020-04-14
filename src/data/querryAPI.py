@@ -30,6 +30,22 @@ for playerID in players['ID']:
     playerIDs = playerIDs + str(playerID) + ","
 playerIDs
 
+# retrieving all career data
+careerParams = {'personIds':playerIDs, 'hydrate':'stats(group=[hitting,fielding,pitching],type=[yearByYear])'}
+careerStats = statsapi.get('people',careerParams)
+careerStats
+
+df = pd.DataFrame.from_dict(careerStats)
+df
+
+for player in careerStats['people']:
+    print('{}'.format(player['fullName']))
+
+
+
+
+
+
 # sample request and printing of the data 
 splitParams = {'personIds':playerIDs, 'hydrate':'stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc],season=2019)'}
 people = statsapi.get('people',splitParams)
@@ -44,14 +60,3 @@ for person in people['people']:
             for split_stat,split_stat_value in split['stat'].items():
                 print('      {}: {}'.format(split_stat, split_stat_value))
             print('\n')
-
-# retrieving all career data
-careerParams = {'personIds':playerIDs, 'hydrate':'stats(group=[hitting,fielding,pitching],type=[yearByYear])'}
-careerStats = statsapi.get('people',careerParams)
-careerStats
-
-df = pd.DataFrame.from_dict(careerStats)
-df
-
-for player in careerStats['people']:
-    print('{}'.format(player['fullName']))
