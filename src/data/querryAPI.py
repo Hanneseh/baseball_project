@@ -24,6 +24,8 @@ import pandas as pd
 players = pd.DataFrame(data={'Name': ['Ozzie Albies', 'Xander Bogaerts', 'Didi Gregorius'], 'ID':[645277, 593428, 544369]})
 players
 
+# https://statsapi.mlb.com/api/v1/people?personIds=645277,593428,544369&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear])
+
 # transforming the IDs to a comma seperated string in order to serve as a parameter later on
 playerIDs = ""
 for playerID in players['ID']:
@@ -39,11 +41,31 @@ df = pd.DataFrame.from_dict(careerStats)
 df
 
 for player in careerStats['people']:
-    print('{}'.format(player['fullName']))
+    # print('Name:', player['fullName'])
+    name = player['fullName']
+    # print('ID:', player['id'])
+    thisPlayersID = player['id']
+    for stat in player['stats']:
+        # print('statGroupe:',stat['group']['displayName'])
+        statGroupe = stat['group']['displayName']
+        for split in stat['splits']:
+            print('ID', thisPlayersID)
+            print('statGroupe', statGroupe)
+            print('season',split['season'])
+            print('Name', name)
+            #print('stats', split['stat'])
+            for seasonStat in split['stat']:
+                print(seasonStat,split['stat'][seasonStat])
+            print('team:', split['team']['name'])
+            print('league: ', split['league']['name'])
+            print('sport:', split['sport']['abbreviation'])
+            print('gameType:', split['gameType'])
+            print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
 
 
-
-
+# TO do:
+# what about general Player information?
+# Waht about position information?
 
 
 # sample request and printing of the data 
