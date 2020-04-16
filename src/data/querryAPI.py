@@ -1,6 +1,6 @@
 ###### Requests to get all data of one player (The requests work for multiple player IDs at the same time) ########
 
-# CAREER DATA: all rows, except the summery rows for the "MLB Career" in hiting and fielding 
+# CAREER DATA: all rows, except the summery rows for the "MLB Career" in hiting and fielding
 # https://statsapi.mlb.com/api/v1/people?personIds=593428&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear])
 
 # CAREER DATA: the summery rows "MLB Career" in hitting and fielding: Remaining Question: How to get minor Carrer stats? Is it relevant?
@@ -19,12 +19,19 @@
 # imports
 import statsapi
 import pandas as pd
+import re
+from pymongo import MongoClient
+
+# Database Connection
+client = MongoClient('localhost', 27017)
+db = client['baseballmd']
+collection = db['careerStats']
 
 # getting Names and IDs of the player (For now only a sample dataframe, later this will come from the database)
-players = pd.DataFrame(data={'Name': ['Ozzie Albies', 'Xander Bogaerts', 'Didi Gregorius'], 'ID':[645277, 593428, 544369]})
+players = pd.DataFrame(data={'Name': [
+                       'Ozzie Albies', 'Xander Bogaerts', 'Didi Gregorius'], 'ID': [645277, 593428, 544369]})
 players
 
-# https://statsapi.mlb.com/api/v1/people?personIds=645277,593428,544369&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear])
 
 # transforming the IDs to a comma seperated string in order to serve as a parameter later on
 playerIDs = ""
@@ -32,53 +39,73 @@ for playerID in players['ID']:
     playerIDs = playerIDs + str(playerID) + ","
 playerIDs
 
-# retrieving all career data
-careerParams = {'personIds':playerIDs, 'hydrate':'stats(group=[hitting,fielding,pitching],type=[yearByYear])'}
-careerStats = statsapi.get('people',careerParams)
+# https://statsapi.mlb.com/api/v1/people?personIds=645277,593428,544369&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear])
+# retrieving career data (Year by Year)
+careerParams = {'personIds': playerIDs,'hydrate': 'stats(group=[hitting,fielding,pitching],type=[yearByYear])'}
+careerStats = statsapi.get('people', careerParams)
 careerStats
 
-df = pd.DataFrame.from_dict(careerStats)
-df
-
 for player in careerStats['people']:
-    # print('Name:', player['fullName'])
-    name = player['fullName']
-    # print('ID:', player['id'])
-    thisPlayersID = player['id']
+    careerDict = {}
+    careerDict['fullName'] = player['fullName']
+    careerDict['Id'] = player['id']
     for stat in player['stats']:
-        # print('statGroupe:',stat['group']['displayName'])
-        statGroupe = stat['group']['displayName']
+        careerDict['statGroupe'] = stat['group']['displayName']
         for split in stat['splits']:
-            print('ID', thisPlayersID)
-            print('statGroupe', statGroupe)
-            print('season',split['season'])
-            print('Name', name)
-            #print('stats', split['stat'])
+            careerDict['season'] = int(split['season'])
             for seasonStat in split['stat']:
-                print(seasonStat,split['stat'][seasonStat])
-            print('team:', split['team']['name'])
-            print('league: ', split['league']['name'])
-            print('sport:', split['sport']['abbreviation'])
-            print('gameType:', split['gameType'])
-            print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
+                if stat['group']['displayName'] == 'fielding' and seasonStat == 'position':
+                   careerDict[seasonStat] = split['stat'][seasonStat]['abbreviation']
+                else:
+                    if isinstance(split['stat'][seasonStat], str) and re.search(r"\d{1}", split['stat'][seasonStat]):
+                        fStat = float(split['stat'][seasonStat])
+                        careerDict[seasonStat] = fStat
+                    else:
+                        careerDict[seasonStat] = split['stat'][seasonStat]
+            careerDict['team'] = split['team']['name']
+            careerDict['league'] = split['league']['name']
+            careerDict['sport'] = split['sport']['abbreviation']
+            careerDict['gameType'] = split['gameType']
+            careerDict.pop('_id', None)
+            collection.insert(careerDict)
 
+# https://statsapi.mlb.com/api/v1/people?personIds=645277,593428,544369&hydrate=stats(group=[hitting,fielding,pitching],type=[career])
+# retrieving career data (summary)
+careerSummaryParams = {'personIds': playerIDs,'hydrate': 'stats(group=[hitting,fielding,pitching],type=[career])'}
+careerSummaryStats = statsapi.get('people', careerSummaryParams)
+careerSummaryStats
 
-# TO do:
-# what about general Player information?
-# Waht about position information?
-
-
-# sample request and printing of the data 
-splitParams = {'personIds':playerIDs, 'hydrate':'stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc],season=2019)'}
-people = statsapi.get('people',splitParams)
-people
-
-for person in people['people']:
-    print('{}'.format(person['fullName']))
-    for stat in person['stats']:
-        if len(stat['splits']): print('  {}'.format(stat['group']['displayName']))
+counter = 0
+for player in careerSummaryStats['people']:
+    careerSummaryDict = {}
+    careerSummaryDict['fullName'] = player['fullName']
+    careerSummaryDict['Id'] = player['id']
+    for stat in player['stats']:
+        careerSummaryDict['statGroupe'] = stat['type']['displayName']
         for split in stat['splits']:
-            print('    {} {}:'.format(split['season'], split['split']['description']))
-            for split_stat,split_stat_value in split['stat'].items():
-                print('      {}: {}'.format(split_stat, split_stat_value))
-            print('\n')
+            for careerSummaryStat in split['stat']:
+# WTF?
+
+
+
+
+
+
+
+
+                if stat['group']['displayName'] == 'fielding' and seasonStat == 'position':
+                   careerDict[seasonStat] = split['stat'][seasonStat]['abbreviation']
+                else:
+                    if isinstance(split['stat'][seasonStat], str) and re.search(r"\d{1}", split['stat'][seasonStat]):
+                        fStat = float(split['stat'][seasonStat])
+                        careerDict[seasonStat] = fStat
+                    else:
+                        careerDict[seasonStat] = split['stat'][seasonStat]
+            careerDict['team'] = split['team']['name']
+            careerDict['league'] = split['league']['name']
+            careerDict['sport'] = split['sport']['abbreviation']
+            careerDict['gameType'] = split['gameType']
+            careerDict.pop('_id', None)
+            #collection.insert(careerDict)
+            counter += 1
+            print(counter)
