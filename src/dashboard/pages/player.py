@@ -18,9 +18,9 @@ from .components import Header
 
 
 #this needs to be edited to the right directory of your computer
-df= pd.read_csv('C:\Users\Basit\OneDrive\Desktop\Baseball\baseballmd\src\dashboard\pages\datacsv\notebooks_playerStats.csv')
+df= pd.read_csv(r'C:\Users\Basit\OneDrive\Desktop\Baseball\baseballmd\src\dashboard\pages\datacsv\notebooks_playerStats.csv')
 df
-df2=pd.read_csv('C:\Users\Basit\OneDrive\Desktop\Baseball\baseballmd\src\dashboard\pages\datacsv\data19.csv')
+df2=pd.read_csv(r'C:\Users\Basit\OneDrive\Desktop\Baseball\baseballmd\src\dashboard\pages\datacsv\data19.csv')
 #app=dash.Dash(__name__)
 
 # this is the layout
