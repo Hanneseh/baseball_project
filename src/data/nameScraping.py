@@ -7,9 +7,8 @@ import statsapi
 from pymongo import MongoClient
 
 #Database connection
-client = MongoClient("localhost:27017")
-db = client.baseballmd
-client.list_database_names()
+client = MongoClient('localhost', 27017)
+db = client['baseballmd']
 
 weburl = urllib.request.urlopen('https://www.honkbalsite.com/profhonkballers/')
 data = weburl.read()
@@ -19,28 +18,18 @@ milbLinks = soup.findAll("a", href=re.compile("milb"))
 mlbLinks = soup.findAll("a", href=re.compile("mlb"))
 allLinks = milbLinks + mlbLinks
 
-playersid = pd.DataFrame(columns=['Name', 'Id', 'birthdate', 'Age', 'Height', 'Weight', 'Active status', 'Position'])
-playersid
-i = 0
-for players in allLinks:
-    name = players.contents[0]
-    linkplayer = players.get('href')
-    playerid = re.search(r"\d{6}", linkplayer).group(0)
-    playerid = int(playerid)
-    rawdata = statsapi.get('person', {'personId':playerid})
-    
+for player in allLinks:
+    playerDict = {}
+    linkplayer = player.get('href')
+    playerDict['id'] = int(re.search(r"\d{6}", linkplayer).group(0))
+    rawdata = statsapi.get('person', {'personId':playerDict['id']})
     for people in rawdata['people']:
-        birthdate = people['birthDate']
-        currentAge = people['currentAge']
-        height = people['height']
-        weight = people['weight']
-        active = people['active']
-        abbreviation = people['primaryPosition']['abbreviation']
-
-    playersid.loc[i] = [name] + [playerid] + [birthdate] + [currentAge] + [height] + [weight] + [active] + [abbreviation]
-    i += 1
-    
-playersid
-
-db.baseballmd.insert_many(playersid.to_dict('records'))
-
+        playerDict['fullName'] = people['fullName']
+        playerDict['birthDate'] = people['birthDate']
+        playerDict['currentAge'] = people['currentAge']
+        playerDict['height'] = people['height']
+        playerDict['weight'] = people['weight']
+        playerDict['active'] = people['active']
+        playerDict['position'] = people['primaryPosition']['abbreviation']
+    playerDict.pop('_id', None)
+    db['players'].insert(playerDict)
