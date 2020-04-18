@@ -34,7 +34,8 @@ for document in cursor:
     playerIDs = playerIDs + str(document['id']) + ","
 playerIDs
 
-# https://statsapi.mlb.com/api/v1/people?personIds=645277,593428,544369&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear])
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear],sportId=16)
+# https://statsapi.mlb.com/api/v1/people?personIds=593428&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear],sportId=11)
 # retrieving career data (type yearByYear)
 careerYearByYearParams = {'personIds': playerIDs,'hydrate': 'stats(group=[hitting,fielding,pitching],type=[yearByYear])'}
 careerYearByYearStats = statsapi.get('people', careerYearByYearParams)
@@ -62,22 +63,27 @@ for player in careerYearByYearStats['people']:
                                     else:
                                         careerYearByYearDict[seasonStat] = split['stat'][seasonStat]
                             except KeyError:
+                                print('1' + player['fullName'])
                                 continue
                         careerYearByYearDict['team'] = split['team']['name']
                         careerYearByYearDict['league'] = split['league']['name']
                         careerYearByYearDict['sport'] = split['sport']['abbreviation']
                         careerYearByYearDict['gameType'] = split['gameType']
                         careerYearByYearDict.pop('_id', None)
-                        db['careerStats'].insert(careerYearByYearDict)
+                        # db['careerStats'].insert(careerYearByYearDict)
                         counter += 1
                     except KeyError:
+                        print('2' + player['fullName'])
                         continue
             except KeyError:
+                print('3' + player['fullName'])
                 continue
     except KeyError:
+        print('4' + player['fullName'])
         continue
-print(counter)
+print('XXXXXXXXXXXXXXXX career Year by Year ' + str(counter))
 
+# https://statsapi.mlb.com/api/v1/people?personIds=645277,593428,544369&hydrate=stats(group=[hitting,fielding,pitching],type=[career],sportId=11))
 # https://statsapi.mlb.com/api/v1/people?personIds=645277,593428,544369&hydrate=stats(group=[hitting,fielding,pitching],type=[career])
 # retrieving career data (type career)
 careerCareerParams = {'personIds': playerIDs,'hydrate': 'stats(group=[hitting,fielding,pitching],type=[career])'}
@@ -105,19 +111,23 @@ for player in careerCareerStats['people']:
                                     else:
                                         careerCareerDict[careerCareerStat] = split['stat'][careerCareerStat]
                             except KeyError:
+                                print('5' + player['fullName'])
                                 continue
                         careerCareerDict['sport'] = split['sport']['abbreviation']
                         careerCareerDict['gameType'] = split['gameType']
                         careerCareerDict.pop('_id', None)
-                        db['careerStats'].insert(careerCareerDict)
+                        # db['careerStats'].insert(careerCareerDict)
                         counter += 1
                     except KeyError:
+                        print('6' + player['fullName'])
                         continue
             except KeyError:
+                print('7' + player['fullName'])
                 continue
     except KeyError:
+        print('8' + player['fullName'])
         continue
-print(counter)
+print('XXXXXXXXXXXXXXXX type career' + str(counter))
 
 
 # getting an arry of past seasons from now back to 2017
@@ -157,17 +167,21 @@ for season in seasons:
                                     else:
                                         splitsStatSplitsDict[splitsSplitStat] = split['stat'][splitsSplitStat]
                                 except KeyError:
+                                    print('9' + player['fullName'])
                                     continue
                             splitsStatSplitsDict.pop('_id', None)
-                            db['splitStats'].insert(splitsStatSplitsDict)
+                            # db['splitStats'].insert(splitsStatSplitsDict)
                             counter += 1
                         except KeyError:
+                            print('10' + player['fullName'])
                             continue
                 except KeyError:
+                    print('11' + player['fullName'])
                     continue
         except KeyError:
+            print('12' + player['fullName'])
             continue
-    print(counter)
+    print('XXXXXXXXXXXXXXXX splits For each season' + str(counter))
 
     # https://statsapi.mlb.com/api/v1/people?personIds=645277,593428,544369&hydrate=stats(type=[season],season=2020)
     # retrieving splits data (type: season)
@@ -198,15 +212,19 @@ for season in seasons:
                                     else:
                                         splitsSeasonDict[splitsSeasonStat] = split['stat'][splitsSeasonStat]
                                 except KeyError:
+                                    print('13' + player['fullName'])
                                     continue
                             splitsSeasonDict.pop('_id', None)
-                            db['splitStats'].insert(splitsSeasonDict)
+                            # db['splitStats'].insert(splitsSeasonDict)
                             counter += 1
                         except KeyError:
+                            print('14' + player['fullName'])
                             continue
                 except KeyError:
+                    print('15' + player['fullName'])
                     continue
         except KeyError:
+            print('16' + player['fullName'])
             continue
-    print(counter)
+    print('XXXXXXXXXXXXXXXX Splits for entire season' + str(counter))
 
