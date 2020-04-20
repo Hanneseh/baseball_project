@@ -39,7 +39,7 @@ print( statsapi.player_stats(next(x['id'] for x in statsapi.get('sports_players'
 
 # retriving player stats by Function: get (gives the most data): 
 # https://github.com/toddrob99/MLB-StatsAPI/wiki/Function:-get
-statsapi.get('person_stats', {'personId':642720, 'gamePk':"current"})
+statsapi.get('person_stats', {'personId':593428, 'gamePk':"current"})
 
 '''
 Here I went more in deph how we could utilitize the API:
@@ -252,7 +252,7 @@ https://statsapi.mlb.com/api/v1/people?personIds=645277,593428&hydrate=stats(gro
 # sample URL for Career data of entire mlb Career
 https://statsapi.mlb.com/api/v1/people?personIds=593428&hydrate=stats(group=[hitting,pitching],type=[career])
 
-statsapi.meta('baseballStats')
+statsapi.meta('languages')
 
 ## experimentation
 https://statsapi.mlb.com/api/v1/people?personIds=645277,593428,544369&hydrate=stats(group=[hitting,pitching,fielding],type=[yearByYear])
@@ -283,3 +283,27 @@ for person in people['people']:
 # https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear],sportId=16)
 
 # https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting],type=[byDateRange],startDate=08/13/2013,endDate=08/20/2019,sportId=21)
+
+
+# getting all sport codes
+r = requests.get('http://statsapi.mlb.com/api/v1/sports/').json()
+r
+
+
+
+# retrieving career data (type YearByYear)
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear],sportId=13)
+
+
+# retrieving career data (type career)
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[career],sportId=13)
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[career])
+
+
+# retrieving splits data (type: statSplits)
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc],season=2019,sportId=12)
+
+# retrieving splits data (type: season)
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(type=[season],season=2019,sportId=12)
+
+
