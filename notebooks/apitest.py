@@ -23,20 +23,19 @@ Testing some basic functions and see what they return:
 
 # get general information about player by id 
 # https://github.com/toddrob99/MLB-StatsAPI/wiki/Function:-get
-statsapi.get('person', {'personId':645277})
+statsapi.get('person', {'personId':642720})
 
 # retriving player stats by Function: player_stats_data 
 # https://github.com/toddrob99/MLB-StatsAPI/wiki/Function:-player_stat_data
-statsapi.player_stat_data(593428, group="[hitting,pitching,fielding]", type="career")
+statsapi.player_stat_data(642720, group="[hitting,pitching,fielding]", type="season")
 
 # retriving player stats by Function: player_data 
 # https://github.com/toddrob99/MLB-StatsAPI/wiki/Function:-player_stats
-statsapi.player_stats(593428, group="[hitting,pitching,fielding]", type="career")
+print(statsapi.player_stats(642720, group="[hitting,pitching,fielding]", type="career"))
 
 # an example how to use player_data to make a more complex requests
 # https://github.com/toddrob99/MLB-StatsAPI/wiki/Function:-player_stats
-print( statsapi.player_stats(next(x['id'] for x in statsapi.get('sports_players',
-{'season':2008,'gameType':'W'})['people'] if x['fullName']=='Chase Utley'), 'hitting', 'career') )
+print( statsapi.player_stats(next(x['id'] for x in statsapi.get('sports_players',{'season':2019,'gameType':'W'})['people'] if x['fullName']=='Ray-Patrick Didder'), 'hitting', 'career') )
 
 # retriving player stats by Function: get (gives the most data): 
 # https://github.com/toddrob99/MLB-StatsAPI/wiki/Function:-get
@@ -57,7 +56,7 @@ seems to be more promesing right now.
 
 #############################################################################################
 # Making a sample scrap by using complex player_data
-stats2 = statsapi.player_stats(next(x['id'] for x in statsapi.get('sports_players',{'season':2019,'gameType':'R'})['people'] if x['fullName']=='Xander Bogaerts'), 'hitting', 'career')
+stats2 = statsapi.player_stats(next(x['id'] for x in statsapi.get('sports_players',{'season':2019,'gameType':'R'})['people'] if x['fullName']=='Ray-Patrick Didder'), 'hitting', 'career')
 print(stats2)
 stats2.dtype()
 
@@ -210,3 +209,101 @@ dfXN
 
 # export to csv
 dfXN.to_csv('/Users/Hannes/baseball-project/baseballmd/notebooks/playerStats.csv', index = False)
+
+
+# further experimentation: 
+
+personIds = "645277,593428,544369"
+splitParams = {'personIds':personIds, 'hydrate':'stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc],season=2019'}
+people = statsapi.get('people',params)
+people
+
+for person in people['people']:
+    print('{}'.format(person['fullName']))
+    for stat in person['stats']:
+        if len(stat['splits']): print('  {}'.format(stat['group']['displayName']))
+        for split in stat['splits']:
+            print('    {} {}:'.format(split['season'], split['split']['description']))
+            for split_stat,split_stat_value in split['stat'].items():
+                print('      {}: {}'.format(split_stat, split_stat_value))
+            print('\n')
+
+
+
+# sample url splits of season 2018 with random player IDs
+https://statsapi.mlb.com/api/v1/people?personIds=434378,519203&hydrate=stats(group=[hitting,pitching],type=[statSplits],sitCodes=[vr,vl],season=2018)
+
+# sample url splits of season 2019 with multiple players
+https://statsapi.mlb.com/api/v1/people?personIds=645277,593428,544369&hydrate=stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc],season=2019)
+
+# sample url splits of season 2019 only xander
+https://statsapi.mlb.com/api/v1/people?personIds=593428&hydrate=stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc],season=2019)
+
+# sample url splits of entire season 2019 only xander (last row in table)
+https://statsapi.mlb.com/api/v1/people?personIds=593428&hydrate=stats(type=[season],season=2018)
+
+################################# Careere Data #####################################
+# sample URL for Career data of just one specific season with one player
+https://statsapi.mlb.com/api/v1/people?personIds=593428&hydrate=stats(group=[hitting,pitching],type=[statsSingleSeason],season=2018)
+
+# sample URL for Career data of one season for several players
+https://statsapi.mlb.com/api/v1/people?personIds=645277,593428&hydrate=stats(group=[hitting,pitching],type=[statsSingleSeason],season=2018)
+
+# sample URL for Career data of entire mlb Career
+https://statsapi.mlb.com/api/v1/people?personIds=593428&hydrate=stats(group=[hitting,pitching],type=[career])
+
+statsapi.meta('languages')
+
+## experimentation
+https://statsapi.mlb.com/api/v1/people?personIds=645277,593428,544369&hydrate=stats(group=[hitting,pitching,fielding],type=[yearByYear])
+
+
+
+import statsapi
+personIds = 663662 # Daz Cameron - can be a list
+sportId = 11 # AAA (http://statsapi.mlb.com/api/v1/sports/11) - find id on person endpoint if unknown
+startDate = '08/13/2019'
+endDate = '08/20/2019'
+hydrate = 'stats(group=[hitting],type=[byDateRange],startDate={},endDate={},sportId=11),currentTeam'.format(startDate,endDate)
+params = {'personIds':personIds, 'hydrate':hydrate}
+people = statsapi.get('people',params)
+# Resulting endpoint URL: https://statsapi.mlb.com/api/v1/people?personIds=663662&hydrate=stats(group=[hitting],type=[byDateRange],startDate=08/13/2019,endDate=08/20/2019,sportId=11),currentTeam
+for person in people['people']:
+    print('{}'.format(person['fullName']))
+    for stat in person['stats']:
+        if len(stat['splits']): print('  {}'.format(stat['group']['displayName']))
+        for split in stat['splits']:
+            print('    {} {}:'.format(split['season'], split['sport']['abbreviation']))
+            for split_stat,split_stat_value in split['stat'].items():
+                print('      {}: {}'.format(split_stat, split_stat_value))
+            print('\n')
+
+
+
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear],sportId=16)
+
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting],type=[byDateRange],startDate=08/13/2013,endDate=08/20/2019,sportId=21)
+
+
+# getting all sport codes
+r = requests.get('http://statsapi.mlb.com/api/v1/sports/').json()
+r
+
+
+
+# retrieving career data (type YearByYear)
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear],sportId=13)
+
+
+# retrieving career data (type career)
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[career],sportId=13)
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[career])
+
+
+# retrieving splits data (type: statSplits)
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc],season=2019,sportId=12)
+
+# retrieving splits data (type: season)
+# https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(type=[season],season=2019,sportId=12)
+
+
