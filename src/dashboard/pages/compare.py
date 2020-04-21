@@ -29,18 +29,47 @@ fig2 = px.line_polar(df5, r='r', theta='theta', line_close=True, width=500, heig
 layout = html.Div([
     Header(),
     html.H3('Compare Players'),
+
+
+    dash_table.DataTable(
+        id='datatable-interactivity',
+        columns=[
+            {"name": i, "id": i, "deletable": True, "selectable": True} for i in df3.columns
+        ],
+        data=df3.to_dict('records'),
+        #style_cell={'padding': '5px',
+         #               'whiteSpace': 'no-wrap',
+          #              'overflow': 'hidden',
+           #             
+            #            'maxWidth': 0,
+             #           'height': 30,
+              #          'textAlign': 'left'},
+        style_table={'overflowX': 'scroll', 'whiteSpace': 'normal', 'height':'auto'},
+        editable=True,
+        filter_action="native",
+        sort_action="native",
+        sort_mode="multi",
+        column_selectable="single",
+        row_selectable="multi",
+        row_deletable=True,
+        selected_columns=[],
+        selected_rows=[],
+        page_action="native",
+        page_current= 0,
+        page_size= 10,
+    ),
+    html.Div(id='datatable-interactivity-container'),
+
+
+
  
+   html.Div([dcc.Graph(figure=fig)], style={'float':'left'}),
+    html.Div([dcc.Graph(figure=fig2)], style={'float':'right'})
     
 
-    html.Div(dash_table.DataTable(
-    id='table3',
-    columns=[{"name": i, "id":i} for i in df3.columns],
-    data=df3.to_dict("rows"),
-    style_table={'overflow': 'scroll'},
-    )),
+    
 
-    html.Div([dcc.Graph(figure=fig)], style={'float':'left'}),
-    html.Div([dcc.Graph(figure=fig2)], style={'float':'right'})
+  
     
     
 
