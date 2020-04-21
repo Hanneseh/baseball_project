@@ -29,14 +29,16 @@ for player in allLinks:
     mlbSoup
 
     if re.search('mlb', linkplayer):
-        print('mlb')
-        imgDiv = mlbSoup.findAll("div", class_='player-header__container')  #.get('img') #.get('src')
-        imgLink = imgDiv[0]
-        print(imgLink)
-
+        imgDiv = mlbSoup.findAll("div", class_='player-header__container')
+        imgTag = imgDiv[0].findAll("img", class_='player-headshot')
+        imgSrcLink = imgTag[0].get("src")
+        playerDict['imageLink'] = str(imgSrcLink)
 
     if re.search('milb', linkplayer):
-        print('milb')
+        imgDiv = mlbSoup.findAll("div", id='main_image')
+        imgTag = imgDiv[0].findAll("img")
+        imgSrcLink = imgTag[0].get("src")
+        playerDict['imageLink'] = 'http://www.milb.com' + str(imgSrcLink)
 
     rawdata = statsapi.get('person', {'personId':playerDict['id']})
     for people in rawdata['people']:
@@ -48,4 +50,4 @@ for player in allLinks:
         playerDict['active'] = people['active']
         playerDict['position'] = people['primaryPosition']['abbreviation']
     playerDict.pop('_id', None)
-    # db['players'].insert(playerDict)
+    db['players'].insert(playerDict)
