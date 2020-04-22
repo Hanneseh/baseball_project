@@ -76,7 +76,17 @@ for sport in allSports:
                             careerYearByYearDict['sport'] = sportAbbreviation
                             careerYearByYearDict['gameType'] = split['gameType']
                             careerYearByYearDict.pop('_id', None)
-                            db['careerStats'].insert(careerYearByYearDict)
+
+                            alreadyExisting = []
+                            for i in db["careerStats"].find({"id": careerYearByYearDict['id'], "type" : careerYearByYearDict['type'], "statGroupe" : careerYearByYearDict['statGroupe'], "sport": careerYearByYearDict['sport']}, { "_id": 0}):
+                                alreadyExisting.append(i)
+                            if len(alreadyExisting) > 0:
+                                if alreadyExisting[0] != careerYearByYearDict:
+                                    db['careerStats'].delete_one(alreadyExisting[0])
+                                    db['careerStats'].insert(careerYearByYearDict)
+                            else:
+                                db['careerStats'].insert(careerYearByYearDict)
+
                         except KeyError:
                             continue
                 except KeyError:
@@ -114,7 +124,17 @@ for sport in allSports:
                             careerCareerDict['sport'] = sportAbbreviation
                             careerCareerDict['gameType'] = split['gameType']
                             careerCareerDict.pop('_id', None)
-                            db['careerStats'].insert(careerCareerDict)
+
+                            alreadyExisting = []
+                            for i in db["careerStats"].find({"id": careerCareerDict['id'], "type" : careerCareerDict['type'], "statGroupe" : careerCareerDict['statGroupe'], "sport": careerCareerDict['sport']}, { "_id": 0}):
+                                alreadyExisting.append(i)
+                            if len(alreadyExisting) > 0:
+                                if alreadyExisting[0] != careerCareerDict:
+                                    db['careerStats'].delete_one(alreadyExisting[0])
+                                    db['careerStats'].insert(careerCareerDict)
+                            else:
+                                db['careerStats'].insert(careerCareerDict)
+
                         except KeyError:
                             continue
                 except KeyError:
@@ -124,6 +144,7 @@ for sport in allSports:
 
     # retriving splits data
     for season in seasons:
+        print(season)
         # https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc],season=2019,sportId=12)
         # retrieving splits data (type: statSplits)
         splitsStatSplitsParams = {'personIds': playerIDs,'hydrate': 'stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc],season={},sportId={})'.format(season,sportId)}
@@ -158,7 +179,17 @@ for sport in allSports:
                                     except KeyError:
                                         continue
                                 splitsStatSplitsDict.pop('_id', None)
-                                db['splitStats'].insert(splitsStatSplitsDict)
+
+                                alreadyExisting = []
+                                for i in db["splitStats"].find({"id": splitsStatSplitsDict['id'], "type" : splitsStatSplitsDict['type'], "statGroupe" : splitsStatSplitsDict['statGroupe'], "sport": splitsStatSplitsDict['sport'], "split": splitsStatSplitsDict['split'], "season": splitsStatSplitsDict['season'],}, { "_id": 0}):
+                                    alreadyExisting.append(i)
+                                if len(alreadyExisting) > 0:
+                                    if alreadyExisting[0] != splitsStatSplitsDict:
+                                        db['splitStats'].delete_one(alreadyExisting[0])
+                                        db['splitStats'].insert(splitsStatSplitsDict)
+                                else:
+                                    db['splitStats'].insert(splitsStatSplitsDict)
+
                             except KeyError:
                                 continue
                     except KeyError:
@@ -200,7 +231,17 @@ for sport in allSports:
                                     except KeyError:
                                         continue
                                 splitsSeasonDict.pop('_id', None)
-                                db['splitStats'].insert(splitsSeasonDict)
+
+                                alreadyExisting = []
+                                for i in db["splitStats"].find({"id": splitsSeasonDict['id'], "type" : splitsSeasonDict['type'], "statGroupe" : splitsSeasonDict['statGroupe'], "sport": splitsSeasonDict['sport'], "season": splitsSeasonDict['season'],}, { "_id": 0}):
+                                    alreadyExisting.append(i)
+                                if len(alreadyExisting) > 0:
+                                    if alreadyExisting[0] != splitsSeasonDict:
+                                        db['splitStats'].delete_one(alreadyExisting[0])
+                                        db['splitStats'].insert(splitsSeasonDict)
+                                else:
+                                    db['splitStats'].insert(splitsSeasonDict)
+
                             except KeyError:
                                 continue
                     except KeyError:
