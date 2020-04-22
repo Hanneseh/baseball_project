@@ -24,6 +24,17 @@ collection = db.players
 
 rawPlayerData = pd.DataFrame(list(collection.find()))
 
+'''
+TO DO:
+- Make table vertical
+- Remove unecessary stuff from the table, Figure out what table lines mean
+- Laying out the Page
+    - Make dropdown shorter 
+    - place picture and table right next to each other
+- place second dropdwon right next to it
+    - mirror player selection
+'''
+
 
 options = []
 for name in rawPlayerData['fullName']:
