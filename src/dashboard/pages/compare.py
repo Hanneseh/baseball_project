@@ -8,6 +8,16 @@ import dash_table
 import plotly.express as px
 df3= pd.read_csv('/Users/Hannes/baseball-project/baseballmd/src/dashboard/pages/datacsv/notebooks_playerStats.csv')
 
+'''
+TO DO:
+- Make table vertical
+- Remove unecessary stuff from the table, Figure out what table lines mean
+- Laying out the Page
+    - Make dropdown shorter 
+    - place picture and table right next to each other
+- place second dropdwon right next to it
+    - mirror player selection
+'''
 
 #https://dash.plotly.com/dash-core-components/graph
 
@@ -34,46 +44,37 @@ layout = html.Div([
     html.H3('Compare Players'),
 
 
-    dash_table.DataTable(
-        id='datatable-interactivity',
-        columns=[
-            {"name": i, "id": i, "deletable": True, "selectable": True} for i in df3.columns
-        ],
-        data=df3.to_dict('records'),
-        #style_cell={'padding': '5px',
-         #               'whiteSpace': 'no-wrap',
-          #              'overflow': 'hidden',
-           #             
-            #            'maxWidth': 0,
-             #           'height': 30,
-              #          'textAlign': 'left'},
-        style_table={'overflowX': 'scroll', 'whiteSpace': 'normal', 'height':'auto'},
-        editable=True,
-        filter_action="native",
-        sort_action="native",
-        sort_mode="multi",
-        column_selectable="single",
-        row_selectable="multi",
-        row_deletable=True,
-        selected_columns=[],
-        selected_rows=[],
-        page_action="native",
-        page_current= 0,
-        page_size= 10,
-    ),
-    html.Div(id='datatable-interactivity-container'),
+    # dash_table.DataTable(
+    #     id='datatable-interactivity',
+    #     columns=[
+    #         {"name": i, "id": i, "deletable": True, "selectable": True} for i in df3.columns
+    #     ],
+    #     data=df3.to_dict('records'),
+    #     #style_cell={'padding': '5px',
+    #      #               'whiteSpace': 'no-wrap',
+    #       #              'overflow': 'hidden',
+    #        #             
+    #         #            'maxWidth': 0,
+    #          #           'height': 30,
+    #           #          'textAlign': 'left'},
+    #     style_table={'overflowX': 'scroll', 'whiteSpace': 'normal', 'height':'auto'},
+    #     editable=True,
+    #     filter_action="native",
+    #     sort_action="native",
+    #     sort_mode="multi",
+    #     column_selectable="single",
+    #     row_selectable="multi",
+    #     row_deletable=True,
+    #     selected_columns=[],
+    #     selected_rows=[],
+    #     page_action="native",
+    #     page_current= 0,
+    #     page_size= 10,
+    # ),
+    # html.Div(id='datatable-interactivity-container'),
 
-
-
- 
-   html.Div([dcc.Graph(figure=fig)], style={'float':'left'}),
-    html.Div([dcc.Graph(figure=fig2)], style={'float':'right'})
-    
-
-    
-
-  
-    
+    # html.Div([dcc.Graph(figure=fig)], style={'float':'left'}),
+    # html.Div([dcc.Graph(figure=fig2)], style={'float':'right'})
     
 
 ], className="page")
