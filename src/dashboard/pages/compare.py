@@ -10,13 +10,9 @@ df3= pd.read_csv('/Users/Hannes/baseball-project/baseballmd/src/dashboard/pages/
 
 '''
 TO DO:
-- Make table vertical
-- Remove unecessary stuff from the table, Figure out what table lines mean
-- Laying out the Page
-    - Make dropdown shorter 
-    - place picture and table right next to each other
-- place second dropdwon right next to it
-    - mirror player selection
+- Get all carrer summary stats form the database and organize them in a datafram
+    - Hints: {"type" : "career", "statGroupe" : "hitting"}
+- Try to figure a way out 
 '''
 
 #https://dash.plotly.com/dash-core-components/graph
@@ -76,5 +72,7 @@ layout = html.Div([
     # html.Div([dcc.Graph(figure=fig)], style={'float':'left'}),
     # html.Div([dcc.Graph(figure=fig2)], style={'float':'right'})
     
+
+
 
 ], className="page")

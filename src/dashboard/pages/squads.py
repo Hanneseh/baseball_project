@@ -16,6 +16,15 @@ collection = db.players
 
 rawPlayerData = pd.DataFrame(list(collection.find()))
 
+'''
+TO DO:
+- Take the name from the dropdownlist, search his id in the dataframe
+- Use the ID to querry MongoDB
+    - Get all hitting carrer stats form the database for this player: 465668 and organize them in a datafram
+    - Hints: {"id" : NumberInt(465668), "statGroupe" : "hitting"}
+- display some data of the player from mongo db
+- Define tow buttons: "batting", "Filding"
+'''
 
 options = []
 for name in rawPlayerData['fullName']:
