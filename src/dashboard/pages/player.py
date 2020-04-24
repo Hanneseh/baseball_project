@@ -22,7 +22,7 @@ client = MongoClient("localhost:27017")
 db=client['baseballmd']
 collection = db.players
 
-rawPlayerData = pd.DataFrame(list(collection.find()))
+rawPlayerData = pd.DataFrame(list(collection.find({},{"_id" : 0})))
 
 '''
 TO DO:
@@ -34,7 +34,6 @@ TO DO:
 - place second dropdwon right next to it
     - mirror player selection
 '''
-
 
 options = []
 for name in rawPlayerData['fullName']:
@@ -50,11 +49,12 @@ layout = html.Div([
         options=[
             {'label': '{}'.format(i), 'value': i} for i in options
         ],
-        placeholder="Select Player" 
+        placeholder="Select Player",
     ),
-    html.Div(id='app-1-display-value'),
-    html.Div(id='datatable-interactivity-container'),
-
+    html.Div([ 
+        html.Div(id='app-1-display-value'),
+        html.Div(id='datatable-interactivity-container'),
+    ]) 
 ], className="page")
 
 # https://github.com/davidcomfort/dash_sample_dashboard/blob/master/callbacks.py
@@ -66,29 +66,30 @@ layout = html.Div([
 )
 def update_styles(value):
     if value:
-        myData = rawPlayerData.loc[rawPlayerData['fullName'] == value]
-        relevantData = myData[['fullName','birthDate', 'currentAge', 'height', 'weight', 'active', 'position']]
-        relevantData
+        myData = rawPlayerData.loc[rawPlayerData['fullName'] == 'Roger Bernadina']
+        relevantData = myData.drop(columns = ['id', 'imageLink'])
+        descriptionValues = []
+        valuesValues = []
+        for cName in relevantData.columns:
+            descriptionValues.append(cName)
+        for playerValue in relevantData.loc[0]:
+            valuesValues.append(playerValue)
+        d = {}
+        d['Descriptions'] = descriptionValues
+        d['Values'] = valuesValues
+        pivotRelevant = pd.DataFrame(data=d)
         table = dt.DataTable(
             id='table',
-            columns=[{"name": i, "id": i, "selectable": True} for i in relevantData.columns],
-            data=relevantData.to_dict('records'),
-            style_table={'overflowX': 'scroll', 'whiteSpace': 'normal', 'height':'auto'},
-            editable=True,
-            filter_action="native",
-            sort_action="native",
-            sort_mode="multi",
-            column_selectable="single",
-            row_selectable="multi",
-            row_deletable=True,
-            selected_columns=[],
-            selected_rows=[],
-            page_action="native",
-            page_current= 0,
-            page_size= 10,
+            columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
+            data=pivotRelevant.to_dict('records'),
+            style_table={'overflowX': 'scroll', 'whitespace': "normal", 'height':'auto'},
+            style_as_list_view=True,
+            style_cell={'minWidth': '18px', 'width': '18px', 'maxWidth': '18px',
+            'overflow': 'hidden',
+            'textOverflow': 'ellipsis',
+            }
         )
         return table
-
 
 @app.callback(
     Output('app-1-display-value', 'children'),
