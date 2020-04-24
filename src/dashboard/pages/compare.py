@@ -6,7 +6,7 @@ from app import app
 from .components import Header
 import dash_table
 import plotly.express as px
-df3= pd.read_csv('/Users/Hannes/baseball-project/baseballmd/src/dashboard/pages/datacsv/notebooks_playerStats.csv')
+df3= pd.read_csv(r'C:\Users\Basit\OneDrive\Desktop\Baseball\baseballmd\src\dashboard\pages\datacsv\data19.csv')
 
 '''
 TO DO:
