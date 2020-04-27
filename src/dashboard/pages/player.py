@@ -19,13 +19,6 @@ db=client['baseballmd']
 collection = db.players
 
 
-# padding: 0mm;
-# margin: 10mm auto;
-# border: 1px #D3D3D3 solid;
-# border-radius: 5px;
-# background: blue;
-# box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-
 # getting raw data in
 rawPlayerData = pd.DataFrame(list(collection.find({},{"_id" : 0})))
 
