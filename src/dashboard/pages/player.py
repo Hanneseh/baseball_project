@@ -7,20 +7,14 @@ import dash_daq as daq
 from dash.dependencies import Input, Output
 import dash_table as dt
 import re
-
-from pymongo import MongoClient
 import numpy as np
 
 from app import app
 from .components import Header
-
-client = MongoClient("localhost:27017")
-db=client['baseballmd']
-collection = db.players
-
+from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable
 
 # getting raw data in
-rawPlayerData = pd.DataFrame(list(collection.find({},{"_id" : 0})))
+rawPlayerData = getPlayerInformation()
 
 # Data for the dropdown list
 options = []
@@ -28,54 +22,100 @@ for name in rawPlayerData['fullName']:
     options.append(name)
 options.sort()
 
+# default Data for basic table
+basicTableOptions = getOptionsBasicTable('hitting')
+
+
 # this is the layout
 layout = html.Div([
     html.Div([
         Header(),
         html.Div([
             html.Div([
-                dcc.Dropdown(
-                id='playerSelection1',
-                options=[
-                    {'label': '{}'.format(i), 'value': i} for i in options
-                ],
-                placeholder="Select Player",
-                ),
-            ] , className="playerDropdown"),
-        
-            html.Div([
                 html.Div([
-                    daq.ToggleSwitch(
-                    id='metricToggle',
-                    value=False
+                    dcc.Dropdown(
+                    id='playerSelection1',
+                    options=[
+                        {'label': '{}'.format(i), 'value': i} for i in options
+                    ],
+                    placeholder="Select Player",
                     ),
-                ]),
-                html.Div(id='outputMetricToggle', style={'text-align':'center'})
-            ], className="toggleSwitch"),
+                ] , className="playerDropdown"),
+            
+                html.Div([
+                    html.Div([
+                        daq.ToggleSwitch(
+                        id='metricToggle',
+                        value=False
+                        ),
+                    ]),
+                    html.Div(id='outputMetricToggle', style={'text-align':'center'})
+                ], className="toggleSwitch"),
 
+                html.Div([
+                    dcc.Dropdown(
+                    id='playerSelection2',
+                    options=[
+                        {'label': '{}'.format(i), 'value': i} for i in options
+                    ],
+                    placeholder="Select Player",
+                    ),
+                ] , className="playerDropdown2"),
+            ]),
             html.Div([
-                dcc.Dropdown(
-                id='playerSelection2',
-                options=[
-                    {'label': '{}'.format(i), 'value': i} for i in options
-                ],
-                placeholder="Select Player",
-                ),
-            ] , className="playerDropdown2"),
+                html.Div([ 
+                    html.Div(id='imageDiv', className="playerImage"),
+                    html.Div(id='playerInformation', className="playerInformation"),
+                ], style={'width':'50%', 'float':'left'}), 
+                
+                html.Div([ 
+                    html.Div(id='imageDiv2', className="playerImage2"),
+                    html.Div(id='playerInformation2', className="playerInformation2"),
+                ], style={'width':'50%', 'float':'right'}), 
+            ]),
         ]),
         html.Div([
-            html.Div([ 
-                html.Div(id='imageDiv', className="playerImage"),
-                html.Div(id='playerInformation', className="playerInformation"),
-            ], style={'width':'50%', 'float':'left'}), 
-            
-            html.Div([ 
-                html.Div(id='imageDiv2', className="playerImage2"),
-                html.Div(id='playerInformation2', className="playerInformation2"),
-            ], style={'width':'50%', 'float':'right'}), 
-        ])
+            html.Div([
+                dcc.Dropdown(
+                    id='basicTableDorpdown',
+                    options=basicTableOptions,
+                    value=['Name', 'Career'],
+                    multi=True,
+                    placeholder='Select metrics',
+                ),
+            ], id='basicTableDropdownDiv', className="basicTableDropdown"),
+            html.Div(id='basicTableDivWrapper', className='basicTableDivWrapper')
+        ], id='basicTableAndDropdownDiv', className='basicTableAndDropdownDiv') 
     ], className="page"),
-    ])
+    ]),
+
+    #  dt.DataTable(
+    #             id='table',
+    #             columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
+    #             data=pivotRelevant.to_dict('records'),
+    #             style_cell={'font-family':'arial', 'border':'none', 'textAlign': 'left'},
+    #             style_as_list_view=True,
+    #             style_header = {'display': 'none'}
+    #         ),
+
+# Callback for updating basic table
+@app.callback(
+    Output('basicTableDivWrapper', 'children'),
+    [Input('basicTableDorpdown', 'value')])
+def update_table(dorpdownValues):
+    print(dorpdownValues)
+    if dorpdownValues:
+        tableData = getSummedCareerStats('hitting')
+        displayedData = tableData.loc[:,dorpdownValues]
+        table = html.Div([
+            dt.DataTable(
+                id='basicTable',
+                columns=[{"name": i, "id": i} for i in displayedData.columns],
+                data = displayedData.to_dict('records')
+            ),
+        ], className='basicTableDiv')
+        return table
+
 
 # Callback to change unit toggle value
 @app.callback(

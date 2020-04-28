@@ -84,3 +84,21 @@ background-repeat: no-repeat;
     margin-right: 3%;
     margin-top: 4%;
 }
+
+
+/* CSS for the basic table */
+.basicTableAndDropdownDiv {
+    display: block;
+}
+.basicTableDropdown {
+    width: 70%;
+    float: left;
+}
+.basicTableDivWrapper {
+    width: auto;
+    display: inline-block;
+}
+.basicTableDiv {
+    width: auto;
+    display: inline-block;
+}
