@@ -23,12 +23,16 @@
     background-size: cover;
     padding: 0mm;
 }
-
-
+/*
+background-image: url("https://c4.wallpaperflare.com/wallpaper/368/433/141/brown-rock-photo-arizona-arizona-wallpaper-preview.jpg");
+background-repeat: no-repeat;
+*/
 .header {
     position: relative;
     background: orange;
     max-width: 2160px;
+    max-height: 100px;
+
 }
 
 .playerDropdown {
