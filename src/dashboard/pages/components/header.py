@@ -14,8 +14,6 @@ def get_menu():
     menu = html.Div([
         dcc.Link('Players', href='/pages/player/',style={'color': 'black'}),
         "   |   ",
-        dcc.Link('Compare', href='/pages/compare/',style={'color': 'black'}),
-        "   |   ",
         dcc.Link('Squads', href='/pages/squads/',style={'color': 'black'}),
     ], className="row ")
     return menu

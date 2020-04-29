@@ -23,7 +23,7 @@ for name in rawPlayerData['fullName']:
 options.sort()
 
 # default Data for basic table
-basicTableOptions = getOptionsBasicTable('hitting')
+
 
 
 # this is the layout
@@ -79,12 +79,17 @@ layout = html.Div([
             html.Div([
                 dcc.Dropdown(
                     id='basicTableDorpdown',
-                    options=basicTableOptions,
-                    value=['Name', 'Career'],
                     multi=True,
-                    placeholder='Select metrics',
+                    placeholder='Select metrics'
+
                 ),
             ], id='basicTableDropdownDiv', className="basicTableDropdown"),
+            html.Div([
+                html.Button('Hitting', id='Hitting', n_clicks=0 ,className='Hitting'),
+                html.Button('Fielding', id='Fielding', n_clicks=0 ,className='Fielding'),
+                html.Button('Pitching', id='Pitching', n_clicks=0,className='Pitching')
+            ], className='buttonGroup'),
+
             html.Div(id='basicTableDivWrapper', className='basicTableDivWrapper')
         ], id='basicTableAndDropdownDiv', className='basicTableAndDropdownDiv'),
 
@@ -103,21 +108,43 @@ layout = html.Div([
 
 # Callback for updating basic table
 @app.callback(
-    Output('basicTableDivWrapper', 'children'),
-    [Input('basicTableDorpdown', 'value')])
-def update_table(dorpdownValues):
-    print(dorpdownValues)
-    if dorpdownValues:
-        tableData = getSummedCareerStats('hitting')
-        displayedData = tableData.loc[:,dorpdownValues]
-        table = html.Div([
-            dt.DataTable(
-                id='basicTable',
-                columns=[{"name": i, "id": i} for i in displayedData.columns],
-                data = displayedData.to_dict('records')
-            ),
-        ], className='basicTableDiv')
-        return table
+    [Output('basicTableDivWrapper', 'children'),
+    Output('basicTableDorpdown','options'),
+    Output('basicTableDorpdown','value')],
+    [Input('Hitting','n_clicks'),
+    Input('Fielding', 'n_clicks'), 
+    Input('Pitching', 'n_clicks')]
+    )
+
+def update_table(hittingClicks, fieldingClicks, pitchingClicks):
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    deafultdropdown=[] 
+    if 'Hitting' in changed_id:
+        msg = 'hitting'
+        deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+    elif 'Fielding' in changed_id:
+        msg = 'fielding'
+        deafultdropdown=['Name' ,'Career', 'POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
+    elif 'Pitching' in changed_id:
+        msg = 'pitching'
+        deafultdropdown=['Name', 'Career','W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
+    else:
+        msg = 'hitting'
+        deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+    print(msg)
+    tableData = getSummedCareerStats(msg)
+    basicTableOptions = getOptionsBasicTable(msg) 
+    displayedData = tableData.loc[:,deafultdropdown]
+    table = html.Div([
+        dt.DataTable(
+            id='basicTable',
+            columns=[{"name": i, "id": i} for i in displayedData.columns],
+            sort_action='native',
+            data = displayedData.to_dict('records'),
+            style_cell={'textAlign': 'left','color': 'grey'}
+        ),
+    ], className='basicTableDiv')
+    return table, basicTableOptions, deafultdropdown
 
 
 # Callback to change unit toggle value
@@ -175,9 +202,10 @@ def showPlayerInformation2(playerName, toggleValue):
                 id='table',
                 columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
                 data=pivotRelevant.to_dict('records'),
-                style_cell={'font-family':'arial', 'border':'none', 'textAlign': 'left'},
+                style_cell={'border':'none', 'textAlign': 'left','background-color': '#27282a'},
                 style_as_list_view=True,
-                style_header = {'display': 'none'}
+                style_header = {'display': 'none'},
+                
             ),
         ], className="playerInformation2")        
     
@@ -226,9 +254,9 @@ def showPlayerInformation(playerName, toggleValue):
         table = html.Div([
             dt.DataTable(
                 id='table',
-                columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
+                columns=[{"name": i, "id": i, "selectable": False} for i in pivotRelevant.columns],
                 data=pivotRelevant.to_dict('records'),
-                style_cell={'font-family':'arial', 'border':'none', 'textAlign': 'left'},
+                style_cell={'border':'none', 'textAlign': 'left', 'background-color': '#27282a'},
                 style_as_list_view=True,
                 style_header = {'display': 'none'}
             ),
