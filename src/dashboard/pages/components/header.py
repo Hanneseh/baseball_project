@@ -3,8 +3,10 @@ import dash_core_components as dcc
 
 def Header():
     return html.Div([
-        html.H1('Baseball'),
-        get_menu()
+        html.Div([
+            html.H1('vdsak'),
+            get_menu(),
+        ], className="backgroundDiv"),
     ], className="header")
 
 

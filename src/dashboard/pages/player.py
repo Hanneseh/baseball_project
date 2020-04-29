@@ -28,8 +28,8 @@ basicTableOptions = getOptionsBasicTable('hitting')
 
 # this is the layout
 layout = html.Div([
+    Header(),
     html.Div([
-        Header(),
         html.Div([
             html.Div([
                 html.Div([
@@ -74,6 +74,7 @@ layout = html.Div([
                 ], style={'width':'50%', 'float':'right'}), 
             ]),
         ]),
+        html.Div(style={'background-image':'url(/assets/SDV_bat_header_copy.png)'}),
         html.Div([
             html.Div([
                 dcc.Dropdown(
@@ -85,9 +86,11 @@ layout = html.Div([
                 ),
             ], id='basicTableDropdownDiv', className="basicTableDropdown"),
             html.Div(id='basicTableDivWrapper', className='basicTableDivWrapper')
-        ], id='basicTableAndDropdownDiv', className='basicTableAndDropdownDiv') 
+        ], id='basicTableAndDropdownDiv', className='basicTableAndDropdownDiv'),
+
+
+        ], className='playerContent'),
     ], className="page"),
-    ]),
 
     #  dt.DataTable(
     #             id='table',

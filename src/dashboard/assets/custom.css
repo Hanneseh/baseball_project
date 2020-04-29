@@ -1,13 +1,12 @@
+/* Css for general page layout */
 .rootPage {
     position:absolute;
     top:0;
-    bottom:0;
+    /* bottom:0; */
     left:0;
     right:0;
-    background-image: url("https://c4.wallpaperflare.com/wallpaper/368/433/141/brown-rock-photo-arizona-arizona-wallpaper-preview.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-size: contain;
+    background-color: #27282a;
+    background-repeat: repeat;
 }
 
 .page {
@@ -15,26 +14,41 @@
     width: 90%;
     max-width: 2160px;
     min-height: 100em;
-    border: 1px #D3D3D3 solid;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    margin: 10mm auto;
+    /* margin: 10mm auto; */
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 1%;
     background-color: white;
     background-size: cover;
     padding: 0mm;
 }
-/*
-background-image: url("https://c4.wallpaperflare.com/wallpaper/368/433/141/brown-rock-photo-arizona-arizona-wallpaper-preview.jpg");
-background-repeat: no-repeat;
-*/
-.header {
-    position: relative;
-    background: orange;
-    max-width: 2160px;
-    max-height: 100px;
 
+.playerContent {
+    border: black;
+    border-width: 3px;
+    border-radius: 200px;
 }
 
+
+/* Css for header */
+.header {
+    margin-top: 0.2%;
+    position: relative;
+    max-height: 300px;
+    max-width: 2160px;
+}
+.backgroundDiv {
+    position: relative;
+    width: auto;
+    min-height: ;
+    height: auto;
+    background: url("SDV_bat_header_copy.jpg") no-repeat center center;
+    background-size: cover;
+}
+
+/* Css for player information*/
 .playerDropdown {
     width: 35%;
     margin-top: 3%;
