@@ -13,23 +13,30 @@ from pages import player, compare, squads
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
+    html.Div([
+        html.Div([
+            html.Div([
+                html.Div([
+                    html.Div(id="navLinkDiv"),
+                ], className="row "),
+            ],className="placeHolderDiv"),
+        ], className="backgroundDiv"),
+    ], className="header"),
     html.Div(id='page-content')
 ], className = "rootPage")
 
-@app.callback(Output('page-content', 'children'),
-              [Input('url', 'pathname')])
+@app.callback(
+    [Output('page-content', 'children'),
+    Output('navLinkDiv', 'children')],
+    [Input('url', 'pathname')])
 def display_page(pathname):
     if pathname == '/pages/player/':
-        return player.layout
-    elif pathname == '/pages/compare/':
-        return compare.layout
+        return player.layout, dcc.Link('Squads', href='/pages/squads/',style={'color': '#D34215'}, id='navLink')
     elif pathname == '/pages/squads/':
-        return squads.layout
+        return squads.layout, dcc.Link('Players', href='/pages/player/',style={'color': '#D34215'}, id='navLink')
     else:
         return '404'
 
 if __name__ == '__main__':
     app.run_server(debug=True)
     
-
-   # 'style={'background-color': 'white'}'

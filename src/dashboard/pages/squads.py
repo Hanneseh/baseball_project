@@ -8,7 +8,6 @@ import dash_table as dt
 from pymongo import MongoClient
 import numpy as np 
 from app import app
-from .components import Header
 
 client = MongoClient("localhost:27017")
 db=client['baseballmd']
@@ -31,7 +30,6 @@ for name in rawPlayerData['fullName']:
     options.append(name)
 
 layout = html.Div([
-    Header(),
     html.H3('This is the Squads Page'),
 
      dcc.Dropdown(

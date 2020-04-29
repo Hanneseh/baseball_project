@@ -10,7 +10,6 @@ import re
 import numpy as np
 
 from app import app
-from .components import Header
 from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable
 
 # getting raw data in
@@ -28,7 +27,6 @@ options.sort()
 
 # this is the layout
 layout = html.Div([
-    Header(),
     html.Div([
         html.Div([
             html.Div([
@@ -97,14 +95,60 @@ layout = html.Div([
         ], className='playerContent'),
     ], className="page"),
 
-    #  dt.DataTable(
-    #             id='table',
-    #             columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
-    #             data=pivotRelevant.to_dict('records'),
-    #             style_cell={'font-family':'arial', 'border':'none', 'textAlign': 'left'},
-    #             style_as_list_view=True,
-    #             style_header = {'display': 'none'}
-    #         ),
+'''
+# Callback for updating basic table
+@app.callback(
+    [Output('basicTableDivWrapper', 'children'),
+    Output('basicTableDorpdown','options')],
+    [Input('Hitting','n_clicks'),
+    Input('Fielding', 'n_clicks'), 
+    Input('Pitching', 'n_clicks'),
+    Input('basicTableDorpdown', 'value')]
+    )
+def update_table(hittingClicks, fieldingClicks, pitchingClicks, dorpdownValues):
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    if 'Hitting' in changed_id:
+        msg = 'hitting'
+    elif 'Fielding' in changed_id:
+        msg = 'fielding'
+    elif 'Pitching' in changed_id:
+        msg = 'pitching'
+    else:
+        msg = 'hitting'
+    tableData = getSummedCareerStats(msg)
+    basicTableOptions = getOptionsBasicTable(msg) 
+    displayedData = tableData.loc[:,dorpdownValues]
+    table = html.Div([
+        dt.DataTable(
+            id='basicTable',
+            columns=[{"name": i, "id": i} for i in displayedData.columns],
+            sort_action='native',
+            data = displayedData.to_dict('records'),
+            style_cell={'textAlign': 'left','color': 'grey'}
+        ),
+    ], className='basicTableDiv')
+    return table, basicTableOptions
+
+# Callback for updating basic table options
+@app.callback(
+    [Output('basicTableDorpdown','value')],
+    [Input('Hitting','n_clicks'),
+    Input('Fielding', 'n_clicks'), 
+    Input('Pitching', 'n_clicks')])
+def update_dropdownValue(hittingClicks, fieldingClicks, pitchingClicks):
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    deafultdropdown=[] 
+    if 'Hitting' in changed_id:
+        deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+    elif 'Fielding' in changed_id:
+        deafultdropdown=['Name' ,'Career', 'POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
+    elif 'Pitching' in changed_id:
+        deafultdropdown=['Name', 'Career','W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
+    else:
+        deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+    return deafultdropdown
+
+'''
 
 # Callback for updating basic table
 @app.callback(
