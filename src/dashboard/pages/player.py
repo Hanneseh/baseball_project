@@ -185,7 +185,7 @@ def update_table(hittingClicks, fieldingClicks, pitchingClicks):
             columns=[{"name": i, "id": i} for i in displayedData.columns],
             sort_action='native',
             data = displayedData.to_dict('records'),
-            style_cell={'textAlign': 'left','color': 'grey'}
+            style_cell={'textAlign': 'left','background-color': '#D3D3D3', 'color':'black'}
         ),
     ], className='basicTableDiv')
     return table, basicTableOptions, deafultdropdown
