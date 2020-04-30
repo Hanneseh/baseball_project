@@ -1,9 +1,9 @@
 # imports
 import pandas as pd
+import dash_daq
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import dash_daq as daq
 from dash.dependencies import Input, Output
 import dash_table as dt
 import re
@@ -12,7 +12,7 @@ import numpy as np
 from app import app
 from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable
 
-# getting raw data in
+# getting raw player Information in
 rawPlayerData = getPlayerInformation()
 
 # Data for the dropdown list
@@ -20,10 +20,6 @@ options = []
 for name in rawPlayerData['fullName']:
     options.append(name)
 options.sort()
-
-# default Data for basic table
-
-
 
 # this is the layout
 layout = html.Div([
@@ -42,11 +38,11 @@ layout = html.Div([
             
                 html.Div([
                     html.Div([
-                        daq.ToggleSwitch(
+                        dash_daq.ToggleSwitch(
                         id='metricToggle',
                         value=False
                         ),
-                    ]),
+                    ],),
                     html.Div(id='outputMetricToggle', style={'text-align':'center'})
                 ], className="toggleSwitch"),
 
@@ -72,14 +68,14 @@ layout = html.Div([
                 ], style={'width':'50%', 'float':'right'}), 
             ]),
         ]),
-        html.Div(style={'background-image':'url(/assets/SDV_bat_header_copy.png)'}),
+        html.Div(id='buttonValue', style={'display': 'none'}),
+        html.Div(id='optionValue', style={'display': 'none'}),
         html.Div([
             html.Div([
                 dcc.Dropdown(
                     id='basicTableDorpdown',
                     multi=True,
                     placeholder='Select metrics'
-
                 ),
             ], id='basicTableDropdownDiv', className="basicTableDropdown"),
             html.Div([
@@ -88,108 +84,70 @@ layout = html.Div([
                 html.Button('Pitching', id='Pitching', n_clicks=0,className='Pitching')
             ], className='buttonGroup'),
 
-            html.Div(id='basicTableDivWrapper', className='basicTableDivWrapper')
+            html.Div([
+                html.Div([
+                    dt.DataTable(
+                        id='basicTable',
+                        sort_action='native',
+                        style_cell={'textAlign': 'left','color': 'grey'}
+                    ),
+                ], className='basicTableDiv')
+            ],id='basicTableDivWrapper', className='basicTableDivWrapper')
         ], id='basicTableAndDropdownDiv', className='basicTableAndDropdownDiv'),
-
-
+        
         ], className='playerContent'),
     ], className="page"),
 
-'''
-# Callback for updating basic table
+# Callback for updating basic table dropdown options and default values
 @app.callback(
-    [Output('basicTableDivWrapper', 'children'),
-    Output('basicTableDorpdown','options')],
-    [Input('Hitting','n_clicks'),
-    Input('Fielding', 'n_clicks'), 
-    Input('Pitching', 'n_clicks'),
-    Input('basicTableDorpdown', 'value')]
-    )
-def update_table(hittingClicks, fieldingClicks, pitchingClicks, dorpdownValues):
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    if 'Hitting' in changed_id:
-        msg = 'hitting'
-    elif 'Fielding' in changed_id:
-        msg = 'fielding'
-    elif 'Pitching' in changed_id:
-        msg = 'pitching'
-    else:
-        msg = 'hitting'
-    tableData = getSummedCareerStats(msg)
-    basicTableOptions = getOptionsBasicTable(msg) 
-    displayedData = tableData.loc[:,dorpdownValues]
-    table = html.Div([
-        dt.DataTable(
-            id='basicTable',
-            columns=[{"name": i, "id": i} for i in displayedData.columns],
-            sort_action='native',
-            data = displayedData.to_dict('records'),
-            style_cell={'textAlign': 'left','color': 'grey'}
-        ),
-    ], className='basicTableDiv')
-    return table, basicTableOptions
-
-# Callback for updating basic table options
-@app.callback(
-    [Output('basicTableDorpdown','value')],
+    [Output('Hitting','value'),
+    Output('basicTableDorpdown','value'),
+    Output('basicTableDorpdown', 'options')],
     [Input('Hitting','n_clicks'),
     Input('Fielding', 'n_clicks'), 
     Input('Pitching', 'n_clicks')])
-def update_dropdownValue(hittingClicks, fieldingClicks, pitchingClicks):
+def determinButtonPress(hittingClicks, fieldingClicks, pitchingClicks):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    deafultdropdown=[] 
+    pressedButton = ''
+    deafultdropdown=[]
+    dropdownOptions = ''
     if 'Hitting' in changed_id:
+        pressedButton = '1'
+        dropdownOptions = getOptionsBasicTable('hitting')
         deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
     elif 'Fielding' in changed_id:
+        pressedButton = '2'
+        dropdownOptions = getOptionsBasicTable('fielding')
         deafultdropdown=['Name' ,'Career', 'POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
     elif 'Pitching' in changed_id:
+        pressedButton = '3'
+        dropdownOptions = getOptionsBasicTable('pitching')
         deafultdropdown=['Name', 'Career','W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
     else:
+        pressedButton = '1'
+        dropdownOptions = getOptionsBasicTable('hitting')
         deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
-    return deafultdropdown
+    return pressedButton, deafultdropdown, dropdownOptions
 
-'''
-
-# Callback for updating basic table
+# Callback to load the correct "basic table" data and columns
 @app.callback(
-    [Output('basicTableDivWrapper', 'children'),
-    Output('basicTableDorpdown','options'),
-    Output('basicTableDorpdown','value')],
-    [Input('Hitting','n_clicks'),
-    Input('Fielding', 'n_clicks'), 
-    Input('Pitching', 'n_clicks')]
-    )
-
-def update_table(hittingClicks, fieldingClicks, pitchingClicks):
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    deafultdropdown=[] 
-    if 'Hitting' in changed_id:
-        msg = 'hitting'
-        deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
-    elif 'Fielding' in changed_id:
-        msg = 'fielding'
-        deafultdropdown=['Name' ,'Career', 'POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
-    elif 'Pitching' in changed_id:
-        msg = 'pitching'
-        deafultdropdown=['Name', 'Career','W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
-    else:
-        msg = 'hitting'
-        deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
-    print(msg)
-    tableData = getSummedCareerStats(msg)
-    basicTableOptions = getOptionsBasicTable(msg) 
-    displayedData = tableData.loc[:,deafultdropdown]
-    table = html.Div([
-        dt.DataTable(
-            id='basicTable',
-            columns=[{"name": i, "id": i} for i in displayedData.columns],
-            sort_action='native',
-            data = displayedData.to_dict('records'),
-            style_cell={'textAlign': 'left','background-color': '#D3D3D3', 'color':'black'}
-        ),
-    ], className='basicTableDiv')
-    return table, basicTableOptions, deafultdropdown
-
+    [Output('basicTable', 'columns'),
+    Output('basicTable', 'data')],
+    [Input('basicTableDorpdown', 'value'),
+    Input('Hitting', 'value')])
+def update_table(dropdownValue, buttonValue):
+    buttonString = ''
+    if buttonValue == '1':
+        buttonString = 'hitting'
+    if buttonValue == '2':
+        buttonString = 'fielding'
+    if buttonValue == '3':
+        buttonString = 'pitching'
+    tableData = getSummedCareerStats(buttonString)
+    displayedData = tableData.loc[:,dropdownValue]
+    columns = [{"name": i, "id": i} for i in displayedData.columns]
+    data = displayedData.to_dict('records')
+    return columns, data
 
 # Callback to change unit toggle value
 @app.callback(
