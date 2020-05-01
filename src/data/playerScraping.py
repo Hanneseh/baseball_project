@@ -50,4 +50,16 @@ for player in allLinks:
         playerDict['active'] = people['active']
         playerDict['position'] = people['primaryPosition']['abbreviation']
     playerDict.pop('_id', None)
-    db['players'].insert(playerDict)
+    
+    # writing to the data base
+    alreadyExisting = []
+    for i in db["players"].find({"id": playerDict['id']}, { "_id": 0}):
+        alreadyExisting.append(i)
+    if len(alreadyExisting) > 0:
+        if alreadyExisting[0] != playerDict:
+            db['players'].delete_one(alreadyExisting[0])
+            print('Updating Player')
+            db['players'].insert(playerDict)
+    else:
+        print('Inserting Player')
+        db['players'].insert(playerDict)

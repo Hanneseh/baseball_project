@@ -5,6 +5,7 @@ import re
 from pymongo import MongoClient
 import datetime
 import requests
+import numbers
 
 # Database Connection
 client = MongoClient('localhost', 27017)
@@ -37,7 +38,7 @@ for i in range(0, difference):
 for sport in allSports:
     sportId = sport['id']
     sportAbbreviation = sport['abbreviation']
-    print(sportAbbreviation, sportId)
+    #print(sportAbbreviation, sportId)
 
     # https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear],sportId=16)
     # retrieving career data (type yearByYear)
@@ -75,18 +76,26 @@ for sport in allSports:
                             careerYearByYearDict['league'] = split['league']['name']
                             careerYearByYearDict['sport'] = sportAbbreviation
                             careerYearByYearDict['gameType'] = split['gameType']
-                            careerYearByYearDict.pop('_id', None)
 
+                            if careerYearByYearDict['statGroupe'] == 'hitting' and isinstance(careerYearByYearDict['slg'], numbers.Number) and isinstance(careerYearByYearDict['avg'], numbers.Number):
+                                careerYearByYearDict['ISO'] = round(careerYearByYearDict['slg'] - careerYearByYearDict['avg'], 3)
+
+                            careerYearByYearDict.pop('_id', None)
+                            # writing to database    
                             alreadyExisting = []
-                            for i in db["careerStats"].find({"id": careerYearByYearDict['id'], "type" : careerYearByYearDict['type'], "statGroupe" : careerYearByYearDict['statGroupe'], "sport": careerYearByYearDict['sport']}, { "_id": 0}):
-                                alreadyExisting.append(i)
+                            if careerYearByYearDict['statGroupe'] == 'fielding':
+                                for i in db["careerStats"].find({"id": careerYearByYearDict['id'], "type" : careerYearByYearDict['type'], "statGroupe" : careerYearByYearDict['statGroupe'], 'season':careerYearByYearDict['season'], "sport": careerYearByYearDict['sport'], "position": careerYearByYearDict['position'], "team": careerYearByYearDict['team'], "league": careerYearByYearDict['league'], "gameType": careerYearByYearDict['gameType'], }, { "_id": 0}):
+                                    alreadyExisting.append(i)
+                            else:
+                                for i in db["careerStats"].find({"id": careerYearByYearDict['id'], "type" : careerYearByYearDict['type'], "statGroupe" : careerYearByYearDict['statGroupe'], 'season':careerYearByYearDict['season'], "sport": careerYearByYearDict['sport'], "team": careerYearByYearDict['team'], "league": careerYearByYearDict['league'], "gameType": careerYearByYearDict['gameType'], }, { "_id": 0}):
+                                    alreadyExisting.append(i)
                             if len(alreadyExisting) > 0:
                                 if alreadyExisting[0] != careerYearByYearDict:
                                     db['careerStats'].delete_one(alreadyExisting[0])
                                     db['careerStats'].insert(careerYearByYearDict)
                             else:
+                                print('Inserting YearByYear')
                                 db['careerStats'].insert(careerYearByYearDict)
-
                         except KeyError:
                             continue
                 except KeyError:
@@ -123,18 +132,26 @@ for sport in allSports:
                                     continue
                             careerCareerDict['sport'] = sportAbbreviation
                             careerCareerDict['gameType'] = split['gameType']
-                            careerCareerDict.pop('_id', None)
 
+                            if careerCareerDict['statGroupe'] == 'hitting' and isinstance(careerCareerDict['slg'], numbers.Number) and isinstance(careerCareerDict['avg'], numbers.Number):
+                                careerCareerDict['ISO'] = round(careerCareerDict['slg'] - careerCareerDict['avg'], 3)
+
+                            careerCareerDict.pop('_id', None)
+                            # writing to the database
                             alreadyExisting = []
-                            for i in db["careerStats"].find({"id": careerCareerDict['id'], "type" : careerCareerDict['type'], "statGroupe" : careerCareerDict['statGroupe'], "sport": careerCareerDict['sport']}, { "_id": 0}):
-                                alreadyExisting.append(i)
+                            if careerCareerDict['statGroupe'] == 'fielding':
+                                for i in db["careerStats"].find({"id": careerCareerDict['id'], "type" : careerCareerDict['type'], "statGroupe" : careerCareerDict['statGroupe'], "sport": careerCareerDict['sport'], "gameType": careerCareerDict['gameType'], "position": careerCareerDict['position']}, { "_id": 0}):
+                                    alreadyExisting.append(i)
+                            else:
+                                for i in db["careerStats"].find({"id": careerCareerDict['id'], "type" : careerCareerDict['type'], "statGroupe" : careerCareerDict['statGroupe'], "sport": careerCareerDict['sport'], "gameType": careerCareerDict['gameType']}, { "_id": 0}):
+                                    alreadyExisting.append(i)
                             if len(alreadyExisting) > 0:
                                 if alreadyExisting[0] != careerCareerDict:
                                     db['careerStats'].delete_one(alreadyExisting[0])
                                     db['careerStats'].insert(careerCareerDict)
                             else:
+                                print('Inserting YearByYear')
                                 db['careerStats'].insert(careerCareerDict)
-
                         except KeyError:
                             continue
                 except KeyError:
@@ -144,7 +161,6 @@ for sport in allSports:
 
     # retriving splits data
     for season in seasons:
-        print(season)
         # https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc],season=2019,sportId=12)
         # retrieving splits data (type: statSplits)
         splitsStatSplitsParams = {'personIds': playerIDs,'hydrate': 'stats(type=[statSplits],sitCodes=[h,a,d,n,g,t,1,2,3,4,5,6,7,8,9,10,11,12,preas,posas,vr,vl,r0,r1,r2,r3,r12,r13,r23,r123,risp,o0,o1,o2,i01,i02,i03,i04,i05,i06,i07,i08,i09,ix,b2,b3,b4,b4,b5,b6,lo,lc,ac,bc],season={},sportId={})'.format(season,sportId)}
@@ -179,17 +195,18 @@ for sport in allSports:
                                     except KeyError:
                                         continue
                                 splitsStatSplitsDict.pop('_id', None)
-
+                                
+                                # writing to the database
                                 alreadyExisting = []
-                                for i in db["splitStats"].find({"id": splitsStatSplitsDict['id'], "type" : splitsStatSplitsDict['type'], "statGroupe" : splitsStatSplitsDict['statGroupe'], "sport": splitsStatSplitsDict['sport'], "split": splitsStatSplitsDict['split'], "season": splitsStatSplitsDict['season'],}, { "_id": 0}):
+                                for i in db["splitStats"].find({"id": splitsStatSplitsDict['id'], "type" : splitsStatSplitsDict['type'], "statGroupe" : splitsStatSplitsDict['statGroupe'], "sport": splitsStatSplitsDict['sport'], "split": splitsStatSplitsDict['split'], "season": splitsStatSplitsDict['season'],"team": splitsStatSplitsDict['team'],"gameType": splitsStatSplitsDict['gameType'],}, { "_id": 0}):
                                     alreadyExisting.append(i)
                                 if len(alreadyExisting) > 0:
                                     if alreadyExisting[0] != splitsStatSplitsDict:
                                         db['splitStats'].delete_one(alreadyExisting[0])
                                         db['splitStats'].insert(splitsStatSplitsDict)
                                 else:
+                                    print('Inserting Splits')
                                     db['splitStats'].insert(splitsStatSplitsDict)
-
                             except KeyError:
                                 continue
                     except KeyError:
@@ -232,16 +249,17 @@ for sport in allSports:
                                         continue
                                 splitsSeasonDict.pop('_id', None)
 
+                                # writing to the database
                                 alreadyExisting = []
-                                for i in db["splitStats"].find({"id": splitsSeasonDict['id'], "type" : splitsSeasonDict['type'], "statGroupe" : splitsSeasonDict['statGroupe'], "sport": splitsSeasonDict['sport'], "season": splitsSeasonDict['season'],}, { "_id": 0}):
+                                for i in db["splitStats"].find({"id": splitsSeasonDict['id'], "type" : splitsSeasonDict['type'], "statGroupe" : splitsSeasonDict['statGroupe'], "sport": splitsSeasonDict['sport'], "season": splitsSeasonDict['season'],"team": splitsSeasonDict['team'],"league": splitsSeasonDict['league'],"gameType": splitsSeasonDict['gameType'],}, { "_id": 0}):
                                     alreadyExisting.append(i)
                                 if len(alreadyExisting) > 0:
                                     if alreadyExisting[0] != splitsSeasonDict:
                                         db['splitStats'].delete_one(alreadyExisting[0])
                                         db['splitStats'].insert(splitsSeasonDict)
                                 else:
+                                    print('Inserting Splits')
                                     db['splitStats'].insert(splitsSeasonDict)
-
                             except KeyError:
                                 continue
                     except KeyError:

@@ -20,7 +20,7 @@ listOfRelevantLeagues = ['AAA', 'AA', 'A(Adv)', 'A(Full)', 'ROK']
 rawData = pd.DataFrame(list(careerStats.find({"type" : "career", "statGroupe" : "hitting"}, { "_id": 0})))
 
 countValues = ['gamesPlayed', 'atBats', 'runs', 'hits', 'totalBases', 'doubles', 'triples' , 'homeRuns', 'rbi', 'baseOnBalls', 'intentionalWalks', 'strikeOuts', 'stolenBases', 'caughtStealing', 'hitByPitch', 'groundIntoDoublePlay', 'numberOfPitches', 'plateAppearances', 'leftOnBase', 'sacBunts', 'sacFlies']
-averageValues = ['avg', 'obp', 'slg', 'ops', 'groundOutsToAirouts', 'stolenBasePercentage', 'babip', 'atBatsPerHomeRun']
+averageValues = ['avg', 'obp', 'slg', 'ops', 'groundOutsToAirouts', 'stolenBasePercentage', 'babip', 'atBatsPerHomeRun', 'ISO']
 
 for playerId in playerIDs:
     playerDocuments = rawData.loc[lambda df: df['id'] == playerId]
@@ -30,7 +30,18 @@ for playerId in playerIDs:
         mlbDict = mlb[0]
         mlbDict['type'] = 'MLB Career'
         mlbDict.pop('_id', None)
-        db['careerTable'].insert(mlbDict)
+
+        # writing to the data base
+        alreadyExisting = []
+        for i in db["careerTable"].find({"id": mlbDict['id'], "type": mlbDict['type'],"statGroupe": mlbDict['statGroupe'], "sport": mlbDict['sport']}, { "_id": 0}):
+            alreadyExisting.append(i)
+        if len(alreadyExisting) > 0:
+            if alreadyExisting[0] != mlbDict:
+                db['careerTable'].delete_one(alreadyExisting[0])
+                db['careerTable'].insert(mlbDict)
+        else:
+            print('Inserting MLB Career hitting')
+            db['careerTable'].insert(mlbDict)
     else:
         intermediateResults = pd.DataFrame()
         calculatedRow = {}
@@ -67,7 +78,18 @@ for playerId in playerIDs:
                         columnMean = round(statistics.mean(meanValues), 3)
                         calculatedRow[column] = float(columnMean)
             calculatedRow.pop('_id', None)
-            db['careerTable'].insert(calculatedRow)
+
+            # writing to the data base
+            alreadyExisting = []
+            for i in db["careerTable"].find({"id": calculatedRow['id'], "type": calculatedRow['type'],"statGroupe": calculatedRow['statGroupe'], "sport": calculatedRow['sport']}, { "_id": 0}):
+                alreadyExisting.append(i)
+            if len(alreadyExisting) > 0:
+                if alreadyExisting[0] != calculatedRow:
+                    db['careerTable'].delete_one(alreadyExisting[0])
+                    db['careerTable'].insert(calculatedRow)
+            else:
+                print('Inserting MiLB Career hitting')
+                db['careerTable'].insert(calculatedRow)
 
 
 #summerizing career filding stats
@@ -84,7 +106,18 @@ for playerId in playerIDs:
         mlbDict = mlb[0]
         mlbDict['type'] = 'MLB Career'
         mlbDict.pop('_id', None)
-        db['careerTable'].insert(mlbDict)
+
+        # writing to the data base
+        alreadyExisting = []
+        for i in db["careerTable"].find({"id": mlbDict['id'], "type": mlbDict['type'],"statGroupe": mlbDict['statGroupe'], "sport": mlbDict['sport'], "position": mlbDict['position']}, { "_id": 0}):
+            alreadyExisting.append(i)
+        if len(alreadyExisting) > 0:
+            if alreadyExisting[0] != mlbDict:
+                db['careerTable'].delete_one(alreadyExisting[0])
+                db['careerTable'].insert(mlbDict)
+        else:
+            print('Inserting MLB Career fielding')
+            db['careerTable'].insert(mlbDict)
     else:
         intermediateResults = pd.DataFrame()
         for league in listOfRelevantLeagues:
@@ -129,7 +162,18 @@ for playerId in playerIDs:
                             columnMean = round(statistics.mean(meanValues), 3)
                             calculatedRow[column] = float(columnMean)
                 calculatedRow.pop('_id', None)
-                db['careerTable'].insert(calculatedRow)
+
+                # writing to the data base
+                alreadyExisting = []
+                for i in db["careerTable"].find({"id": calculatedRow['id'], "type": calculatedRow['type'],"statGroupe": calculatedRow['statGroupe'], "sport": calculatedRow['sport'], "position": calculatedRow['position']}, { "_id": 0}):
+                    alreadyExisting.append(i)
+                if len(alreadyExisting) > 0:
+                    if alreadyExisting[0] != calculatedRow:
+                        db['careerTable'].delete_one(alreadyExisting[0])
+                        db['careerTable'].insert(calculatedRow)
+                else:
+                    print('Inserting MiLB Career fielding')
+                    db['careerTable'].insert(calculatedRow)
 
 
 #summerizing career pitching stats
@@ -146,7 +190,18 @@ for playerId in playerIDs:
         mlbDict = mlb[0]
         mlbDict['type'] = 'MLB Career'
         mlbDict.pop('_id', None)
-        db['careerTable'].insert(mlbDict)
+
+        # writing to the data base
+        alreadyExisting = []
+        for i in db["careerTable"].find({"id": mlbDict['id'], "type": mlbDict['type'],"statGroupe": mlbDict['statGroupe'], "sport": mlbDict['sport']}, { "_id": 0}):
+            alreadyExisting.append(i)
+        if len(alreadyExisting) > 0:
+            if alreadyExisting[0] != mlbDict:
+                db['careerTable'].delete_one(alreadyExisting[0])
+                db['careerTable'].insert(mlbDict)
+        else:
+            print('Inserting MLB Career pitching')
+            db['careerTable'].insert(mlbDict)
     else:
         intermediateResults = pd.DataFrame()
         calculatedRow = {}
@@ -183,5 +238,16 @@ for playerId in playerIDs:
                         columnMean = round(statistics.mean(meanValues), 3)
                         calculatedRow[column] = float(columnMean)
             calculatedRow.pop('_id', None)
-            db['careerTable'].insert(calculatedRow)
+
+            # writing to the data base
+            alreadyExisting = []
+            for i in db["careerTable"].find({"id": calculatedRow['id'], "type": calculatedRow['type'],"statGroupe": calculatedRow['statGroupe'], "sport": calculatedRow['sport']}, { "_id": 0}):
+                alreadyExisting.append(i)
+            if len(alreadyExisting) > 0:
+                if alreadyExisting[0] != calculatedRow:
+                    db['careerTable'].delete_one(alreadyExisting[0])
+                    db['careerTable'].insert(calculatedRow)
+            else:
+                print('Inserting MiLB Career pitching')
+                db['careerTable'].insert(calculatedRow)
 
