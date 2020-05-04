@@ -70,6 +70,7 @@ layout = html.Div([
         ]),
         html.Div(id='buttonValue', style={'display': 'none'}),
         html.Div(id='optionValue', style={'display': 'none'}),
+        
         html.Div([
             html.Div([
                 dcc.Dropdown(
@@ -83,13 +84,14 @@ layout = html.Div([
                 html.Button('Fielding', id='Fielding', n_clicks=0 ,className='Fielding'),
                 html.Button('Pitching', id='Pitching', n_clicks=0,className='Pitching')
             ], className='buttonGroup'),
-
+            
             html.Div([
                 html.Div([
                     dt.DataTable(
                         id='basicTable',
                         sort_action='native',
-                        style_cell={'textAlign': 'left','color': 'grey'}
+                        style_cell={'textAlign': 'left','color': 'grey'},
+                        style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'}
                     ),
                 ], className='basicTableDiv')
             ],id='basicTableDivWrapper', className='basicTableDivWrapper')

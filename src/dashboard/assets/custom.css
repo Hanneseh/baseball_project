@@ -41,7 +41,7 @@
     position: relative;
     max-height: 300px;
     max-width: 2160px;
-    color: white;
+    color: whitesmoke;
 }
 .backgroundDiv {
     position: relative;
@@ -50,7 +50,7 @@
     background: url("SDV_bat_header_copy.jpg") no-repeat center center;
     background-size: cover;
     font-style: italic;
-    color: #D34215;
+    color: whitesmoke;
 }
 .placeHolderDiv {
     height: 100px;
@@ -79,7 +79,7 @@
     margin-right: 10%;
     float: left;
     font-style: italic;
-    color:#D34215 ;
+    color: whitesmoke;
 }
 
 .playerImage {
@@ -103,7 +103,7 @@
     margin-right: 3%;
     margin-top: 4%;
     font-style: italic;
-    color: #D34215;
+    color: whitesmoke;
 
 }
 
@@ -113,7 +113,7 @@
     margin-right: 3%;
     margin-top: 4%;
     font-style: italic;
-    color: #D34215;
+    color: whitesmoke;
 }
 
 
@@ -122,14 +122,13 @@
     display: block;
     background-color:#27282a;
     font-style: italic;
-    color:#D34215;
+    color: whitesmoke;
     text-align: left;
     width: 100%;
 }
 .basicTableDropdown {
     width: 100%;
     align-content: center;
-
     height: 50%;
     float: left;
     font-style: italic;
@@ -149,22 +148,31 @@
 
 .Hitting{
     
-    color:#D34215;
+    color: whitesmoke;
     margin-right: 5px;
     font-style: italic;
+}
+.Hitting:hover{
+    background: grey;
 }
 
 .Fielding{
     
-    color:#D34215;
+    color: whitesmoke;
     margin-right: 5px;
     font-style: italic;
+}
+.Fielding:hover{
+    background: grey;
 }
 
 .Pitching{
     
-    color:#D34215;
+    color: whitesmoke;
     font-style: italic;
+}
+.Pitching:hover{
+    background: grey;
 }
 
 .buttonGroup{
