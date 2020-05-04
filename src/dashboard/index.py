@@ -9,7 +9,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from pages import player, compare, squads
+from pages import player, squads
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -31,11 +31,11 @@ app.layout = html.Div([
     [Input('url', 'pathname')])
 def display_page(pathname):
     if pathname == '/pages/player/':
-        return player.layout, dcc.Link('Squads', href='/pages/squads/',style={'color': '#D34215'}, id='navLink')
+        return player.layout, dcc.Link('Squads', href='/pages/squads/',style={'color': 'whitesmoke'}, id='navLink')
     elif pathname == '/pages/squads/':
-        return squads.layout, dcc.Link('Players', href='/pages/player/',style={'color': '#D34215'}, id='navLink')
+        return squads.layout, dcc.Link('Players', href='/pages/player/',style={'color': 'whitesmoke'}, id='navLink')
     else:
-        return '404'
+        return '404','404'
 
 if __name__ == '__main__':
     app.run_server(debug=True)
