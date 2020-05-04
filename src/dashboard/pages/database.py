@@ -34,7 +34,6 @@ def getSummedCareerStats(statGroup):
 
 
 
-{'sacFlies':'SF', 'babip':'BABIP','groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}
 # return options for basic table
 def getOptionsBasicTable(statGroup):
     if statGroup == 'hitting':
@@ -113,4 +112,37 @@ def getOptionsBasicTable(statGroup):
         ]
     return options
 
+
+
+# return Data of individual career stats
+def getIndividualCareerStats(playerID, statGroup):
+    df = pd.DataFrame(list(careerStats.find({"id": playerID,"statGroupe" : statGroup},{"_id" : 0})))
+
+    if careerStats.find({"id": playerID,"statGroupe" : statGroup},{"_id" : 0}).count() > 0:
+        if statGroup == 'hitting':
+            indexNames = df[df['type'] == 'career'].index
+            df.drop(indexNames, inplace=True)
+            df = df.astype({'season': 'int32'})
+            cleanedColumns = df.loc[:,('fullName', 'type', 'season', 'gamesPlayed', 'runs', 'doubles', 'triples', 'homeRuns','strikeOuts', 'baseOnBalls', 'intentionalWalks', 'hits', 'hitByPitch','avg', 'atBats', 'obp', 'slg', 'ops', 'caughtStealing', 'stolenBases', 'groundIntoDoublePlay', 'numberOfPitches','plateAppearances', 'totalBases', 'rbi', 'leftOnBase', 'sacBunts','sacFlies', 'babip', 'groundOutsToAirouts', 'team','league', 'sport','ISO')]
+            cleanedColumns.rename(columns={'fullName': 'Name', 'season':'Season', 'gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','league':'League', 'sport':'Level', 'groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
+            cleanedColumns.sort_values(by=['Season'], inplace=True)
+
+        if statGroup == 'fielding':
+            indexNames = df[df['type'] == 'career'].index
+            df.drop(indexNames, inplace=True)
+            df = df.astype({'season': 'int32'})
+            cleanedColumns = df.loc[:,('fullName', 'type','season', 'position','games','gamesStarted', 'innings','chances','putOuts','assists','errors','doublePlays', 'rangeFactorPerGame', 'fielding', 'team','league', 'sport')]
+            cleanedColumns.rename(columns={'fullName':'Name', 'season':'Season','type':'Career', 'position':'POS','games':'G','gamesStarted':'GS', 'innings':'INN','chances':'TC','putOuts':'PO','assists':'A','errors':'E','doublePlays':'DP', 'rangeFactorPerGame':'RF', 'fielding':'FPCT','team':'Team','league':'League', 'sport':'Level'}, inplace=True)
+            cleanedColumns.sort_values(by=['Season'], inplace=True)
+
+        if statGroup == 'pitching':
+            indexNames = df[df['type'] == 'career'].index
+            df.drop(indexNames, inplace=True)
+            df = df.astype({'season': 'int32'})
+            cleanedColumns = df.loc[:,('fullName', 'type','season', 'wins','losses','era','gamesPlayed', 'gamesStarted', 'completeGames', 'shutouts','holds','saves','saveOpportunities','inningsPitched','hits','runs','earnedRuns','homeRuns','numberOfPitches','hitBatsmen','baseOnBalls', 'intentionalWalks','strikeOuts', 'avg','whip','groundOutsToAirouts','team','league', 'sport')]
+            cleanedColumns.rename(columns={'fullName':'Name', 'season':'Season', 'wins':'W','losses':'L','era':'ERA','gamesPlayed':'G', 'gamesStarted':'GS', 'completeGames':'CG', 'shutouts':'SHO','holds':'HLD','saves':'SV','saveOpportunities':'SVO','inningsPitched':'IP','hits':'H','runs':'R','earnedRuns':'ER','homeRuns':'HR','numberOfPitches':'NP','hitBatsmen':'HB','baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO', 'avg':'AVG','whip':'WHIP','groundOutsToAirouts':'GO/AO','team':'Team','league':'League', 'sport':'Level'}, inplace=True)
+            cleanedColumns.sort_values(by=['Season'], inplace=True)
+        return cleanedColumns
+    else:
+        return "This player does not have " + statGroup + " data"
 
