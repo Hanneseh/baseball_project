@@ -206,7 +206,7 @@ def showPlayerInformation2(playerName, toggleValue):
                 id='table',
                 columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
                 data=pivotRelevant.to_dict('records'),
-                style_cell={'border':'none', 'textAlign': 'left','background-color': '#27282a'},
+                style_cell={'border':'none', 'textAlign': 'left','background-color': 'whitesmoke'},
                 style_as_list_view=True,
                 style_header = {'display': 'none'},
                 
@@ -260,7 +260,7 @@ def showPlayerInformation(playerName, toggleValue):
                 id='table',
                 columns=[{"name": i, "id": i, "selectable": False} for i in pivotRelevant.columns],
                 data=pivotRelevant.to_dict('records'),
-                style_cell={'border':'none', 'textAlign': 'left', 'background-color': '#27282a'},
+                style_cell={'border':'none', 'textAlign': 'left', 'background-color': 'whitesmoke'},
                 style_as_list_view=True,
                 style_header = {'display': 'none'}
             ),

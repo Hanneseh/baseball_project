@@ -31,9 +31,9 @@ app.layout = html.Div([
     [Input('url', 'pathname')])
 def display_page(pathname):
     if pathname == '/pages/player/':
-        return player.layout, dcc.Link('Squads', href='/pages/squads/',style={'color': 'whitesmoke'}, id='navLink')
+        return player.layout, dcc.Link('Squads', href='/pages/squads/',style={'color': '#0580FF'}, id='navLink')
     elif pathname == '/pages/squads/':
-        return squads.layout, dcc.Link('Players', href='/pages/player/',style={'color': 'whitesmoke'}, id='navLink')
+        return squads.layout, dcc.Link('Players', href='/pages/player/',style={'color': '#0580FF'}, id='navLink')
     else:
         return '404','404'
 
