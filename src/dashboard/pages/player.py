@@ -68,8 +68,39 @@ layout = html.Div([
                 ], style={'width':'50%', 'float':'right'}), 
             ]),
         ]),
-        html.Div(id='buttonValue', style={'display': 'none'}),
-        html.Div(id='optionValue', style={'display': 'none'}),
+
+        html.Div([
+            html.Div([
+                html.Div([
+                    html.Button('Batting', id='careerHitting', n_clicks=0 ,className='Hitting'),
+                    html.Button('Fielding', id='careerFielding', n_clicks=0 ,className='Fielding'),
+                    html.Button('Pitching', id='careerPitching', n_clicks=0,className='Pitching'),
+                ], id='statTypeButtons', className='statTypeButtons'),
+                html.Div([
+                    html.Button('Career', id='career', n_clicks=0 ,className='Hitting'),
+                    html.Button('Splits', id='splits', n_clicks=0 ,className='Fielding'),
+                ], id='statCagegoryButtons', className='statCategoryButtonGroup')
+            ], id='individualPlayerInfoButtons', className='individualPlayerInfoButtons'),
+            
+            html.Div([
+                dcc.Dropdown(
+                    id='individualPlayerInfoDropdown',
+                    multi=True,
+                    placeholder='Select metrics'
+                ),
+            ], id='individualPlayerInfoDropdownWrapper', className="basicTableDropdown"),
+            html.Div([
+                html.Div([
+                    dt.DataTable(
+                        id='individualPlayerInfoTable',
+                        sort_action='native',
+                        style_cell={'textAlign': 'left','color': 'grey'},
+                        style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'}
+                    ),
+                ], className='individualPlayerInfoTableDiv')
+            ],id='individualPlayerInfoTableWrapper', className='basicTableDivWrapper')
+
+        ], id='playerInfoWrapper', className='playerInfoNotDisplayed'),
         
         html.Div([
             html.Div([
@@ -80,7 +111,7 @@ layout = html.Div([
                 ),
             ], id='basicTableDropdownDiv', className="basicTableDropdown"),
             html.Div([
-                html.Button('Hitting', id='Hitting', n_clicks=0 ,className='Hitting'),
+                html.Button('Batting', id='Hitting', n_clicks=0 ,className='Hitting'),
                 html.Button('Fielding', id='Fielding', n_clicks=0 ,className='Fielding'),
                 html.Button('Pitching', id='Pitching', n_clicks=0,className='Pitching')
             ], className='buttonGroup'),
@@ -100,6 +131,52 @@ layout = html.Div([
         ], className='playerContent'),
     ], className="page"),
 
+# callback for individual player stats
+@app.callback(
+    [Output('playerInfoWrapper', 'className'),
+    # Output('careerHitting','value'),
+    # Output('individualPlayerInfoDropdown','value'),
+    # Output('individualPlayerInfoDropdown', 'options')
+    ],
+    [Input('playerSelection1', 'value'),
+    Input('playerSelection2', 'value'),
+    Input('careerHitting','n_clicks'),
+    Input('careerFielding', 'n_clicks'), 
+    Input('careerPitching', 'n_clicks'),
+    Input('career', 'n_clicks'),
+    Input('splits', 'n_clicks')]
+)
+def showPlayerInfo(playerSec1Value, playerSec2Value, hittingClicks, fieldingClicks, pitchingClicks, careerClicks, splitClicks):
+    print(playerSec1Value, playerSec2Value, hittingClicks, fieldingClicks, pitchingClicks, careerClicks, splitClicks)
+    if (playerSec1Value and not playerSec2Value) or (playerSec2Value and not playerSec1Value) :
+        # changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+        # pressedButton = ''
+        # deafultdropdown=[]
+        # dropdownOptions = ''
+        # if 'Hitting' in changed_id:
+        #     pressedButton = '1'
+        #     dropdownOptions = getOptionsBasicTable('hitting')
+        #     deafultdropdown=['Name', 'Career','G','AB', 'ISO','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+        # elif 'Fielding' in changed_id:
+        #     pressedButton = '2'
+        #     dropdownOptions = getOptionsBasicTable('fielding')
+        #     deafultdropdown=['Name' ,'Career', 'POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
+        # elif 'Pitching' in changed_id:
+        #     pressedButton = '3'
+        #     dropdownOptions = getOptionsBasicTable('pitching')
+        #     deafultdropdown=['Name', 'Career','W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
+        # else:
+        #     pressedButton = '1'
+        #     dropdownOptions = getOptionsBasicTable('hitting')
+        #     deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+        # return pressedButton, deafultdropdown, dropdownOptions
+        return ['playerInfoDisplayed']
+    if playerSec1Value and playerSec2Value: 
+        return ['playerInfoNotDisplayed']
+    else: 
+        return ['playerInfoNotDisplayed']
+
+
 # Callback for updating basic table dropdown options and default values
 @app.callback(
     [Output('Hitting','value'),
@@ -116,7 +193,7 @@ def determinButtonPress(hittingClicks, fieldingClicks, pitchingClicks):
     if 'Hitting' in changed_id:
         pressedButton = '1'
         dropdownOptions = getOptionsBasicTable('hitting')
-        deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+        deafultdropdown=['Name', 'Career','G','AB', 'ISO','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
     elif 'Fielding' in changed_id:
         pressedButton = '2'
         dropdownOptions = getOptionsBasicTable('fielding')

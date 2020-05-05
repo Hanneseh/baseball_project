@@ -18,7 +18,7 @@ def getPlayerInformation():
 def getSummedCareerStats(statGroup):
     df = pd.DataFrame(list(careerTable.find({"statGroupe" : statGroup},{"_id" : 0})))
     if statGroup == 'hitting':
-        cleanedColumns = df.loc[:,('fullName', 'type', 'gamesPlayed', 'atBats', 'runs','hits','totalBases', 'doubles','triples', 'homeRuns', 'rbi', 'baseOnBalls', 'intentionalWalks','strikeOuts','stolenBases','caughtStealing', 'avg', 'obp','slg', 'ops','groundOutsToAirouts','plateAppearances', 'hitByPitch', 'sacBunts', 'sacFlies', 'babip','groundIntoDoublePlay','numberOfPitches','leftOnBase')]
+        cleanedColumns = df.loc[:,('fullName', 'type', 'gamesPlayed', 'atBats', 'runs','hits','totalBases', 'doubles','triples', 'homeRuns', 'rbi', 'baseOnBalls', 'intentionalWalks','strikeOuts','stolenBases','caughtStealing', 'avg', 'obp','slg', 'ops','groundOutsToAirouts','plateAppearances', 'hitByPitch', 'sacBunts', 'sacFlies', 'babip','groundIntoDoublePlay','numberOfPitches','leftOnBase', 'ISO')]
         cleanedColumns.rename(columns={'fullName': 'Name', 'type':'Career', 'gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
         cleanedColumns.sort_values(by=['Name'], inplace=True)
     if statGroup == 'fielding':
@@ -65,6 +65,7 @@ def getOptionsBasicTable(statGroup):
             {'label': 'Grounded into Double Plays', 'value': 'GIDP'},
             {'label': 'Number of Pitches seen', 'value': 'NP'},
             {'label': 'Left On Base', 'value': 'LOB'},
+            {'label': 'ISO', 'value': 'ISO'},
         ]
     if statGroup == 'fielding':
         options=[
