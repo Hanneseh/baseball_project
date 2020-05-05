@@ -10,7 +10,7 @@ import re
 import numpy as np
 
 from app import app
-from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable
+from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable, getOptionsIndividualCareerStatsTable, getIndividualCareerStats, getPlayerID
 
 # getting raw player Information in
 rawPlayerData = getPlayerInformation()
@@ -122,7 +122,7 @@ layout = html.Div([
                         id='basicTable',
                         sort_action='native',
                         style_cell={'textAlign': 'left','color': 'grey'},
-                        style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'}
+                        style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
                     ),
                 ], className='basicTableDiv')
             ],id='basicTableDivWrapper', className='basicTableDivWrapper')
@@ -134,9 +134,10 @@ layout = html.Div([
 # callback for individual player stats
 @app.callback(
     [Output('playerInfoWrapper', 'className'),
-    # Output('careerHitting','value'),
-    # Output('individualPlayerInfoDropdown','value'),
-    # Output('individualPlayerInfoDropdown', 'options')
+    Output('careerHitting','value'),
+    Output('careerFielding', 'value'),
+    Output('individualPlayerInfoDropdown','value'),
+    Output('individualPlayerInfoDropdown', 'options')
     ],
     [Input('playerSelection1', 'value'),
     Input('playerSelection2', 'value'),
@@ -147,34 +148,67 @@ layout = html.Div([
     Input('splits', 'n_clicks')]
 )
 def showPlayerInfo(playerSec1Value, playerSec2Value, hittingClicks, fieldingClicks, pitchingClicks, careerClicks, splitClicks):
-    print(playerSec1Value, playerSec2Value, hittingClicks, fieldingClicks, pitchingClicks, careerClicks, splitClicks)
     if (playerSec1Value and not playerSec2Value) or (playerSec2Value and not playerSec1Value) :
-        # changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-        # pressedButton = ''
-        # deafultdropdown=[]
-        # dropdownOptions = ''
-        # if 'Hitting' in changed_id:
-        #     pressedButton = '1'
-        #     dropdownOptions = getOptionsBasicTable('hitting')
-        #     deafultdropdown=['Name', 'Career','G','AB', 'ISO','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
-        # elif 'Fielding' in changed_id:
-        #     pressedButton = '2'
-        #     dropdownOptions = getOptionsBasicTable('fielding')
-        #     deafultdropdown=['Name' ,'Career', 'POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
-        # elif 'Pitching' in changed_id:
-        #     pressedButton = '3'
-        #     dropdownOptions = getOptionsBasicTable('pitching')
-        #     deafultdropdown=['Name', 'Career','W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
-        # else:
-        #     pressedButton = '1'
-        #     dropdownOptions = getOptionsBasicTable('hitting')
-        #     deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
-        # return pressedButton, deafultdropdown, dropdownOptions
-        return ['playerInfoDisplayed']
+        changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+        pressedButton = ''
+        deafultdropdown=[]
+        dropdownOptions = ''
+        playerId = 1
+        if playerSec1Value:
+            playerId = getPlayerID(playerSec1Value)
+            playerId = str(playerId)
+        else: 
+            playerId = getPlayerID(playerSec2Value)
+            playerId = str(playerId)
+        if 'careerHitting' in changed_id:
+            pressedButton = '1'
+            dropdownOptions = getOptionsIndividualCareerStatsTable('hitting')
+            deafultdropdown=['Name', 'Career','G','AB', 'ISO','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+        elif 'careerFielding' in changed_id:
+            pressedButton = '2'
+            dropdownOptions = getOptionsIndividualCareerStatsTable('fielding')
+            deafultdropdown=['Name' ,'Career', 'POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
+        elif 'careerPitching' in changed_id:
+            pressedButton = '3'
+            dropdownOptions = getOptionsIndividualCareerStatsTable('pitching')
+            deafultdropdown=['Name', 'Career','W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
+        else:
+            pressedButton = '1'
+            dropdownOptions = getOptionsIndividualCareerStatsTable('hitting')
+            deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+        return 'playerInfoDisplayed', pressedButton, playerId, deafultdropdown, dropdownOptions
     if playerSec1Value and playerSec2Value: 
-        return ['playerInfoNotDisplayed']
+        return 'playerInfoNotDisplayed', '0', '0', ['No','Option'], [{'label': 'Name', 'value': 'Name'}]
     else: 
-        return ['playerInfoNotDisplayed']
+        return 'playerInfoNotDisplayed', '0', '0', ['No','Option'], [{'label': 'Name', 'value': 'Name'}]
+
+# Callback to load the correct "individual player info" data and columns
+@app.callback(
+    [Output('individualPlayerInfoTable', 'columns'),
+    Output('individualPlayerInfoTable', 'data')],
+    [Input('individualPlayerInfoDropdown', 'value'),
+    Input('careerHitting', 'value'),
+    Input('careerFielding', 'value'),])
+def update_Individualtable(dropdownValue, buttonValue, playerID):
+    if playerID != '0':
+        buttonString = ''
+        if buttonValue == '1':
+            buttonString = 'hitting'
+        if buttonValue == '2':
+            buttonString = 'fielding'
+        if buttonValue == '3':
+            buttonString = 'pitching'
+        playerID = int(playerID)
+        tableData = getIndividualCareerStats(playerID, buttonString)
+        displayedData = tableData.loc[:,dropdownValue]
+        columns = [{"name": i, "id": i} for i in displayedData.columns]
+        data = displayedData.to_dict('records')
+        return columns, data
+    else: 
+        data = rawPlayerData.to_dict('records')
+        columns = [{"name": i, "id": i} for i in rawPlayerData.columns]
+        return columns, data
+
 
 
 # Callback for updating basic table dropdown options and default values
