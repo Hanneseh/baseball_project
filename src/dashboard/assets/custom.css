@@ -184,3 +184,24 @@
     float: left;
     margin-top: 10px;
 }
+
+/* Css for individual player information */
+.playerInfoNotDisplayed{
+    display: None;
+}
+
+.playerInfoDisplayed{
+    float: left;
+    width: 100%;
+}
+.individualPlayerInfoButtons{
+
+}
+
+.statTypeButtons{
+    float: left;
+}
+
+.statCategoryButtonGroup{
+    float: right;
+}
