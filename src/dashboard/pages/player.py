@@ -57,19 +57,13 @@ layout = html.Div([
                 ] , className="playerDropdown2"),
             ]),
             html.Div([
-                html.Div([ 
-                    html.Div(id='imageDiv', className="playerImage"),
-                    html.Div(id='playerInformation', className="playerInformation"),
-                ], style={'width':'50%', 'float':'left'}), 
-                
-                html.Div([ 
-                    html.Div(id='imageDiv2', className="playerImage2"),
-                    html.Div(id='playerInformation2', className="playerInformation2"),
-                ], style={'width':'50%', 'float':'right'}), 
+                html.Div(id='playerInfoLeft', style={'width':'50%', 'float':'left'}),
+                html.Div(id='playerInfoRight', style={'width':'50%', 'float':'right'}), 
             ]),
         ]),
 
         html.Div([
+            html.H3(['Penis']),
             html.Div([
                 html.Div([
                     html.Button('Batting', id='careerHitting', n_clicks=0 ,className='Hitting'),
@@ -89,20 +83,17 @@ layout = html.Div([
                     placeholder='Select metrics'
                 ),
             ], id='individualPlayerInfoDropdownWrapper', className="basicTableDropdown"),
-            html.Div([
-                html.Div([
-                    dt.DataTable(
-                        id='individualPlayerInfoTable',
-                        sort_action='native',
-                        style_cell={'textAlign': 'left','color': 'grey'},
-                        style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'}
-                    ),
-                ], className='individualPlayerInfoTableDiv')
-            ],id='individualPlayerInfoTableWrapper', className='basicTableDivWrapper')
+            html.Div(id='individualPlayerInfoTableWrapper', className='basicTableDivWrapper')
 
         ], id='playerInfoWrapper', className='playerInfoNotDisplayed'),
         
         html.Div([
+            html.H3(['Penis2']),
+            html.Div([
+                html.Button('Batting', id='Hitting', n_clicks=0 ,className='Hitting'),
+                html.Button('Fielding', id='Fielding', n_clicks=0 ,className='Fielding'),
+                html.Button('Pitching', id='Pitching', n_clicks=0,className='Pitching')
+            ], className='buttonGroup'),
             html.Div([
                 dcc.Dropdown(
                     id='basicTableDorpdown',
@@ -110,11 +101,6 @@ layout = html.Div([
                     placeholder='Select metrics'
                 ),
             ], id='basicTableDropdownDiv', className="basicTableDropdown"),
-            html.Div([
-                html.Button('Batting', id='Hitting', n_clicks=0 ,className='Hitting'),
-                html.Button('Fielding', id='Fielding', n_clicks=0 ,className='Fielding'),
-                html.Button('Pitching', id='Pitching', n_clicks=0,className='Pitching')
-            ], className='buttonGroup'),
             
             html.Div([
                 html.Div([
@@ -184,8 +170,7 @@ def showPlayerInfo(playerSec1Value, playerSec2Value, hittingClicks, fieldingClic
 
 # Callback to load the correct "individual player info" data and columns
 @app.callback(
-    [Output('individualPlayerInfoTable', 'columns'),
-    Output('individualPlayerInfoTable', 'data')],
+    [Output('individualPlayerInfoTableWrapper', 'children')],
     [Input('individualPlayerInfoDropdown', 'value'),
     Input('careerHitting', 'value'),
     Input('careerFielding', 'value'),])
@@ -200,14 +185,25 @@ def update_Individualtable(dropdownValue, buttonValue, playerID):
             buttonString = 'pitching'
         playerID = int(playerID)
         tableData = getIndividualCareerStats(playerID, buttonString)
-        displayedData = tableData.loc[:,dropdownValue]
-        columns = [{"name": i, "id": i} for i in displayedData.columns]
-        data = displayedData.to_dict('records')
-        return columns, data
-    else: 
-        data = rawPlayerData.to_dict('records')
-        columns = [{"name": i, "id": i} for i in rawPlayerData.columns]
-        return columns, data
+        if isinstance(tableData, str):
+            table = html.Div([ tableData], className='individualPlayerInfoTableDiv'),
+            return table
+        else:
+            displayedData = tableData.loc[:,dropdownValue]
+            table = html.Div([
+                dt.DataTable(
+                    id='individualPlayerInfoTable',
+                    sort_action='native',
+                    style_cell={'textAlign': 'left','color': 'grey'},
+                    style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
+                    data=displayedData.to_dict('records'),
+                    columns = [{"name": i, "id": i} for i in displayedData.columns],
+                    ),], className='individualPlayerInfoTableDiv'),
+            return table
+    else:
+        table = html.Div([ ''
+        ], className='individualPlayerInfoTableDiv'),
+        return table
 
 
 
@@ -274,8 +270,7 @@ def update_output(value):
 
 # Callback to load player information right
 @app.callback(
-    [Output('imageDiv2', 'children'),
-     Output('playerInformation2', 'children')],
+    [Output('playerInfoRight', 'children')],
     [Input('playerSelection2', 'value'),
      Input('metricToggle', 'value')],
 )
@@ -285,7 +280,6 @@ def showPlayerInformation2(playerName, toggleValue):
     if playerName:
         myData = rawPlayerData.loc[rawPlayerData['fullName'] == playerName]
         myData.reset_index(drop=True, inplace=True)
-        playerImage = html.Img(src=myData['imageLink'].iloc[0])
         relevantData = myData.drop(columns = ['id', 'imageLink'])
         valuesValues = []
         formattedColumnNames = ['Name', 'Birthdate', 'Age', 'Height', 'Weight', 'Active', 'Position']
@@ -312,24 +306,33 @@ def showPlayerInformation2(playerName, toggleValue):
         pivotData['Descriptions'] = formattedColumnNames
         pivotData['Values'] = valuesValues
         pivotRelevant = pd.DataFrame(data=pivotData)
-        table = html.Div([
-            dt.DataTable(
-                id='table',
-                columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
-                data=pivotRelevant.to_dict('records'),
-                style_cell={'border':'none', 'textAlign': 'left','background-color': 'whitesmoke'},
-                style_as_list_view=True,
-                style_header = {'display': 'none'},
-                
-            ),
-        ], className="playerInformation2")        
+
+        playerInfoRight = html.Div([
+            html.Div([
+                html.Img(src=myData['imageLink'].iloc[0]),
+            ],id='imageDiv2', className="playerImage2"),
+            html.Div([
+                html.Div([
+                    dt.DataTable(
+                        id='table',
+                        columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
+                        data=pivotRelevant.to_dict('records'),
+                        style_cell={'border':'none', 'textAlign': 'left','background-color': 'whitesmoke'},
+                        style_as_list_view=True,
+                        style_header = {'display': 'none'},
+                        
+                    ),
+                ], className="playerInformation2"),   
+            ],id='playerInformation2', className="playerInformation2"),
+        ]),
+    else:
+        playerInfoRight = html.Div(['No player selected']),
     
-    return playerImage, table
+    return playerInfoRight
 
 # Callback to load player information left
 @app.callback(
-    [Output('imageDiv', 'children'),
-     Output('playerInformation', 'children')],
+    [Output('playerInfoLeft', 'children')],
     [Input('playerSelection1', 'value'),
      Input('metricToggle', 'value')],
 )
@@ -339,7 +342,6 @@ def showPlayerInformation(playerName, toggleValue):
     if playerName:
         myData = rawPlayerData.loc[rawPlayerData['fullName'] == playerName]
         myData.reset_index(drop=True, inplace=True)
-        playerImage = html.Img(src=myData['imageLink'].iloc[0])
         relevantData = myData.drop(columns = ['id', 'imageLink'])
         valuesValues = []
         formattedColumnNames = ['Name', 'Birthdate', 'Age', 'Height', 'Weight', 'Active', 'Position']
@@ -366,15 +368,26 @@ def showPlayerInformation(playerName, toggleValue):
         pivotData['Descriptions'] = formattedColumnNames
         pivotData['Values'] = valuesValues
         pivotRelevant = pd.DataFrame(data=pivotData)
-        table = html.Div([
-            dt.DataTable(
-                id='table',
-                columns=[{"name": i, "id": i, "selectable": False} for i in pivotRelevant.columns],
-                data=pivotRelevant.to_dict('records'),
-                style_cell={'border':'none', 'textAlign': 'left', 'background-color': 'whitesmoke'},
-                style_as_list_view=True,
-                style_header = {'display': 'none'}
-            ),
-        ], className="playerInformation")        
+
+        playerInfoLeft = html.Div([
+            html.Div([
+                html.Img(src=myData['imageLink'].iloc[0]),
+            ],id='imageDiv', className="playerImage"),
+            html.Div([
+                html.Div([
+                    dt.DataTable(
+                        id='table',
+                        columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
+                        data=pivotRelevant.to_dict('records'),
+                        style_cell={'border':'none', 'textAlign': 'left','background-color': 'whitesmoke'},
+                        style_as_list_view=True,
+                        style_header = {'display': 'none'},
+                        
+                    ),
+                ], className="playerInformation"),   
+            ],id='playerInformation', className="playerInformation"),
+        ]),
+    else:
+        playerInfoLeft = html.Div(['No player selected']),     
     
-    return playerImage, table
+    return playerInfoLeft
