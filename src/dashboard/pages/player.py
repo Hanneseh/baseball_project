@@ -37,12 +37,10 @@ layout = html.Div([
                 ] , className="playerDropdown"),
             
                 html.Div([
-                    html.Div([
-                        dash_daq.ToggleSwitch(
+                    dash_daq.ToggleSwitch(
                         id='metricToggle',
                         value=False
-                        ),
-                    ],),
+                    ),
                     html.Div(id='outputMetricToggle', style={'text-align':'center'})
                 ], className="toggleSwitch"),
 
@@ -63,7 +61,8 @@ layout = html.Div([
         ]),
 
         html.Div([
-            html.H3(['Penis']),
+            html.Div([html.H3(['Induvidual Player Stats'], style={"text-align":"center"}
+            ),], className="Sectio1"),
             html.Div([
                 html.Div([
                     html.Button('Batting', id='careerHitting', n_clicks=0 ,className='Hitting'),
@@ -88,8 +87,10 @@ layout = html.Div([
         ], id='playerInfoWrapper', className='playerInfoNotDisplayed'),
         
         html.Div([
-            html.H3(['Penis2']),
+            html.Div([html.H3(['Career Summary Of All Players']
+            ),], className="Sectio1"),
             html.Div([
+                
                 html.Button('Batting', id='Hitting', n_clicks=0 ,className='Hitting'),
                 html.Button('Fielding', id='Fielding', n_clicks=0 ,className='Fielding'),
                 html.Button('Pitching', id='Pitching', n_clicks=0,className='Pitching')
@@ -149,7 +150,7 @@ def showPlayerInfo(playerSec1Value, playerSec2Value, hittingClicks, fieldingClic
         if 'careerHitting' in changed_id:
             pressedButton = '1'
             dropdownOptions = getOptionsIndividualCareerStatsTable('hitting')
-            deafultdropdown=['Name', 'Career','G','AB', 'ISO','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+            deafultdropdown=['Name', 'Season','ISO','AVG', 'OPS','G','AB','R','H','TB', '2B','3B','HR','GO/GA']
         elif 'careerFielding' in changed_id:
             pressedButton = '2'
             dropdownOptions = getOptionsIndividualCareerStatsTable('fielding')
@@ -275,8 +276,6 @@ def update_output(value):
      Input('metricToggle', 'value')],
 )
 def showPlayerInformation2(playerName, toggleValue):
-    playerImage = ''
-    table = ''
     if playerName:
         myData = rawPlayerData.loc[rawPlayerData['fullName'] == playerName]
         myData.reset_index(drop=True, inplace=True)
@@ -326,7 +325,7 @@ def showPlayerInformation2(playerName, toggleValue):
             ],id='playerInformation2', className="playerInformation2"),
         ]),
     else:
-        playerInfoRight = html.Div(['No player selected']),
+        playerInfoRight = html.Div(['No player selected'],className="noplayerright"),
     
     return playerInfoRight
 
@@ -337,8 +336,6 @@ def showPlayerInformation2(playerName, toggleValue):
      Input('metricToggle', 'value')],
 )
 def showPlayerInformation(playerName, toggleValue):
-    playerImage = ''
-    table = ''
     if playerName:
         myData = rawPlayerData.loc[rawPlayerData['fullName'] == playerName]
         myData.reset_index(drop=True, inplace=True)
@@ -388,6 +385,6 @@ def showPlayerInformation(playerName, toggleValue):
             ],id='playerInformation', className="playerInformation"),
         ]),
     else:
-        playerInfoLeft = html.Div(['No player selected']),     
+        playerInfoLeft = html.Div(['No player selected'],className="noplayerleft"),     
     
     return playerInfoLeft

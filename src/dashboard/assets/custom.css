@@ -20,7 +20,7 @@
     margin-left: 5%;
     margin-right: 5%;
     margin-bottom: 1%;
-    background-color:#27282a;
+    background-color:whitesmoke;
     background-size: cover;
     padding: 0mm;
 }
@@ -30,8 +30,17 @@
     border-width: 3px;
     border-radius: 200px;
 }
+ .Sectio1 {
+    color:black;
+    font-style: italic ;
+    text-align: center;
+}
 
-
+.SectionHeadline {
+    color:black;
+    font-style: italic ;
+    text-align: center;
+}
 /* Css for header */
 .header {
     width: 90%;
@@ -65,6 +74,7 @@
     font-style: italic;
     background:white;
     color:black;
+    margin-left: 1%;
 }
 
 .playerDropdown2 {
@@ -72,17 +82,38 @@
     margin-top: 3%;
     float: right;
     font-style: italic;
+    margin-right: 1%;
 }
 
 .toggleSwitch {
     width: 7%;
     margin-top: 3%;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 10.5%;
+    margin-right: 10.5%;
     float: left;
     font-style: italic;
     color:#0580FF;
 }
+
+.noplayerleft{
+    width: 35%;
+    margin-top: 10%;
+    float: left;
+    font-style: italic;
+    margin-left: 20%;
+    margin-bottom: 10%;
+    
+}
+
+.noplayerright{
+    width: 35%;
+    margin-top: 10%;
+    margin-bottom:10% ;
+    float: right;
+    font-style: italic;
+    margin-right: 20%;
+}
+
 
 .playerImage {
     width: auto;
@@ -111,8 +142,7 @@
 .playerInformation2 {
     width: auto;
     float: right; 
-    margin-right: 3%;
-    margin-top: 4%;
+
     font-style: italic;
     color:grey;
 }
@@ -120,31 +150,32 @@
 
 /* CSS for the basic table */
 .basicTableAndDropdownDiv {
-    display: block;
     background-color:whitesmoke;
-    border-radius: 20px;
     font-style: italic;
     color:black;
-    text-align: left;
     width: 100%;
+    float: left;
 }
 .basicTableDropdown {
-    width: 100%;
+    width: 98%;
+    margin-left: 1%;
     align-content: center;
     height: 50%;
     float: left;
     font-style: italic;
+    margin-top: 1%;
 }
 .basicTableDivWrapper {
-    width: auto;
+    width: 98%;
+    margin-left: 1%;
     display: inline-block;
     max-height: 1500px;
-    width: 100%;
     background:whitesmoke;
 }
 .basicTableDiv {
     width: 100%;
     display: inline-block;
+    margin-top: 1%;
 }
 
 /* Buttons*/
@@ -154,7 +185,9 @@
     color:#0580FF;
     background:lightgray;
     margin-right: 5px;
+    width: auto;
     font-style: italic;
+    margin-top: 5px;
 }
 .Hitting:hover{
     background: grey;
@@ -182,12 +215,14 @@
 
 .buttonGroup{
     float: left;
-    margin-top: 10px;
+    width: 98%;
+    margin-left: 1%;
 }
 
 /* Css for individual player information */
 .playerInfoNotDisplayed{
     display: None;
+    text-align: right;
 }
 
 .playerInfoDisplayed{
@@ -195,13 +230,16 @@
     width: 100%;
 }
 .individualPlayerInfoButtons{
-
+    width: 100%;
 }
 
 .statTypeButtons{
     float: left;
+    margin-left: 1%;
 }
 
 .statCategoryButtonGroup{
     float: right;
+    margin-right: 1%;
 }
+
