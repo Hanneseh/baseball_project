@@ -9,6 +9,7 @@ db=client['baseballmd']
 playerInformation = db.players
 careerTable = db.careerTable
 careerStats = db.careerStats
+splitStats = db.splitStats
 
 # return general player information
 def getPlayerInformation():
@@ -243,3 +244,33 @@ def getOptionsIndividualCareerStatsTable(statGroup):
             {'label': 'Ground Outs/Air Outs', 'value': 'GO/AO'},
         ]
     return options
+
+
+########## in development:
+
+# imports
+import pandas as pd
+from pymongo import MongoClient
+
+# database connection
+client = MongoClient("localhost:27017")
+db=client['baseballmd']
+splitStats = db.splitStats
+
+# return Data of individual career stats
+def getSplitStats(playerID, season, level):
+    playerID = int(playerID)
+    df = pd.DataFrame(list(splitStats.find({"id": playerID, "season": season, 'sport':level},{"_id" : 0})))
+    # dfSeasonSum = pd.DataFrame(list(splitStats.find({"id": playerID, "statGroupe": 'season', 'sport':level},{"_id" : 0})))
+
+    cleanedColumns = df.loc[:,('split', 'team', 'gamesPlayed', 'atBats', 'runs','hits','doubles', 'triples', 'homeRuns','rbi','baseOnBalls','intentionalWalks','strikeOuts', 'stolenBases', 'caughtStealing','avg',  'obp', 'slg','ops', 'hitByPitch','groundIntoDoublePlay', 'plateAppearances', 'totalBases','sacBunts', 'sacFlies', 'babip', 'groundOutsToAirouts')]
+    cleanedColumns.rename(columns={'split': 'Split','gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','groundIntoDoublePlay':'GIDP'}, inplace=True)
+
+
+
+    return cleanedColumns
+
+
+myDF = getSplitStats('593428', 2018, 'MLB')
+
+myDF
