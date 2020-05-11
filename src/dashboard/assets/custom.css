@@ -236,6 +236,16 @@
 .statTypeButtons{
     float: left;
     margin-left: 1%;
+    width: 50%;
+}
+.levelDropdown {
+    float: left;
+    width: 25%;
+    margin-right: 1%;
+}
+.seasonDropdown {
+    float: left;
+    width: 25%;
 }
 
 .statCategoryButtonGroup{

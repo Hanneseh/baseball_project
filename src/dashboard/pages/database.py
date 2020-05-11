@@ -26,15 +26,15 @@ def getPlayerID(playerName):
 def getSummedCareerStats(statGroup):
     df = pd.DataFrame(list(careerTable.find({"statGroupe" : statGroup},{"_id" : 0})))
     if statGroup == 'hitting':
-        cleanedColumns = df.loc[:,('fullName', 'type', 'gamesPlayed', 'atBats', 'runs','hits','totalBases', 'doubles','triples', 'homeRuns', 'rbi', 'baseOnBalls', 'intentionalWalks','strikeOuts','stolenBases','caughtStealing', 'avg', 'obp','slg', 'ops','groundOutsToAirouts','plateAppearances', 'hitByPitch', 'sacBunts', 'sacFlies', 'babip','groundIntoDoublePlay','numberOfPitches','leftOnBase', 'ISO')]
+        cleanedColumns = df.loc[:,['fullName', 'type', 'gamesPlayed', 'atBats', 'runs','hits','totalBases', 'doubles','triples', 'homeRuns', 'rbi', 'baseOnBalls', 'intentionalWalks','strikeOuts','stolenBases','caughtStealing', 'avg', 'obp','slg', 'ops','groundOutsToAirouts','plateAppearances', 'hitByPitch', 'sacBunts', 'sacFlies', 'babip','groundIntoDoublePlay','numberOfPitches','leftOnBase', 'ISO']]
         cleanedColumns.rename(columns={'fullName': 'Name', 'type':'Career', 'gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
         cleanedColumns.sort_values(by=['Name'], inplace=True)
     if statGroup == 'fielding':
-        cleanedColumns = df.loc[:,('fullName', 'type', 'position','games','gamesStarted', 'innings','chances','putOuts','assists','errors','doublePlays', 'rangeFactorPerGame', 'fielding')]
+        cleanedColumns = df.loc[:,['fullName', 'type', 'position','games','gamesStarted', 'innings','chances','putOuts','assists','errors','doublePlays', 'rangeFactorPerGame', 'fielding']]
         cleanedColumns.rename(columns={'fullName':'Name', 'type':'Career', 'position':'POS','games':'G','gamesStarted':'GS', 'innings':'INN','chances':'TC','putOuts':'PO','assists':'A','errors':'E','doublePlays':'DP', 'rangeFactorPerGame':'RF', 'fielding':'FPCT'}, inplace=True)
         cleanedColumns.sort_values(by=['Name'], inplace=True)
     if statGroup == 'pitching':
-        cleanedColumns = df.loc[:,('fullName', 'type', 'wins','losses','era','gamesPlayed', 'gamesStarted', 'completeGames', 'shutouts','holds','saves','saveOpportunities','inningsPitched','hits','runs','earnedRuns','homeRuns','numberOfPitches','hitBatsmen','baseOnBalls', 'intentionalWalks','strikeOuts', 'avg','whip','groundOutsToAirouts')]
+        cleanedColumns = df.loc[:,['fullName', 'type', 'wins','losses','era','gamesPlayed', 'gamesStarted', 'completeGames', 'shutouts','holds','saves','saveOpportunities','inningsPitched','hits','runs','earnedRuns','homeRuns','numberOfPitches','hitBatsmen','baseOnBalls', 'intentionalWalks','strikeOuts', 'avg','whip','groundOutsToAirouts']]
         cleanedColumns.rename(columns={'fullName':'Name', 'type':'Career','wins':'W','losses':'L','era':'ERA','gamesPlayed':'G', 'gamesStarted':'GS', 'completeGames':'CG', 'shutouts':'SHO','holds':'HLD','saves':'SV','saveOpportunities':'SVO','inningsPitched':'IP','hits':'H','runs':'R','earnedRuns':'ER','homeRuns':'HR','numberOfPitches':'NP','hitBatsmen':'HB','baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO', 'avg':'AVG','whip':'WHIP','groundOutsToAirouts':'GO/AO'}, inplace=True)
         cleanedColumns.sort_values(by=['Name'], inplace=True)
     return cleanedColumns
@@ -133,7 +133,7 @@ def getIndividualCareerStats(playerID, statGroup):
             indexNames = df[df['type'] == 'career'].index
             df.drop(indexNames, inplace=True)
             df = df.astype({'season': 'int32'})
-            cleanedColumns = df.loc[:,('fullName', 'type', 'season', 'gamesPlayed', 'runs', 'doubles', 'triples', 'homeRuns','strikeOuts', 'baseOnBalls', 'intentionalWalks', 'hits', 'hitByPitch','avg', 'atBats', 'obp', 'slg', 'ops', 'caughtStealing', 'stolenBases', 'groundIntoDoublePlay', 'numberOfPitches','plateAppearances', 'totalBases', 'rbi', 'leftOnBase', 'sacBunts','sacFlies', 'babip', 'groundOutsToAirouts', 'team','league', 'sport','ISO')]
+            cleanedColumns = df.loc[:,['fullName', 'type', 'season', 'gamesPlayed', 'runs', 'doubles', 'triples', 'homeRuns','strikeOuts', 'baseOnBalls', 'intentionalWalks', 'hits', 'hitByPitch','avg', 'atBats', 'obp', 'slg', 'ops', 'caughtStealing', 'stolenBases', 'groundIntoDoublePlay', 'numberOfPitches','plateAppearances', 'totalBases', 'rbi', 'leftOnBase', 'sacBunts','sacFlies', 'babip', 'groundOutsToAirouts', 'team','league', 'sport','ISO']]
             cleanedColumns.rename(columns={'fullName': 'Name', 'season':'Season','type':'Career', 'gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','league':'League', 'sport':'Level', 'groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
             cleanedColumns.sort_values(by=['Season'], inplace=True)
 
@@ -141,7 +141,7 @@ def getIndividualCareerStats(playerID, statGroup):
             indexNames = df[df['type'] == 'career'].index
             df.drop(indexNames, inplace=True)
             df = df.astype({'season': 'int32'})
-            cleanedColumns = df.loc[:,('fullName', 'type','season', 'position','games','gamesStarted', 'innings','chances','putOuts','assists','errors','doublePlays', 'rangeFactorPerGame', 'fielding', 'team','league', 'sport')]
+            cleanedColumns = df.loc[:,['fullName', 'type','season', 'position','games','gamesStarted', 'innings','chances','putOuts','assists','errors','doublePlays', 'rangeFactorPerGame', 'fielding', 'team','league', 'sport']]
             cleanedColumns.rename(columns={'fullName':'Name', 'season':'Season','type':'Career', 'position':'POS','games':'G','gamesStarted':'GS', 'innings':'INN','chances':'TC','putOuts':'PO','assists':'A','errors':'E','doublePlays':'DP', 'rangeFactorPerGame':'RF', 'fielding':'FPCT','team':'Team','league':'League', 'sport':'Level'}, inplace=True)
             cleanedColumns.sort_values(by=['Season'], inplace=True)
 
@@ -149,7 +149,7 @@ def getIndividualCareerStats(playerID, statGroup):
             indexNames = df[df['type'] == 'career'].index
             df.drop(indexNames, inplace=True)
             df = df.astype({'season': 'int32'})
-            cleanedColumns = df.loc[:,('fullName', 'type','season', 'wins','losses','era','gamesPlayed', 'gamesStarted', 'completeGames', 'shutouts','holds','saves','saveOpportunities','inningsPitched','hits','runs','earnedRuns','homeRuns','numberOfPitches','hitBatsmen','baseOnBalls', 'intentionalWalks','strikeOuts', 'avg','whip','groundOutsToAirouts','team','league', 'sport')]
+            cleanedColumns = df.loc[:,['fullName', 'type','season', 'wins','losses','era','gamesPlayed', 'gamesStarted', 'completeGames', 'shutouts','holds','saves','saveOpportunities','inningsPitched','hits','runs','earnedRuns','homeRuns','numberOfPitches','hitBatsmen','baseOnBalls', 'intentionalWalks','strikeOuts', 'avg','whip','groundOutsToAirouts','team','league', 'sport']]
             cleanedColumns.rename(columns={'fullName':'Name', 'season':'Season', 'type':'Career', 'wins':'W','losses':'L','era':'ERA','gamesPlayed':'G', 'gamesStarted':'GS', 'completeGames':'CG', 'shutouts':'SHO','holds':'HLD','saves':'SV','saveOpportunities':'SVO','inningsPitched':'IP','hits':'H','runs':'R','earnedRuns':'ER','homeRuns':'HR','numberOfPitches':'NP','hitBatsmen':'HB','baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO', 'avg':'AVG','whip':'WHIP','groundOutsToAirouts':'GO/AO','team':'Team','league':'League', 'sport':'Level'}, inplace=True)
             cleanedColumns.sort_values(by=['Season'], inplace=True)
         return cleanedColumns
@@ -246,31 +246,34 @@ def getOptionsIndividualCareerStatsTable(statGroup):
     return options
 
 
-########## in development:
 
-# imports
-import pandas as pd
-from pymongo import MongoClient
+# get level Options
+def getLevelOptions(playerID, season):
+    playerID = int(playerID)
+    df = pd.DataFrame(list(splitStats.find({"id": playerID, "season": season},{"_id" : 0})))
+    levelOptions = []
+    for value in df['sport'].unique():
+        levelOptions.append(value)
+    levelOptions.sort()
+    return levelOptions
 
-# database connection
-client = MongoClient("localhost:27017")
-db=client['baseballmd']
-splitStats = db.splitStats
+# get Season options
+def getSeasonOptions(playerID):
+    playerID = int(playerID)
+    df = pd.DataFrame(list(splitStats.find({"id": playerID},{"_id" : 0})))
+    seasonOptions = []
+    for value in df['season'].unique():
+        seasonOptions.append(value)
+    seasonOptions.sort()
+    return seasonOptions
+
+
 
 # return Data of individual career stats
 def getSplitStats(playerID, season, level):
     playerID = int(playerID)
     df = pd.DataFrame(list(splitStats.find({"id": playerID, "season": season, 'sport':level},{"_id" : 0})))
-    # dfSeasonSum = pd.DataFrame(list(splitStats.find({"id": playerID, "statGroupe": 'season', 'sport':level},{"_id" : 0})))
-
-    cleanedColumns = df.loc[:,('split', 'team', 'gamesPlayed', 'atBats', 'runs','hits','doubles', 'triples', 'homeRuns','rbi','baseOnBalls','intentionalWalks','strikeOuts', 'stolenBases', 'caughtStealing','avg',  'obp', 'slg','ops', 'hitByPitch','groundIntoDoublePlay', 'plateAppearances', 'totalBases','sacBunts', 'sacFlies', 'babip', 'groundOutsToAirouts')]
+    cleanedColumns = df.loc[:,['split', 'team', 'gamesPlayed', 'atBats', 'runs','hits','doubles', 'triples', 'homeRuns','rbi','baseOnBalls','intentionalWalks','strikeOuts', 'stolenBases', 'caughtStealing','avg',  'obp', 'slg','ops', 'hitByPitch','groundIntoDoublePlay', 'plateAppearances', 'totalBases','sacBunts', 'sacFlies', 'babip', 'groundOutsToAirouts']]
     cleanedColumns.rename(columns={'split': 'Split','gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','groundIntoDoublePlay':'GIDP'}, inplace=True)
 
-
-
     return cleanedColumns
-
-
-myDF = getSplitStats('593428', 2018, 'MLB')
-
-myDF
