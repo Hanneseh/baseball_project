@@ -27,7 +27,7 @@ def getSummedCareerStats(statGroup):
     df = pd.DataFrame(list(careerTable.find({"statGroupe" : statGroup},{"_id" : 0})))
     if statGroup == 'hitting':
         cleanedColumns = df.loc[:,['fullName', 'type', 'gamesPlayed', 'atBats', 'runs','hits','totalBases', 'doubles','triples', 'homeRuns', 'rbi', 'baseOnBalls', 'intentionalWalks','strikeOuts','stolenBases','caughtStealing', 'avg', 'obp','slg', 'ops','groundOutsToAirouts','plateAppearances', 'hitByPitch', 'sacBunts', 'sacFlies', 'babip','groundIntoDoublePlay','numberOfPitches','leftOnBase', 'ISO']]
-        cleanedColumns.rename(columns={'fullName': 'Name', 'type':'Career', 'gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
+        cleanedColumns.rename(columns={'fullName': 'Name', 'type':'Career', 'gamesPlayed':'Games Played', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
         cleanedColumns.sort_values(by=['Name'], inplace=True)
     if statGroup == 'fielding':
         cleanedColumns = df.loc[:,['fullName', 'type', 'position','games','gamesStarted', 'innings','chances','putOuts','assists','errors','doublePlays', 'rangeFactorPerGame', 'fielding']]
@@ -48,7 +48,7 @@ def getOptionsBasicTable(statGroup):
         options=[
             {'label': 'Name', 'value': 'Name'},
             {'label': 'Career', 'value': 'Career'},
-            {'label': 'Games Played', 'value': 'G'},
+            {'label': 'Games Played', 'value': 'Games Played'},
             {'label': 'At Bats', 'value': 'AB'},
             {'label': 'Runs', 'value': 'R'},
             {'label': 'Hits', 'value': 'H'},

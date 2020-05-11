@@ -313,7 +313,7 @@ def determinButtonPress(hittingClicks, fieldingClicks, pitchingClicks):
     if 'Hitting' in changed_id:
         pressedButton = '1'
         dropdownOptions = getOptionsBasicTable('hitting')
-        deafultdropdown=['Name', 'Career','G','AB', 'ISO','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+        deafultdropdown=['Name', 'Career','Games Played','AB', 'ISO','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
     elif 'Fielding' in changed_id:
         pressedButton = '2'
         dropdownOptions = getOptionsBasicTable('fielding')
