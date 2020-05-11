@@ -116,7 +116,7 @@ layout = html.Div([
                     dt.DataTable(
                         id='basicTable',
                         sort_action='native',
-                        style_cell={'textAlign': 'left','color': 'grey'},
+                        style_cell={'textAlign': 'left','color': 'black'},
                         style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
                     ),
                 ], className='basicTableDiv')
@@ -286,7 +286,7 @@ def update_Individualtable(dropdownValue, buttonValue, playerID):
                 dt.DataTable(
                     id='individualPlayerInfoTable',
                     sort_action='native',
-                    style_cell={'textAlign': 'left','color': 'grey'},
+                    style_cell={'textAlign': 'left','color': 'black'},
                     style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
                     data=displayedData.to_dict('records'),
                     columns = [{"name": i, "id": i} for i in displayedData.columns],
