@@ -61,7 +61,7 @@ layout = html.Div([
         ]),
 
         html.Div([
-            html.Div([html.H3(['Induvidual Player Stats'], style={"text-align":"center"}
+            html.Div([html.H3(['Individual Player Stats'], style={"text-align":"center"}
             ),], className="Sectio1"),
             html.Div([
                 html.Div([
@@ -108,7 +108,7 @@ layout = html.Div([
                     dt.DataTable(
                         id='basicTable',
                         sort_action='native',
-                        style_cell={'textAlign': 'left','color': 'grey'},
+                        style_cell={'textAlign': 'left','color': 'black'},
                         style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
                     ),
                 ], className='basicTableDiv')
@@ -154,15 +154,15 @@ def showPlayerInfo(playerSec1Value, playerSec2Value, hittingClicks, fieldingClic
         elif 'careerFielding' in changed_id:
             pressedButton = '2'
             dropdownOptions = getOptionsIndividualCareerStatsTable('fielding')
-            deafultdropdown=['Name' ,'Career', 'POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
+            deafultdropdown=['Name' ,'Season', 'POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
         elif 'careerPitching' in changed_id:
             pressedButton = '3'
             dropdownOptions = getOptionsIndividualCareerStatsTable('pitching')
-            deafultdropdown=['Name', 'Career','W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
+            deafultdropdown=['Name', 'Season','W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
         else:
             pressedButton = '1'
             dropdownOptions = getOptionsIndividualCareerStatsTable('hitting')
-            deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+            deafultdropdown=['Name', 'Season','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
         return 'playerInfoDisplayed', pressedButton, playerId, deafultdropdown, dropdownOptions
     if playerSec1Value and playerSec2Value: 
         return 'playerInfoNotDisplayed', '0', '0', ['No','Option'], [{'label': 'Name', 'value': 'Name'}]
@@ -195,7 +195,7 @@ def update_Individualtable(dropdownValue, buttonValue, playerID):
                 dt.DataTable(
                     id='individualPlayerInfoTable',
                     sort_action='native',
-                    style_cell={'textAlign': 'left','color': 'grey'},
+                    style_cell={'textAlign': 'left','color': 'black'},
                     style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
                     data=displayedData.to_dict('records'),
                     columns = [{"name": i, "id": i} for i in displayedData.columns],
