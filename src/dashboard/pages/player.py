@@ -10,7 +10,7 @@ import re
 import numpy as np
 
 from app import app
-from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable, getOptionsIndividualCareerStatsTable, getIndividualCareerStats, getPlayerID, getLevelOptions, getSeasonOptions
+from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable, getOptionsIndividualCareerStatsTable, getIndividualCareerStats, getPlayerID, getLevelOptions, getSeasonOptions, getOptionsSplitsTable, getSplitStats
 
 # getting raw player Information in
 rawPlayerData = getPlayerInformation()
@@ -90,6 +90,8 @@ layout = html.Div([
                     placeholder='Select metrics'
                 ),
             ], id='individualPlayerInfoDropdownWrapper', className="basicTableDropdown"),
+
+            html.Div(id='individualTabpleDiv', className='playerInfoDisplayed'),
             ],id='playerInfoWrapper', className='playerInfoDisplayed',style={"display":"None"}),
         
         html.Div(id='compareDivWrapper', className='playerInfoDisplayed'),
@@ -128,7 +130,7 @@ layout = html.Div([
 
 # 1. evaluates player input --> returns button combination √
 # 2. evaluates button press --> stores current button combo in the buttons, updates buttons in case of splits
-# 3. evaluates button state --> eturns dropdown list
+# 3. evaluates button state --> returns dropdown list
 # 4. evaluates dropdown and buttons --> returns table
 
 
@@ -152,7 +154,8 @@ def evaluatePlayerInput(playerSec1Value, playerSec2Value):
         wrapperstyle = {}
     if playerSec1Value and playerSec2Value: 
         compareContent = html.Div([
-            html.Img(src='assets/placeholder.jpg')
+            html.H3('Really cheap mockup of what the comparision table will look like'),
+            html.Img(src='assets/mockup.png', style={'width':'100%'})
         ], id="compareMockUp"),
     return wrapperstyle, headline, compareContent
 
@@ -164,6 +167,7 @@ def evaluatePlayerInput(playerSec1Value, playerSec2Value):
     Output('statTypeButtons', 'style'),
     Output('seasonDropdown', 'options'), 
     Output('seasonDropdown', 'value'),
+    Output('careerFielding', 'value')
     ],
     [
     Input('careerHitting','n_clicks'),
@@ -180,9 +184,14 @@ def evaluateButtonPress(hittingClicks, fieldingClicks, pitchingClicks, careerCli
     statsType = 'hitting'
     infoButtonVisibility = {}
     splitDropdownVisibility = {"display":"None"}
-    listOfOptions = ['option1', 'option2']
+    listOfOptions = ['', '']
     seasonOptions = [{'label': '{}'.format(i), 'value': i} for i in listOfOptions]
     seasonValue = listOfOptions[0]
+    playerId = 0
+    if playerLeft:
+            playerId = getPlayerID(playerLeft)
+    if playerRight: 
+        playerId = getPlayerID(playerRight)
     if 'careerHitting' in changed_id:
         statsType = 'hitting'
     if 'careerFielding' in changed_id:
@@ -192,18 +201,14 @@ def evaluateButtonPress(hittingClicks, fieldingClicks, pitchingClicks, careerCli
     if 'career' in changed_id:
         statsCategory = 'career'
     if 'splits' in changed_id:
-        playerId = 0
-        if playerLeft:
-            playerId = getPlayerID(playerLeft)
-        else: 
-            playerId = getPlayerID(playerRight)
         listOfOptions = getSeasonOptions(playerId)
         seasonOptions = [{'label': '{}'.format(i), 'value': i} for i in listOfOptions]
         seasonValue = listOfOptions[len(listOfOptions)-1]
         statsCategory = 'splits'
         infoButtonVisibility = {"display":"None"}
         splitDropdownVisibility = {}
-    return statsCategory, statsType, splitDropdownVisibility, infoButtonVisibility, seasonOptions, seasonValue
+    playerId = str(playerId)
+    return statsCategory, statsType, splitDropdownVisibility, infoButtonVisibility, seasonOptions, seasonValue, playerId
 
 # returns options for level dropdown
 @app.callback(
@@ -211,19 +216,14 @@ def evaluateButtonPress(hittingClicks, fieldingClicks, pitchingClicks, careerCli
     Output('levelDropdown', 'value')],
     [
     Input('seasonDropdown', 'value'),
-    Input('playerSelection1', 'value'),
-    Input('playerSelection2', 'value'),
+    Input('careerFielding', 'value')
     ])
-def setLevelValueAndOptions(seasonValue, playerLeft, playerRight):
-    listOfOptions = ['option1', 'option2']
+def setLevelValueAndOptions(seasonValue, playerId):
+    listOfOptions = ['', '']
     levelOptions = [{'label': '{}'.format(i), 'value': i} for i in listOfOptions]
     levelValue = listOfOptions[0]
     if isinstance(seasonValue, int):
-        playerId = 0
-        if playerLeft:
-            playerId = getPlayerID(playerLeft)
-        else: 
-            playerId = getPlayerID(playerRight)
+        playerId = int(playerId)
         listOfOptions = getLevelOptions(playerId, seasonValue)
         levelOptions = [{'label': '{}'.format(i), 'value': i} for i in listOfOptions]
         levelValue = listOfOptions[len(listOfOptions)-1]
@@ -245,43 +245,48 @@ def evaluateButtonState(statsCategory, statsType, levelDropdown, seasonDropdown)
     if statsCategory == 'career':
         if statsType == 'hitting':
             dropdownOptions = getOptionsIndividualCareerStatsTable('hitting')
-            dropdownValues=['Name', 'Season','ISO','AVG', 'OPS','G','AB','R','H','TB', '2B','3B','HR','GO/GA']
+            dropdownValues=['Season','ISO','AVG', 'OPS','G','AB','R','H','TB', '2B','3B','HR','GO/GA']
         if statsType == 'fielding':
             dropdownOptions = getOptionsIndividualCareerStatsTable('fielding')
-            dropdownValues=['Name' ,'Career', 'POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
+            dropdownValues=['POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
         if statsType == 'pitching':
             dropdownOptions = getOptionsIndividualCareerStatsTable('pitching')
-            dropdownValues=['Name', 'Career','W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
+            dropdownValues=['W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
     if statsCategory == 'splits':
-       # print('splits: ', levelDropdown, seasonDropdown)
-       dropdownOptions = [{'label': 'Split', 'value': 'Split'},{'label': 'Career', 'value': 'Career'},]
-       dropdownValues = ['Split']
+       dropdownOptions = getOptionsSplitsTable()
+       dropdownValues = ['Split', 'Team', 'G', 'AB','R', 'H', 'AVG', 'OBP', 'SLG', 'OPS']
     
     return dropdownOptions, dropdownValues
 
 
-# Callback to load the correct "individual player info" data and columns
+# evaluates dropdown and buttons --> returns table
 @app.callback(
-    [Output('individualPlayerInfoTableWrapper', 'children')],
+    [Output('individualTabpleDiv', 'children')],
     [Input('individualPlayerInfoDropdown', 'value'),
-    Input('careerHitting', 'value'),
+    Input('career', 'value'),
+    Input('careerHitting','value'),
+    Input('levelDropdown', 'value'), 
+    Input('seasonDropdown', 'value'),
     Input('careerFielding', 'value'),])
-def update_Individualtable(dropdownValue, buttonValue, playerID):
-    if playerID != '0':
-        buttonString = ''
-        if buttonValue == '1':
-            buttonString = 'hitting'
-        if buttonValue == '2':
-            buttonString = 'fielding'
-        if buttonValue == '3':
-            buttonString = 'pitching'
-        playerID = int(playerID)
-        tableData = getIndividualCareerStats(playerID, buttonString)
+def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdown, seasonDropdown, playerId):
+    if playerId != '0':
+        playerId = int(playerId)
+        tableData = ''
+        if statsCategory == 'career':
+            if statsType == 'hitting':
+                tableData = getIndividualCareerStats(playerId, statsType)
+            if statsType == 'fielding':
+                tableData = getIndividualCareerStats(playerId, statsType)
+            if statsType == 'pitching':
+                tableData = getIndividualCareerStats(playerId, statsType)
+        if statsCategory == 'splits' and len(levelDropdown) > 1 and len(dropdownValue) == 10:
+            tableData = getSplitStats(playerId, seasonDropdown, levelDropdown)
+
         if isinstance(tableData, str):
             table = html.Div([ tableData], className='individualPlayerInfoTableDiv'),
             return table
         else:
-            displayedData = tableData.loc[:,dropdownValue]
+            displayedData = tableData[dropdownValue]
             table = html.Div([
                 dt.DataTable(
                     id='individualPlayerInfoTable',
@@ -290,12 +295,14 @@ def update_Individualtable(dropdownValue, buttonValue, playerID):
                     style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
                     data=displayedData.to_dict('records'),
                     columns = [{"name": i, "id": i} for i in displayedData.columns],
-                    ),], className='individualPlayerInfoTableDiv'),
+                    ),
+                    ], className='individualPlayerInfoTableDiv'),
             return table
     else:
         table = html.Div([ ''
         ], className='individualPlayerInfoTableDiv'),
         return table
+
 
 # Callback for updating basic table dropdown options and default values
 @app.callback(
@@ -313,7 +320,7 @@ def determinButtonPress(hittingClicks, fieldingClicks, pitchingClicks):
     if 'Hitting' in changed_id:
         pressedButton = '1'
         dropdownOptions = getOptionsBasicTable('hitting')
-        deafultdropdown=['Name', 'Career','Games Played','AB', 'ISO','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+        deafultdropdown=['Name', 'Career','G','AB', 'ISO','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
     elif 'Fielding' in changed_id:
         pressedButton = '2'
         dropdownOptions = getOptionsBasicTable('fielding')
