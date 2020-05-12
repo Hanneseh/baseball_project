@@ -154,8 +154,8 @@ def evaluatePlayerInput(playerSec1Value, playerSec2Value):
         wrapperstyle = {}
     if playerSec1Value and playerSec2Value: 
         compareContent = html.Div([
-            html.H3('Really cheap mockup of what the comparision table will look like'),
-            html.Img(src='assets/mockup.png', style={'width':'100%'})
+            html.H3('Mockup of what the comparision table will look like'),
+            html.Img(src='assets/mockupFinal.png', style={'width':'100%'})
         ], id="compareMockUp"),
     return wrapperstyle, headline, compareContent
 
@@ -245,13 +245,13 @@ def evaluateButtonState(statsCategory, statsType, levelDropdown, seasonDropdown)
     if statsCategory == 'career':
         if statsType == 'hitting':
             dropdownOptions = getOptionsIndividualCareerStatsTable('hitting')
-            dropdownValues=['Season','ISO','AVG', 'OPS','G','AB','R','H','TB', '2B','3B','HR','GO/GA']
+            dropdownValues=['Season','Team','League','G','AB','R','H','HR','AVG','OBP', 'SLG', 'OPS','ISO']
         if statsType == 'fielding':
             dropdownOptions = getOptionsIndividualCareerStatsTable('fielding')
-            dropdownValues=['POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
+            dropdownValues=['Season','Team','League','POS','G','GS', 'INN','TC','PO','A','E','DP','FPCT']
         if statsType == 'pitching':
             dropdownOptions = getOptionsIndividualCareerStatsTable('pitching')
-            dropdownValues=['W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
+            dropdownValues=['Season','Team','League','W','L','G','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
     if statsCategory == 'splits':
        dropdownOptions = getOptionsSplitsTable()
        dropdownValues = ['Split', 'Team', 'G', 'AB','R', 'H', 'AVG', 'OBP', 'SLG', 'OPS']
@@ -286,7 +286,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
             table = html.Div([ tableData], className='individualPlayerInfoTableDiv'),
             return table
         else:
-            displayedData = tableData[dropdownValue]
+            displayedData = tableData.reindex(columns=dropdownValue)
             table = html.Div([
                 dt.DataTable(
                     id='individualPlayerInfoTable',
@@ -350,7 +350,7 @@ def update_table(dropdownValue, buttonValue):
     if buttonValue == '3':
         buttonString = 'pitching'
     tableData = getSummedCareerStats(buttonString)
-    displayedData = tableData.loc[:,dropdownValue]
+    displayedData = tableData.reindex(columns=dropdownValue)
     columns = [{"name": i, "id": i} for i in displayedData.columns]
     data = displayedData.to_dict('records')
     return columns, data
