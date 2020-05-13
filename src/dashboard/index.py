@@ -17,7 +17,7 @@ app.layout = html.Div([
         html.Div([
             html.Div([
                 html.Div([
-                    html.Div(id="navLinkDiv"),
+                    html.Div(id="navLinkDiv", style={"display":"None"}),
                 ], className="row "),
             ],className="placeHolderDiv"),
         ], className="backgroundDiv"),

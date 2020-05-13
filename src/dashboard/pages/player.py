@@ -279,7 +279,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
                 tableData = getIndividualCareerStats(playerId, statsType)
             if statsType == 'pitching':
                 tableData = getIndividualCareerStats(playerId, statsType)
-        if statsCategory == 'splits' and len(levelDropdown) > 1 and len(dropdownValue) == 10:
+        if statsCategory == 'splits' and len(levelDropdown) > 1:
             tableData = getSplitStats(playerId, seasonDropdown, levelDropdown)
 
         if isinstance(tableData, str):
