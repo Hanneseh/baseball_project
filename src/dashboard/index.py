@@ -7,9 +7,12 @@
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+from pages.database import getDBRefreshInfo
 
 from app import app
 from pages import player, squads
+
+updateInfo = getDBRefreshInfo()
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -18,6 +21,7 @@ app.layout = html.Div([
             html.Div([
                 html.Div([
                     html.Div(id="navLinkDiv", style={"display":"None"}),
+                    html.Div([updateInfo], id="dbRefreshInfo", style={"float":"left", "font-size":"small","color":"black"}),
                 ], className="row "),
             ],className="placeHolderDiv"),
         ], className="backgroundDiv"),

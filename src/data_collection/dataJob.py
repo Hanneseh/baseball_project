@@ -41,18 +41,18 @@ def dataCollection():
 
 
 # execute data gethering scrips: uncomment the one line accordingly
-# testing the scedualer
-schedule.every(15).minutes.do(dataCollection)
+# testing the scheduler
+#schedule.every(15).minutes.do(dataCollection)
 
 # implementation on server
 # schedule.every().day.at("3:00").do(job)
 
 # running the script just once
-# dataCollection()
+dataCollection()
 
-while True:
-    schedule.run_pending()
-    now = datetime.datetime.now()
-    nextRun = schedule.next_run()
-    print('Current Time: ', now.strftime("%H:%M:%S"), 'Next Run at: ', nextRun.strftime("%H:%M:%S"))
-    time.sleep(60)
+# while True:
+#     schedule.run_pending()
+#     now = datetime.datetime.now()
+#     nextRun = schedule.next_run()
+#     print('Current Time: ', now.strftime("%H:%M:%S"), 'Next Run at: ', nextRun.strftime("%H:%M:%S"))
+#     time.sleep(10)

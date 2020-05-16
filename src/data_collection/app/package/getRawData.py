@@ -1,13 +1,13 @@
 # imports
 import statsapi
 import pandas as pd
-import re
 from pymongo import MongoClient
 import datetime
 import requests
 import numbers
 from app.config import getDB
 
+#client = MongoClient('localhost', 27017)
 client = getDB()
 db = client['baseballmd']
 
@@ -38,13 +38,13 @@ def getRawDartaFromAPI():
         sportAbbreviation = sport['abbreviation']
         print(sportAbbreviation, sportId)
 
-        # https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear],sportId=16)
+        # https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[yearByYear],sportId=11)
         # retrieving career data (type yearByYear)
         careerYearByYearParams = {'personIds': playerIDs,'hydrate': 'stats(group=[hitting,fielding,pitching],type=[yearByYear],sportId={})'.format(sportId)}
         careerYearByYearStats = statsapi.get('people', careerYearByYearParams)
         retrieveCareerData(careerYearByYearStats, sportAbbreviation)
 
-        # https://statsapi.mlb.com/api/v1/people?personIds=642720&hydrate=stats(group=[hitting,fielding,pitching],type=[career],sportId=13)
+        # https://statsapi.mlb.com/api/v1/people?personIds=642488&hydrate=stats(group=[hitting,fielding,pitching],type=[career],sportId=11)
         # retrieving career data (type career)
         careerCareerParams = {'personIds': playerIDs,'hydrate': 'stats(group=[hitting,fielding,pitching],type=[career],sportId={})'.format(sportId)}
         careerCareerStats = statsapi.get('people', careerCareerParams)
@@ -88,9 +88,11 @@ def retrieveCareerData(rawData, sportAbbreviation):
                         if stat['group']['displayName'] == 'fielding' and seasonStat == 'position':
                             careerDict[seasonStat] = split['stat'][seasonStat]['abbreviation']
                         else:
-                            if isinstance(split['stat'][seasonStat], str) and re.search(r"\d{1}", split['stat'][seasonStat]):
-                                careerDict[seasonStat] = float(split['stat'][seasonStat])
-                            if split['stat'][seasonStat] == '-.--' or split['stat'][seasonStat]=='.---' or split['stat'][seasonStat]=='*.**':
+                            if isinstance(split['stat'][seasonStat], str) and any(char.isdigit() for char in split['stat'][seasonStat]) and '.' in split['stat'][seasonStat]:
+                                careerDict[seasonStat] = round(float(split['stat'][seasonStat]),3)
+                            elif isinstance(split['stat'][seasonStat], str) and any(char.isdigit() for char in split['stat'][seasonStat]) and '.' not in split['stat'][seasonStat]:
+                                careerDict[seasonStat] = int(split['stat'][seasonStat])
+                            elif split['stat'][seasonStat] == '-.--' or split['stat'][seasonStat]=='.---' or split['stat'][seasonStat]=='*.**':
                                 careerDict[seasonStat] = ''
                             else:
                                 careerDict[seasonStat] = split['stat'][seasonStat]
@@ -156,10 +158,16 @@ def retrieveSplitsData(rawData, sportAbbreviation):
                         splitsDict['gameType'] = split['gameType']
                         splitsDict['sport'] = sportAbbreviation
                         for splitsSplitStat in split['stat']:
-                            if isinstance(split['stat'][splitsSplitStat], str) and re.search(r"\d{1}", split['stat'][splitsSplitStat]):
-                                splitsDict[splitsSplitStat] = float(split['stat'][splitsSplitStat])
+                            if isinstance(split['stat'][splitsSplitStat], str) and any(char.isdigit() for char in split['stat'][splitsSplitStat]) and '.' in split['stat'][splitsSplitStat]:
+                                splitsDict[splitsSplitStat] = round(float(split['stat'][splitsSplitStat]),3)
+                            elif isinstance(split['stat'][splitsSplitStat], str) and any(char.isdigit() for char in split['stat'][splitsSplitStat]) and '.' not in split['stat'][splitsSplitStat]:
+                                splitsDict[splitsSplitStat] = int(split['stat'][splitsSplitStat])
                             else:
                                 splitsDict[splitsSplitStat] = split['stat'][splitsSplitStat]
+
+                        if 'slg' in splitsDict and 'avg' in splitsDict and isinstance(splitsDict['slg'], numbers.Number) and isinstance(splitsDict['avg'], numbers.Number):
+                            splitsDict['ISO'] = round(splitsDict['slg'] - splitsDict['avg'], 3)
+
                         splitsDict.pop('_id', None)
                         
                         # writing to the database
@@ -176,3 +184,6 @@ def retrieveSplitsData(rawData, sportAbbreviation):
                             db['splitStats'].insert_one(splitsDict)
 
 
+
+# ### debugging
+#getRawDartaFromAPI()

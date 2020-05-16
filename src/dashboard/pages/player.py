@@ -254,7 +254,7 @@ def evaluateButtonState(statsCategory, statsType, levelDropdown, seasonDropdown)
             dropdownValues=['Season','Team','League','W','L','G','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
     if statsCategory == 'splits':
        dropdownOptions = getOptionsSplitsTable()
-       dropdownValues = ['Split', 'Team', 'G', 'AB','R', 'H', 'AVG', 'OBP', 'SLG', 'OPS']
+       dropdownValues = ['Split', 'Team', 'G', 'AB','R', 'H', 'AVG', 'OBP', 'SLG', 'OPS', 'ISO']
     
     return dropdownOptions, dropdownValues
 
@@ -320,15 +320,15 @@ def determinButtonPress(hittingClicks, fieldingClicks, pitchingClicks):
     if 'Hitting' in changed_id:
         pressedButton = '1'
         dropdownOptions = getOptionsBasicTable('hitting')
-        deafultdropdown=['Name', 'Career','G','AB', 'ISO','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
+        deafultdropdown=['Name', 'Career','G','AB','R','H','HR','AVG','OBP', 'SLG', 'OPS','ISO']
     elif 'Fielding' in changed_id:
         pressedButton = '2'
         dropdownOptions = getOptionsBasicTable('fielding')
-        deafultdropdown=['Name' ,'Career', 'POS','G','GS', 'INN','TC','PO','A','E','DP', 'RF', 'FPCT']
+        deafultdropdown=['Name' ,'Career','POS','G','GS', 'INN','TC','PO','A','E','DP','FPCT']
     elif 'Pitching' in changed_id:
         pressedButton = '3'
         dropdownOptions = getOptionsBasicTable('pitching')
-        deafultdropdown=['Name', 'Career','W','L','G','SVO','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
+        deafultdropdown=['Name', 'Career','W','L','G','IP','H','R','HR','NP', 'IBB','AVG','GO/AO']
     else:
         pressedButton = '1'
         dropdownOptions = getOptionsBasicTable('hitting')

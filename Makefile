@@ -195,7 +195,9 @@ git checkout [YOUR BRANCH NAME]
 git pull
 
 # 7. make sure all dependencis are up to date by typing: (*)
-pip install --upgrade -r requirements.txt
+pip freeze > requirements.txt 
+
+pip install requirements.txt
 # ignore possible warnings for now. 
 
 # 8. install all our own python packages in such way that edits are effectiv by typing: (*)

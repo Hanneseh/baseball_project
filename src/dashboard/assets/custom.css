@@ -2,6 +2,8 @@
 .rootPage {
     position:absolute;
     top:0;
+    overflow: hidden;
+    min-height: 100%;
     /* bottom:0; */
     left:0;
     right:0;
@@ -13,7 +15,8 @@
     position: relative;
     width: 90%;
     max-width: 2160px;
-    min-height: 100em;
+    min-height: 70em;
+    overflow: hidden;
     /* border-radius: 5px; */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     /* margin: 10mm auto; */
@@ -178,6 +181,7 @@
     width: 100%;
     display: inline-block;
     margin-top: 1%;
+    margin-bottom: 1%;
 }
 
 /* Buttons*/

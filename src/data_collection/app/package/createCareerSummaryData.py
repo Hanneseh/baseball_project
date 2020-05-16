@@ -74,7 +74,7 @@ def getCareerSummaryData():
                                 sumValues.append(value)
                         if len(sumValues) > 0:
                             columnSum = sum(sumValues)
-                            calculatedRow[column] = float(columnSum)
+                            calculatedRow[column] = int(columnSum)
 
                     if column in averageValues:
                         meanValues = []
@@ -162,7 +162,7 @@ def getCareerSummaryData():
                                     sumValues.append(value)
                             if len(sumValues) > 0:
                                 columnSum = sum(sumValues)
-                                calculatedRow[column] = float(columnSum)
+                                calculatedRow[column] = int(columnSum)
                         if column in averageValues:
                             meanValues = []
                             for value in item[column]:
@@ -240,7 +240,7 @@ def getCareerSummaryData():
                                 sumValues.append(value)
                         if len(sumValues) > 0:
                             columnSum = sum(sumValues)
-                            calculatedRow[column] = float(columnSum)
+                            calculatedRow[column] = int(columnSum)
 
                     if column in averageValues:
                         meanValues = []
