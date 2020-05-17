@@ -148,28 +148,31 @@ def getIndividualCareerStats(playerID, statGroup):
 
     if careerStats.find({"id": playerID,"statGroupe" : statGroup},{"_id" : 0}).count() > 0:
         if statGroup == 'hitting':
-            indexNames = df[df['type'] == 'career'].index
+            indexNames = df[(df['type'] == 'career') | (df['league'] == 'No Info')].index
             df.drop(indexNames, inplace=True)
+            df.drop(columns=['type'], inplace=True)
             df = df.astype({'season': 'int32'})
-            cleanedColumns = df.reindex(columns=['fullName', 'type', 'season', 'gamesPlayed', 'runs', 'doubles', 'triples', 'homeRuns','strikeOuts', 'baseOnBalls', 'intentionalWalks', 'hits', 'hitByPitch','avg', 'atBats', 'obp', 'slg', 'ops', 'caughtStealing', 'stolenBases', 'groundIntoDoublePlay', 'numberOfPitches','plateAppearances', 'totalBases', 'rbi', 'leftOnBase', 'sacBunts','sacFlies', 'babip', 'groundOutsToAirouts', 'team','league', 'sport','ISO'])
-            cleanedColumns.rename(columns={'fullName': 'Name', 'season':'Season','type':'Career', 'gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','league':'League', 'sport':'Level', 'groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
+            cleanedColumns = df.reindex(columns=['fullName', 'season', 'gamesPlayed', 'runs', 'doubles', 'triples', 'homeRuns','strikeOuts', 'baseOnBalls', 'intentionalWalks', 'hits', 'hitByPitch','avg', 'atBats', 'obp', 'slg', 'ops', 'caughtStealing', 'stolenBases', 'groundIntoDoublePlay', 'numberOfPitches','plateAppearances', 'totalBases', 'rbi', 'leftOnBase', 'sacBunts','sacFlies', 'babip', 'groundOutsToAirouts', 'team','league', 'sport','ISO'])
+            cleanedColumns.rename(columns={'fullName': 'Name', 'season':'Season', 'gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','league':'League', 'sport':'Level', 'groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
             cleanedColumns.sort_values(by=['Season'],ascending=False, inplace=True)
 
         if statGroup == 'fielding':
-            indexNames = df[df['type'] == 'career'].index
+            indexNames = df[(df['type'] == 'career') | (df['league'] == 'No Info')].index
             df.drop(indexNames, inplace=True)
+            df.drop(columns=['type'], inplace=True)
             df = df.astype({'season': 'int32'})
-            cleanedColumns = df.reindex(columns=['fullName', 'type','season', 'position','games','gamesStarted', 'innings','chances','putOuts','assists','errors','doublePlays', 'rangeFactorPerGame', 'fielding', 'team','league', 'sport'])
-            cleanedColumns.rename(columns={'fullName':'Name', 'season':'Season','type':'Career', 'position':'POS','games':'G','gamesStarted':'GS', 'innings':'INN','chances':'TC','putOuts':'PO','assists':'A','errors':'E','doublePlays':'DP', 'rangeFactorPerGame':'RF', 'fielding':'FPCT','team':'Team','league':'League', 'sport':'Level'}, inplace=True)
+            cleanedColumns = df.reindex(columns=['fullName', 'season', 'position','games','gamesStarted', 'innings','chances','putOuts','assists','errors','doublePlays', 'rangeFactorPerGame', 'fielding', 'team','league', 'sport'])
+            cleanedColumns.rename(columns={'fullName':'Name', 'season':'Season', 'position':'POS','games':'G','gamesStarted':'GS', 'innings':'INN','chances':'TC','putOuts':'PO','assists':'A','errors':'E','doublePlays':'DP', 'rangeFactorPerGame':'RF', 'fielding':'FPCT','team':'Team','league':'League', 'sport':'Level'}, inplace=True)
             cleanedColumns.sort_values(by=['Season'], ascending=False,inplace=True)
 
 
         if statGroup == 'pitching':
-            indexNames = df[df['type'] == 'career'].index
+            indexNames = df[(df['type'] == 'career') | (df['league'] == 'No Info')].index
             df.drop(indexNames, inplace=True)
+            df.drop(columns=['type'], inplace=True)
             df = df.astype({'season': 'int32'})
-            cleanedColumns = df.reindex(columns=['fullName', 'type','season', 'wins','losses','era','gamesPlayed', 'gamesStarted', 'completeGames', 'shutouts','holds','saves','saveOpportunities','inningsPitched','hits','runs','earnedRuns','homeRuns','numberOfPitches','hitBatsmen','baseOnBalls', 'intentionalWalks','strikeOuts', 'avg','whip','groundOutsToAirouts','team','league', 'sport'])
-            cleanedColumns.rename(columns={'fullName':'Name', 'season':'Season', 'type':'Career', 'wins':'W','losses':'L','era':'ERA','gamesPlayed':'G', 'gamesStarted':'GS', 'completeGames':'CG', 'shutouts':'SHO','holds':'HLD','saves':'SV','saveOpportunities':'SVO','inningsPitched':'IP','hits':'H','runs':'R','earnedRuns':'ER','homeRuns':'HR','numberOfPitches':'NP','hitBatsmen':'HB','baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO', 'avg':'AVG','whip':'WHIP','groundOutsToAirouts':'GO/AO','team':'Team','league':'League', 'sport':'Level'}, inplace=True)
+            cleanedColumns = df.reindex(columns=['fullName','season', 'wins','losses','era','gamesPlayed', 'gamesStarted', 'completeGames', 'shutouts','holds','saves','saveOpportunities','inningsPitched','hits','runs','earnedRuns','homeRuns','numberOfPitches','hitBatsmen','baseOnBalls', 'intentionalWalks','strikeOuts', 'avg','whip','groundOutsToAirouts','team','league', 'sport'])
+            cleanedColumns.rename(columns={'fullName':'Name', 'season':'Season', 'wins':'W','losses':'L','era':'ERA','gamesPlayed':'G', 'gamesStarted':'GS', 'completeGames':'CG', 'shutouts':'SHO','holds':'HLD','saves':'SV','saveOpportunities':'SVO','inningsPitched':'IP','hits':'H','runs':'R','earnedRuns':'ER','homeRuns':'HR','numberOfPitches':'NP','hitBatsmen':'HB','baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO', 'avg':'AVG','whip':'WHIP','groundOutsToAirouts':'GO/AO','team':'Team','league':'League', 'sport':'Level'}, inplace=True)
             cleanedColumns.sort_values(by=['Season'], ascending=False,inplace=True)
         return cleanedColumns
     else:
@@ -180,7 +183,6 @@ def getOptionsIndividualCareerStatsTable(statGroup):
     if statGroup == 'hitting':
         options=[
             {'label': 'Name', 'value': 'Name'},
-            {'label': 'Career', 'value': 'Career'},
             {'label': 'Season', 'value': 'Season'},
             {'label': 'Team', 'value': 'Team'},
             {'label': 'League', 'value': 'League'},
@@ -217,7 +219,6 @@ def getOptionsIndividualCareerStatsTable(statGroup):
     if statGroup == 'fielding':
         options=[
             {'label': 'Name', 'value': 'Name'},
-            {'label': 'Career', 'value': 'Career'},
             {'label': 'Season', 'value': 'Season'},
             {'label': 'Team', 'value': 'Team'},
             {'label': 'League', 'value': 'League'},
@@ -236,7 +237,6 @@ def getOptionsIndividualCareerStatsTable(statGroup):
     if statGroup == 'pitching':
         options=[
             {'label': 'Name', 'value': 'Name'},
-            {'label': 'Career', 'value': 'Career'},
             {'label': 'Season', 'value': 'Season'},
             {'label': 'Team', 'value': 'Team'},
             {'label': 'League', 'value': 'League'},
@@ -336,7 +336,12 @@ def getOptionsSplitsTable():
 def returnCompareDate(playerID1, playerID2, statGroup):
     playerData1 = getIndividualCareerStats(playerID1, statGroup)
     playerData2 = getIndividualCareerStats(playerID2, statGroup)
-    return playerData1, playerData2
+    playerData1 = playerData1.append(playerData2)
+    playerData1.sort_values(by=['Season'], ascending=False,inplace=True)
+    seasonOptions = playerData1['Season'].unique()
+    levelOptions = playerData1['Level'].unique()
+    leagueOptions = playerData1['League'].unique()
+    returnValues = list(playerData1, seasonOptions, levelOptions, levelOptions)
+    return returnValues
 
 returnCompareDate(465668, 636072, 'hitting')
-#### work
