@@ -10,7 +10,7 @@ import re
 import numpy as np
 
 from app import app
-from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable, getOptionsIndividualCareerStatsTable, getIndividualCareerStats, getPlayerID, getLevelOptions, getSeasonOptions, getOptionsSplitsTable, getSplitStats
+from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable, getOptionsIndividualCareerStatsTable, getIndividualCareerStats, getPlayerID, getLevelOptions, getSeasonOptions, getOptionsSplitsTable, getSplitStats, returnCompareDate
 
 # getting raw player Information in
 rawPlayerData = getPlayerInformation()
@@ -82,18 +82,21 @@ layout = html.Div([
                     html.Div([
                         dcc.Dropdown(
                             id='leagueDropdown',
-                            placeholder='Fileter for League',
+                            multi=True,
+                            placeholder='Filter for League',
                         ),
                     ],className="filter"),
                     html.Div([
                         dcc.Dropdown(
                             id='levelFilter',
+                            multi=True,
                             placeholder='Filter for Level',
                         ),
                     ],className="filter"),
                     html.Div([
                         dcc.Dropdown(
                             id='seasonFilter',
+                            multi=True,
                             placeholder='Filter for Season',
                         ),
                     ],className="filter"),
@@ -295,10 +298,13 @@ def evaluateButtonState(statsCategory, statsType, levelDropdown, seasonDropdown,
     
     return dropdownOptions, dropdownValues
 
-########### Work ###########
 # evaluates dropdown and buttons --> returns table
 @app.callback(
-    [Output('individualTabpleDiv', 'children')],
+    [Output('individualTabpleDiv', 'children'),
+    Output('seasonFilter', 'options'),
+    Output('levelFilter', 'options'),
+    Output('leagueDropdown', 'options'),
+    ],
     [Input('individualPlayerInfoDropdown', 'value'),
     Input('career', 'value'),
     Input('careerHitting','value'),
@@ -306,56 +312,65 @@ def evaluateButtonState(statsCategory, statsType, levelDropdown, seasonDropdown,
     Input('seasonDropdown', 'value'),
     Input('careerFielding', 'value'),
     Input('careerPitching', 'value'),
+    Input('seasonFilter', 'value'),
+    Input('levelFilter', 'value'),
+    Input('leagueDropdown', 'value'),
     ])
-def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdown, seasonDropdown, playerId, playerIdLeft):
-    # if playerId != '0' and playerIdLeft != '0':
-    #     playerId = int(playerId)
-    #     playerIdLeft = int(playerIdLeft)
-    #     if statsCategory == 'career':
-    #         if statsType == 'hitting':
-    #             values = returnCompareDate(playerId,playerIdLeft, statsType):
+def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdown, seasonDropdown, playerId, playerIdLeft, seasonValue, levelValue, leagueValue):
+    seasonOptions = []
+    levelOptions = []
+    leagueOptions = []
+    table = ''
+    tableData = ''
+    if playerId != '0' and playerIdLeft != '0':
+        playerId = int(playerId)
+        playerIdLeft = int(playerIdLeft)
+        tableData = returnCompareDate(playerId,playerIdLeft, statsType)
+        if isinstance(tableData, str):
+            table = html.Div([tableData], className='individualPlayerInfoTableDiv'),
+        else:
+            displayedData = tableData.reindex(columns=dropdownValue)
+            leftcolumns = displayedData.columns
+            if 'Season' in leftcolumns:
+                seasonOptions = [{'label': '{}'.format(i), 'value': i} for i in displayedData['Season'].unique()]
+            if 'Level' in leftcolumns:
+                levelOptions = [{'label': '{}'.format(i), 'value': i} for i in displayedData['Level'].unique()]
+            if 'League' in leftcolumns:
+                leagueOptions = [{'label': '{}'.format(i), 'value': i} for i in displayedData['League'].unique()]            
 
-    #             tableData = getIndividualCareerStats(playerId, statsType)
-    #         if statsType == 'fielding':
-    #             tableData = getIndividualCareerStats(playerId, statsType)
-    #         if statsType == 'pitching':
-    #             tableData = getIndividualCareerStats(playerId, statsType)
-    #     if statsCategory == 'splits' and len(levelDropdown) > 1:
-    #         tableData = getSplitStats(playerId, seasonDropdown, levelDropdown)
+            if seasonValue and 'Season' in leftcolumns:
+                seasonIndex = displayedData[~displayedData['Season'].isin(seasonValue)].index
+                displayedData.drop(seasonIndex, inplace=True)
+            if levelValue and 'Level' in leftcolumns:
+                levelIndex = displayedData[~displayedData['Level'].isin(levelValue)].index
+                displayedData.drop(levelIndex, inplace=True)
+            if leagueValue and 'League' in leftcolumns:
+                leagueIndex = displayedData[~displayedData['League'].isin(leagueValue)].index
+                displayedData.drop(leagueIndex, inplace=True)
+            
 
-    #     if isinstance(tableData, str):
-    #         table = html.Div([ tableData], className='individualPlayerInfoTableDiv'),
-    #         return table
-    #     else:
-    #         displayedData = tableData.reindex(columns=dropdownValue)
-    #         table = html.Div([
-    #             dt.DataTable(
-    #                 id='individualPlayerInfoTable',
-    #                 sort_action='native',
-    #                 style_cell={'textAlign': 'left','color': 'black'},
-    #                 style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
-    #                 data=displayedData.to_dict('records'),
-    #                 columns = [{"name": i, "id": i} for i in displayedData.columns],
-    #                 ),
-    #                 ], className='individualPlayerInfoTableDiv'),
-    #     return table
+            table = html.Div([
+                dt.DataTable(
+                    id='compareTable',
+                    sort_action='native',
+                    style_cell={'textAlign': 'left','color': 'black'},
+                    style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
+                    data=displayedData.to_dict('records'),
+                    columns = [{"name": i, "id": i} for i in displayedData.columns],
+                    ),
+                    ], className='individualPlayerInfoTableDiv'),
     
     elif playerId != '0':
         playerId = int(playerId)
-        tableData = ''
         if statsCategory == 'career':
-            if statsType == 'hitting':
-                tableData = getIndividualCareerStats(playerId, statsType)
-            if statsType == 'fielding':
-                tableData = getIndividualCareerStats(playerId, statsType)
-            if statsType == 'pitching':
-                tableData = getIndividualCareerStats(playerId, statsType)
-        if statsCategory == 'splits' and len(levelDropdown) > 1:
+            tableData = getIndividualCareerStats(playerId, statsType)
+        if (statsCategory == 'splits') and (levelDropdown == None or seasonDropdown == None):
+            tableData = 'Select a Season and a Level in order to see the splits'
+        if (statsCategory == 'splits') and (levelDropdown != None) and (len(levelDropdown) > 1) and isinstance(seasonDropdown,int):
             tableData = getSplitStats(playerId, seasonDropdown, levelDropdown)
 
         if isinstance(tableData, str):
-            table = html.Div([ tableData], className='individualPlayerInfoTableDiv'),
-            return table
+            table = html.Div([tableData], className='individualPlayerInfoTableDiv'),
         else:
             displayedData = tableData.reindex(columns=dropdownValue)
             table = html.Div([
@@ -368,11 +383,11 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
                     columns = [{"name": i, "id": i} for i in displayedData.columns],
                     ),
                     ], className='individualPlayerInfoTableDiv'),
-            return table
     else:
         table = html.Div([ ''
         ], className='individualPlayerInfoTableDiv'),
-        return table
+
+    return table, seasonOptions, levelOptions, leagueOptions
 
 
 # Callback for updating basic table dropdown options and default values

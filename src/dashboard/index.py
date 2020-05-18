@@ -21,7 +21,7 @@ app.layout = html.Div([
             html.Div([
                 html.Div([
                     html.Div(id="navLinkDiv", style={"display":"None"}),
-                    html.Div([updateInfo], id="dbRefreshInfo", style={"float":"left", "font-size":"small","color":"black"}),
+                    html.Div([updateInfo], id="dbRefreshInfo", style={"float":"left", "font-size":"small","color":"whitesmoke"}),
                 ], className="row "),
             ],className="placeHolderDiv"),
         ], className="backgroundDiv"),

@@ -22,6 +22,7 @@ def getDBRefreshInfo():
     for document in docs:
         if document['fetchCycle'] == fetchNumberMax:
             updateTime = document['fetchEndTime']
+    updateTime = updateTime[6:len(updateTime)]
     mostRecentUpdateInfo = 'Last refresh ' + updateTime
     return mostRecentUpdateInfo
 
@@ -336,12 +337,10 @@ def getOptionsSplitsTable():
 def returnCompareDate(playerID1, playerID2, statGroup):
     playerData1 = getIndividualCareerStats(playerID1, statGroup)
     playerData2 = getIndividualCareerStats(playerID2, statGroup)
-    playerData1 = playerData1.append(playerData2)
-    playerData1.sort_values(by=['Season'], ascending=False,inplace=True)
-    seasonOptions = playerData1['Season'].unique()
-    levelOptions = playerData1['Level'].unique()
-    leagueOptions = playerData1['League'].unique()
-    returnValues = list(playerData1, seasonOptions, levelOptions, levelOptions)
-    return returnValues
-
-returnCompareDate(465668, 636072, 'hitting')
+    if isinstance(playerData1, str) or isinstance(playerData2, str):
+        playerData1 = "One of the players does not have " + statGroup + " stats, so there is no comparison possible"
+    else:
+        playerData1 = playerData1.append(playerData2)
+        playerData1.sort_values(by=['Season'], ascending=False,inplace=True)
+        playerData1.reset_index(drop=True, inplace=True)
+    return playerData1
