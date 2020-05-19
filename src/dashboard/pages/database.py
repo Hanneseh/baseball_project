@@ -344,3 +344,27 @@ def returnCompareDate(playerID1, playerID2, statGroup):
         playerData1.sort_values(by=['Season'], ascending=False,inplace=True)
         playerData1.reset_index(drop=True, inplace=True)
     return playerData1
+
+# return 
+def getRadardiagramData(playerID1, playerID2):
+    df = pd.DataFrame(list(careerTable.find({"id": playerID1,"statGroupe" : 'hitting'},{"_id" : 0})))
+    df2 = pd.DataFrame(list(careerTable.find({"id": playerID2,"statGroupe" : 'hitting'},{"_id" : 0})))
+    df = df.append(df2)
+    cleanedData = df.reindex(columns=['fullName','avg', 'obp', 'slg', 'ops','ISO'])
+    cleanedData.reset_index(drop=True, inplace=True)
+    return cleanedData
+
+
+#myData = getRadardiagramData(593428, 465668)
+
+# # return 
+# def getRadardiagramData(playerID):
+#     df = pd.DataFrame(list(careerTable.find({"id": playerID,"statGroupe" : 'hitting'},{"_id" : 0})))
+#     cleanedData = df.reindex(columns=['fullName','avg', 'obp', 'slg', 'ops','ISO'])
+#     cleanedData.reset_index(drop=True, inplace=True)
+#     return cleanedData
+
+
+# myData = getRadardiagramData(465668)
+
+       

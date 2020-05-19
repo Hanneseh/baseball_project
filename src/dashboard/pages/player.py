@@ -8,9 +8,10 @@ from dash.dependencies import Input, Output
 import dash_table as dt
 import re
 import numpy as np
+import plotly.graph_objects as go
 
 from app import app
-from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable, getOptionsIndividualCareerStatsTable, getIndividualCareerStats, getPlayerID, getLevelOptions, getSeasonOptions, getOptionsSplitsTable, getSplitStats, returnCompareDate
+from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable, getOptionsIndividualCareerStatsTable, getIndividualCareerStats, getPlayerID, getLevelOptions, getSeasonOptions, getOptionsSplitsTable, getSplitStats, returnCompareDate, getRadardiagramData
 
 # getting raw player Information in
 rawPlayerData = getPlayerInformation()
@@ -117,8 +118,12 @@ layout = html.Div([
             ], id='individualPlayerInfoDropdownWrapper', className="basicTableDropdown"),
             html.Div(id='individualTabpleDiv', className='playerInfoDisplayed'),
 
+
             ],id='playerInfoWrapper', className='playerInfoDisplayed',style={"display":"None"}),
         
+        html.Div([
+            dcc.Graph(className="radarGraph", id="radarGraph")
+            ], id="compareInRadar", className="radarWrapper", style={"display":"None"}),
 
         html.Div([
             html.Div([html.H3(['Career Summary Of All Players']
@@ -151,8 +156,6 @@ layout = html.Div([
         
         ], className='playerContent'),
     ], className="page"),
-
-# Output('compareDivWrapper', 'children'),
 
 # evaluates player input --> returns button combination
 @app.callback(
@@ -304,6 +307,8 @@ def evaluateButtonState(statsCategory, statsType, levelDropdown, seasonDropdown,
     Output('seasonFilter', 'options'),
     Output('levelFilter', 'options'),
     Output('leagueDropdown', 'options'),
+    Output('compareInRadar', 'style'),
+    Output('radarGraph', 'figure'),
     ],
     [Input('individualPlayerInfoDropdown', 'value'),
     Input('career', 'value'),
@@ -322,10 +327,13 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
     leagueOptions = []
     table = ''
     tableData = ''
+    showRadar = {"display":"None"}
+    fig = go.Figure()
     if playerId != '0' and playerIdLeft != '0':
         playerId = int(playerId)
         playerIdLeft = int(playerIdLeft)
         tableData = returnCompareDate(playerId,playerIdLeft, statsType)
+        showRadar = {}
         if isinstance(tableData, str):
             table = html.Div([tableData], className='individualPlayerInfoTableDiv'),
         else:
@@ -348,7 +356,6 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
                 leagueIndex = displayedData[~displayedData['League'].isin(leagueValue)].index
                 displayedData.drop(leagueIndex, inplace=True)
             
-
             table = html.Div([
                 dt.DataTable(
                     id='compareTable',
@@ -359,6 +366,34 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
                     columns = [{"name": i, "id": i} for i in displayedData.columns],
                     ),
                     ], className='individualPlayerInfoTableDiv'),
+            categories = ['avg','obp', 'slg','ops','ISO']
+
+            radarData = getRadardiagramData(playerId, playerIdLeft)
+            print(radarData)
+
+            radarDataPlayerLeft = [1, 5, 2, 2, 3]
+            radarDataPlayerRight = [4, 3, 2.5, 1, 2]
+
+            fig.add_trace(go.Scatterpolar(
+                r=radarDataPlayerLeft,
+                theta=categories,
+                fill='toself',
+                name='Product A'
+            ))
+            fig.add_trace(go.Scatterpolar(
+                r=radarDataPlayerRight,
+                theta=categories,
+                fill='toself',
+                name='Product B'
+            ))
+            fig.update_layout(
+                polar=dict(
+                    radialaxis=dict(
+                        visible=True,
+                        range=[0, 5]
+                        )),
+                        showlegend=True
+            )
     
     elif playerId != '0':
         playerId = int(playerId)
@@ -387,7 +422,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
         table = html.Div([ ''
         ], className='individualPlayerInfoTableDiv'),
 
-    return table, seasonOptions, levelOptions, leagueOptions
+    return table, seasonOptions, levelOptions, leagueOptions, showRadar, fig
 
 
 # Callback for updating basic table dropdown options and default values

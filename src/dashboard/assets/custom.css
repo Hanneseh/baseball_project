@@ -275,3 +275,12 @@
     width: 48%;
 }
 
+/* CSS for Radar Graph */
+.radarWrapper{
+    float: left;
+    width: 100%;
+}
+.radarGraph{
+    width: 100%;
+    height: 35em;
+}
