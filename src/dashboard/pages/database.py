@@ -37,6 +37,12 @@ def getPlayerID(playerName):
     playerId = myData['id'].iloc[0]
     return playerId
 
+def getPlayerName(playerID):
+    players = getPlayerInformation()
+    playerRow = players.loc[players['id'] == playerID]
+    playerName = playerRow.reindex(columns=['fullName'])
+    return playerName
+
 
 # return Data for basic table
 def getSummedCareerStats(statGroup):
@@ -271,21 +277,27 @@ def getOptionsIndividualCareerStatsTable(statGroup):
 def getLevelOptions(playerID, season):
     playerID = int(playerID)
     df = pd.DataFrame(list(splitStats.find({"id": playerID, "season": season},{"_id" : 0})))
-    levelOptions = []
-    for value in df['sport'].unique():
-        levelOptions.append(value)
-    levelOptions.sort()
-    return levelOptions
+    if df.empty:
+        return ['']
+    else:
+        levelOptions = []
+        for value in df['sport'].unique():
+            levelOptions.append(value)
+        levelOptions.sort()
+        return levelOptions
 
 # get Season options
 def getSeasonOptions(playerID):
     playerID = int(playerID)
     df = pd.DataFrame(list(splitStats.find({"id": playerID},{"_id" : 0})))
-    seasonOptions = []
-    for value in df['season'].unique():
-        seasonOptions.append(value)
-    seasonOptions.sort()
-    return seasonOptions
+    if df.empty:
+        return ['No Options']
+    else:
+        seasonOptions = []
+        for value in df['season'].unique():
+            seasonOptions.append(value)
+        seasonOptions.sort()
+        return seasonOptions
 
 # return Data for splits table
 def getSplitStats(playerID, season, level):
@@ -293,9 +305,13 @@ def getSplitStats(playerID, season, level):
     season = int(season)
     level = str(level)
     df = pd.DataFrame(list(splitStats.find({"id": playerID, "season": season, 'sport':level},{"_id" : 0})))
-    cleanedColumns = df.reindex(columns=['split', 'team', 'gamesPlayed', 'atBats', 'runs','hits','doubles', 'triples', 'homeRuns','rbi','baseOnBalls','intentionalWalks','strikeOuts', 'stolenBases', 'caughtStealing','avg',  'obp', 'slg','ops', 'hitByPitch','groundIntoDoublePlay', 'plateAppearances', 'totalBases','sacBunts', 'sacFlies', 'babip', 'groundOutsToAirouts', 'ISO'])
-    cleanedColumns.rename(columns={'split': 'Split','gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','groundIntoDoublePlay':'GIDP'}, inplace=True)
-    cleanedColumns['Split'] = cleanedColumns['Split'].replace({'No Info':'Season'})
+    if df.empty:
+        playerName = getPlayerName(playerID)
+        return "No Splits could be found for " + playerName
+    else:
+        cleanedColumns = df.reindex(columns=['split', 'team', 'gamesPlayed', 'atBats', 'runs','hits','doubles', 'triples', 'homeRuns','rbi','baseOnBalls','intentionalWalks','strikeOuts', 'stolenBases', 'caughtStealing','avg',  'obp', 'slg','ops', 'hitByPitch','groundIntoDoublePlay', 'plateAppearances', 'totalBases','sacBunts', 'sacFlies', 'babip', 'groundOutsToAirouts', 'ISO'])
+        cleanedColumns.rename(columns={'split': 'Split','gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','groundIntoDoublePlay':'GIDP'}, inplace=True)
+        cleanedColumns['Split'] = cleanedColumns['Split'].replace({'No Info':'Season'})
     return cleanedColumns
 
 
@@ -346,25 +362,15 @@ def returnCompareDate(playerID1, playerID2, statGroup):
     return playerData1
 
 # return 
-def getRadardiagramData(playerID1, playerID2):
-    df = pd.DataFrame(list(careerTable.find({"id": playerID1,"statGroupe" : 'hitting'},{"_id" : 0})))
-    df2 = pd.DataFrame(list(careerTable.find({"id": playerID2,"statGroupe" : 'hitting'},{"_id" : 0})))
-    df = df.append(df2)
-    cleanedData = df.reindex(columns=['fullName','avg', 'obp', 'slg', 'ops','ISO'])
-    cleanedData.reset_index(drop=True, inplace=True)
-    return cleanedData
-
-
-#myData = getRadardiagramData(593428, 465668)
-
-# # return 
-# def getRadardiagramData(playerID):
-#     df = pd.DataFrame(list(careerTable.find({"id": playerID,"statGroupe" : 'hitting'},{"_id" : 0})))
-#     cleanedData = df.reindex(columns=['fullName','avg', 'obp', 'slg', 'ops','ISO'])
-#     cleanedData.reset_index(drop=True, inplace=True)
-#     return cleanedData
-
-
-# myData = getRadardiagramData(465668)
-
-       
+def getRadardiagramData(playerID):
+    df = pd.DataFrame(list(careerTable.find({"id": playerID,"statGroupe" : 'hitting'},{"_id" : 0})))
+    if df.empty:
+        playerName = getPlayerName(playerID)
+        return "No Stats could be found for " + playerName
+    else:
+        cleanedData = df.reindex(columns=['fullName','avg', 'obp', 'slg', 'ops','ISO'])
+        cleanedData.reset_index(drop=True, inplace=True)
+        valueArray = []
+        for values in cleanedData.iloc[0]:
+            valueArray.append(values)
+        return valueArray

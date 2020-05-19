@@ -11,7 +11,7 @@ import numpy as np
 import plotly.graph_objects as go
 
 from app import app
-from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable, getOptionsIndividualCareerStatsTable, getIndividualCareerStats, getPlayerID, getLevelOptions, getSeasonOptions, getOptionsSplitsTable, getSplitStats, returnCompareDate, getRadardiagramData
+from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable, getOptionsIndividualCareerStatsTable, getIndividualCareerStats, getPlayerID, getLevelOptions, getSeasonOptions, getOptionsSplitsTable, getSplitStats, returnCompareDate, getRadardiagramData, getPlayerName
 
 # getting raw player Information in
 rawPlayerData = getPlayerInformation()
@@ -122,8 +122,10 @@ layout = html.Div([
             ],id='playerInfoWrapper', className='playerInfoDisplayed',style={"display":"None"}),
         
         html.Div([
-            dcc.Graph(className="radarGraph", id="radarGraph")
+            html.Div(id="radarHeadline", className="Sectio1"),
+            dcc.Graph(className="radarGraph", id="radarGraph"),
             ], id="compareInRadar", className="radarWrapper", style={"display":"None"}),
+        html.Div(id="radarDiagramPlaceholder",className="noDataPlaceholder", style={"display":"None"}),
 
         html.Div([
             html.Div([html.H3(['Career Summary Of All Players']
@@ -161,12 +163,14 @@ layout = html.Div([
 @app.callback(
     [Output('playerInfoWrapper', 'style'),
     Output('individHeadline', 'children'),
+    Output('radarHeadline', 'children'),
     ],
     [Input('playerSelection1', 'value'),
     Input('playerSelection2', 'value')],)
 def evaluatePlayerInput(playerSec1Value, playerSec2Value):
     wrapperstyle = {"display":"None"}
     headline = '',
+    radarHeadline = '',
     if (playerSec1Value and not playerSec2Value) or (playerSec2Value and not playerSec1Value):
         if playerSec1Value:
             headline = html.H3(['Individual Player Stats of ' + playerSec1Value], style={"text-align":"center"}),
@@ -176,7 +180,9 @@ def evaluatePlayerInput(playerSec1Value, playerSec2Value):
     if playerSec1Value and playerSec2Value:
         headline = html.H3(['Player Comparison of ' + playerSec1Value + ' and ' + playerSec2Value], style={"text-align":"center"}),
         wrapperstyle = {}
-    return wrapperstyle, headline
+        radarHeadline = html.H3(['Comparing ' + playerSec1Value + ' and ' + playerSec2Value + ' career summary stats'], style={"text-align":"center"}),
+
+    return wrapperstyle, headline, radarHeadline
 
 # evaluates button press --> stores current button combo in the buttons, updates buttons in case of splits or comparison
 @app.callback(
@@ -309,6 +315,8 @@ def evaluateButtonState(statsCategory, statsType, levelDropdown, seasonDropdown,
     Output('leagueDropdown', 'options'),
     Output('compareInRadar', 'style'),
     Output('radarGraph', 'figure'),
+    Output('radarDiagramPlaceholder', 'style'),
+    Output('radarDiagramPlaceholder', 'children'),
     ],
     [Input('individualPlayerInfoDropdown', 'value'),
     Input('career', 'value'),
@@ -328,12 +336,44 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
     table = ''
     tableData = ''
     showRadar = {"display":"None"}
+    placeholderStyle = {"display":"None"}
+    placeholder = ''
     fig = go.Figure()
     if playerId != '0' and playerIdLeft != '0':
         playerId = int(playerId)
         playerIdLeft = int(playerIdLeft)
         tableData = returnCompareDate(playerId,playerIdLeft, statsType)
-        showRadar = {}
+        radarDataPlayerLeft = getRadardiagramData(playerId)
+        radarDataPlayerRight = getRadardiagramData(playerIdLeft)
+        if len(radarDataPlayerLeft) == 6 and len(radarDataPlayerRight) == 6:
+            showRadar = {}
+            categories = ['AVG','OBP', 'SLG','OPS','ISO']
+
+            fig.add_trace(go.Scatterpolar(
+                r=radarDataPlayerLeft[1:6],
+                theta=categories,
+                fill='toself',
+                name=radarDataPlayerLeft[0]
+            ))
+            fig.add_trace(go.Scatterpolar(
+                r=radarDataPlayerRight[1:6],
+                theta=categories,
+                fill='toself',
+                name=radarDataPlayerRight[0]
+            ))
+            fig.update_layout(
+                paper_bgcolor='whitesmoke',
+                plot_bgcolor='whitesmoke',
+                polar=dict(
+                    radialaxis=dict(
+                        visible=True,
+                        range=[0, 1]
+                        )),
+                        showlegend=True
+            )
+        else:
+            placeholderStyle = {}
+            placeholder = html.Div(["No sufficient Data for radar diagram"]),
         if isinstance(tableData, str):
             table = html.Div([tableData], className='individualPlayerInfoTableDiv'),
         else:
@@ -366,35 +406,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
                     columns = [{"name": i, "id": i} for i in displayedData.columns],
                     ),
                     ], className='individualPlayerInfoTableDiv'),
-            categories = ['avg','obp', 'slg','ops','ISO']
 
-            radarData = getRadardiagramData(playerId, playerIdLeft)
-            print(radarData)
-
-            radarDataPlayerLeft = [1, 5, 2, 2, 3]
-            radarDataPlayerRight = [4, 3, 2.5, 1, 2]
-
-            fig.add_trace(go.Scatterpolar(
-                r=radarDataPlayerLeft,
-                theta=categories,
-                fill='toself',
-                name='Product A'
-            ))
-            fig.add_trace(go.Scatterpolar(
-                r=radarDataPlayerRight,
-                theta=categories,
-                fill='toself',
-                name='Product B'
-            ))
-            fig.update_layout(
-                polar=dict(
-                    radialaxis=dict(
-                        visible=True,
-                        range=[0, 5]
-                        )),
-                        showlegend=True
-            )
-    
     elif playerId != '0':
         playerId = int(playerId)
         if statsCategory == 'career':
@@ -403,6 +415,8 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
             tableData = 'Select a Season and a Level in order to see the splits'
         if (statsCategory == 'splits') and (levelDropdown != None) and (len(levelDropdown) > 1) and isinstance(seasonDropdown,int):
             tableData = getSplitStats(playerId, seasonDropdown, levelDropdown)
+        if levelDropdown == '' and seasonDropdown == 'No Options':
+            tableData = "This player does not have any splits data"
 
         if isinstance(tableData, str):
             table = html.Div([tableData], className='individualPlayerInfoTableDiv'),
@@ -422,7 +436,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
         table = html.Div([ ''
         ], className='individualPlayerInfoTableDiv'),
 
-    return table, seasonOptions, levelOptions, leagueOptions, showRadar, fig
+    return table, seasonOptions, levelOptions, leagueOptions, showRadar, fig, placeholderStyle, placeholder
 
 
 # Callback for updating basic table dropdown options and default values
