@@ -99,24 +99,21 @@
 }
 
 .noplayerleft{
-    width: 35%;
+    width: 75%;
     margin-top: 10%;
-    float: left;
-    font-style: italic;
-    margin-left: 20%;
     margin-bottom: 10%;
+    font-style: italic;
+    text-align: center;
     
 }
 
 .noplayerright{
-    width: 35%;
+    width: 120%;
     margin-top: 10%;
     margin-bottom:10% ;
-    float: right;
     font-style: italic;
-    margin-right: 20%;
+    text-align: center;
 }
-
 
 .playerImage {
     width: auto;
@@ -145,7 +142,7 @@
 .playerInformation2 {
     width: auto;
     float: right; 
-
+    margin-top: 4%;
     font-style: italic;
     color:black;
 }
@@ -295,4 +292,5 @@
     margin: 1%;
     background-color:whitesmoke;
     margin-bottom: 5em;
+    text-align: center;
 }

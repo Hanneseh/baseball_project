@@ -1,9 +1,3 @@
-# run this file by navigating to it in the terminal and then do 
-# python index.py
-# to start the dashboard
-# to stop the dashboard type this in ther terminal:
-# ctrl+c
-
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output

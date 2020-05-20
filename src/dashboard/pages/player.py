@@ -375,7 +375,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
             placeholderStyle = {}
             placeholder = html.Div(["No sufficient Data for radar diagram"]),
         if isinstance(tableData, str):
-            table = html.Div([tableData], className='individualPlayerInfoTableDiv'),
+            table = html.Div([tableData], className='noDataPlaceholder'),
         else:
             displayedData = tableData.reindex(columns=dropdownValue)
             leftcolumns = displayedData.columns
@@ -419,7 +419,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
             tableData = "This player does not have any splits data"
 
         if isinstance(tableData, str):
-            table = html.Div([tableData], className='individualPlayerInfoTableDiv'),
+            table = html.Div([tableData], className='noDataPlaceholder'),
         else:
             displayedData = tableData.reindex(columns=dropdownValue)
             table = html.Div([
