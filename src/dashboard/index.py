@@ -8,6 +8,10 @@ from pages import player, squads
 
 updateInfo = getDBRefreshInfo()
 
+#nlbaseball -- link
+# nl logo favicon
+# Name: NL Baseball
+
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     html.Div([

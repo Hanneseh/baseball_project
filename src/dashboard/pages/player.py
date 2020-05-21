@@ -13,25 +13,27 @@ import plotly.graph_objects as go
 from app import app
 from .database import getPlayerInformation, getSummedCareerStats, getOptionsBasicTable, getOptionsIndividualCareerStatsTable, getIndividualCareerStats, getPlayerID, getLevelOptions, getSeasonOptions, getOptionsSplitsTable, getSplitStats, returnCompareDate, getRadardiagramData, getPlayerName
 
-# getting raw player Information in
+# raw player data
 rawPlayerData = getPlayerInformation()
 
-# Data for the dropdown list
+# Data for player dropdown list
 options = []
 for name in rawPlayerData['fullName']:
     options.append(name)
 options.sort()
 
-# this is the layout
+# content layout
 layout = html.Div([
     html.Div([
+
+        # player selection dorwpdowns and unit toggle
         html.Div([
             html.Div([
                 html.Div([
                     dcc.Dropdown(
                         id='playerSelection1',
                         options=[{'label': '{}'.format(i), 'value': i} for i in options],
-                        placeholder="Select Player",),
+                        placeholder="Select a Player to look at his stats or to compare",),
                 ] , className="playerDropdown"),
             
                 html.Div([
@@ -46,7 +48,7 @@ layout = html.Div([
                     dcc.Dropdown(
                         id='playerSelection2',
                         options=[{'label': '{}'.format(i), 'value': i} for i in options],
-                        placeholder="Select Player",
+                        placeholder="Select a Player to look at his stats or to compare",
                         ),
                 ] , className="playerDropdown2"),
             ]),
@@ -56,6 +58,7 @@ layout = html.Div([
             ]),
         ]),
 
+        # Buttons and dropdowsn for compare and individual stats table
         html.Div([
             html.Div(id="individHeadline", className="Sectio1"),
             html.Div([
@@ -116,22 +119,23 @@ layout = html.Div([
                     placeholder='Select metrics'
                 ),
             ], id='individualPlayerInfoDropdownWrapper', className="basicTableDropdown"),
-            html.Div(id='individualTabpleDiv', className='playerInfoDisplayed'),
 
-
-            ],id='playerInfoWrapper', className='playerInfoDisplayed',style={"display":"None"}),
+        # Stats Table
+        html.Div(id='individualTabpleDiv', className='playerInfoDisplayed')],id='playerInfoWrapper', className='playerInfoDisplayed',style={"display":"None"}),
         
+        # Radar graph
         html.Div([
             html.Div(id="radarHeadline", className="Sectio1"),
             dcc.Graph(className="radarGraph", id="radarGraph"),
             ], id="compareInRadar", className="radarWrapper", style={"display":"None"}),
         html.Div(id="radarDiagramPlaceholder",className="noDataPlaceholder", style={"display":"None"}),
 
+        # everything belonging to the career summary table
         html.Div([
-            html.Div([html.H3(['Career Summary Of All Players']
-            ),], className="Sectio1"),
+            html.Div([html.H3(['Career Summary Of All Players'])], className="Sectio1"),
+
+            # button and dropdowns
             html.Div([
-                
                 html.Button('Batting', id='Hitting', n_clicks=0 ,className='Hitting'),
                 html.Button('Fielding', id='Fielding', n_clicks=0 ,className='Fielding'),
                 html.Button('Pitching', id='Pitching', n_clicks=0,className='Pitching')
@@ -144,6 +148,7 @@ layout = html.Div([
                 ),
             ], id='basicTableDropdownDiv', className="basicTableDropdown"),
             
+            # career summary table
             html.Div([
                 html.Div([
                     dt.DataTable(
@@ -159,14 +164,149 @@ layout = html.Div([
         ], className='playerContent'),
     ], className="page"),
 
-# evaluates player input --> returns button combination
+
+########################### Callbacks for player selection ###########################
+
+# Callback to load player information right
+@app.callback(
+    [Output('playerInfoRight', 'children')],
+    [Input('playerSelection2', 'value'),
+     Input('metricToggle', 'value')],
+)
+def showPlayerInformation2(playerName, toggleValue):
+    if playerName:
+        myData = rawPlayerData.loc[rawPlayerData['fullName'] == playerName]
+        myData.reset_index(drop=True, inplace=True)
+        relevantData = myData.drop(columns = ['id', 'imageLink'])
+        valuesValues = []
+        formattedColumnNames = ['Name', 'Birthdate', 'Age', 'Height', 'Weight', 'Active', 'Position']
+        for playerValue in relevantData.loc[0]:
+            if isinstance(playerValue, str) and "\"" in playerValue:
+                if toggleValue == True:
+                    extracted = []
+                    for digit in playerValue:
+                        if digit.isdigit():
+                            extracted.append(digit)
+                    meters = (float(extracted[0]) * 30.48 + float(extracted[1]) * 2.54) / 100
+                    playerValue = "{:.2f} m".format(meters)
+            if isinstance(playerValue, np.int64) and playerValue >= 99:
+                if toggleValue == False:
+                    playerValue = str(playerValue) + " lbs"
+                if toggleValue == True:
+                    kilos = playerValue * 0.453592
+                    playerValue = "{:.2f} kg".format(kilos)
+            if isinstance(playerValue, np.bool_) and playerValue == True:
+                playerValue = 'Yes'
+            valuesValues.append(playerValue)
+
+        pivotData = {}
+        pivotData['Descriptions'] = formattedColumnNames
+        pivotData['Values'] = valuesValues
+        pivotRelevant = pd.DataFrame(data=pivotData)
+
+        playerInfoRight = html.Div([
+            html.Div([
+                html.Img(src=myData['imageLink'].iloc[0]),
+            ],id='imageDiv2', className="playerImage2"),
+            html.Div([
+                html.Div([
+                    dt.DataTable(
+                        id='table',
+                        columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
+                        data=pivotRelevant.to_dict('records'),
+                        style_cell={'border':'none', 'textAlign': 'left','background-color': 'whitesmoke'},
+                        style_as_list_view=True,
+                        style_header = {'display': 'none'},
+                        
+                    ),
+                ], className="playerInformation2"),   
+            ],id='playerInformation2', className="playerInformation2"),
+        ]),
+    else:
+        playerInfoRight = html.Div(['No player selected'],className="noplayerright"),
+    
+    return playerInfoRight
+
+
+# Callback to load player information left
+@app.callback(
+    [Output('playerInfoLeft', 'children')],
+    [Input('playerSelection1', 'value'),
+     Input('metricToggle', 'value')],
+)
+def showPlayerInformation(playerName, toggleValue):
+    if playerName:
+        myData = rawPlayerData.loc[rawPlayerData['fullName'] == playerName]
+        myData.reset_index(drop=True, inplace=True)
+        relevantData = myData.drop(columns = ['id', 'imageLink'])
+        valuesValues = []
+        formattedColumnNames = ['Name', 'Birthdate', 'Age', 'Height', 'Weight', 'Active', 'Position']
+        for playerValue in relevantData.loc[0]:
+            if isinstance(playerValue, str) and "\"" in playerValue:
+                if toggleValue == True:
+                    extracted = []
+                    for digit in playerValue:
+                        if digit.isdigit():
+                            extracted.append(digit)
+                    meters = (float(extracted[0]) * 30.48 + float(extracted[1]) * 2.54) / 100
+                    playerValue = "{:.2f} m".format(meters)
+            if isinstance(playerValue, np.int64) and playerValue >= 99:
+                if toggleValue == False:
+                    playerValue = str(playerValue) + " lbs"
+                if toggleValue == True:
+                    kilos = playerValue * 0.453592
+                    playerValue = "{:.2f} kg".format(kilos)
+            if isinstance(playerValue, np.bool_) and playerValue == True:
+                playerValue = 'Yes'
+            valuesValues.append(playerValue)
+
+        pivotData = {}
+        pivotData['Descriptions'] = formattedColumnNames
+        pivotData['Values'] = valuesValues
+        pivotRelevant = pd.DataFrame(data=pivotData)
+
+        playerInfoLeft = html.Div([
+            html.Div([
+                html.Img(src=myData['imageLink'].iloc[0]),
+            ],id='imageDiv', className="playerImage"),
+            html.Div([
+                html.Div([
+                    dt.DataTable(
+                        id='table',
+                        columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
+                        data=pivotRelevant.to_dict('records'),
+                        style_cell={'border':'none', 'textAlign': 'left','background-color': 'whitesmoke'},
+                        style_as_list_view=True,
+                        style_header = {'display': 'none'},
+                        
+                    ),
+                ], className="playerInformation"),   
+            ],id='playerInformation', className="playerInformation"),
+        ]),
+    else:
+        playerInfoLeft = html.Div(['No player selected'],className="noplayerleft"),     
+    
+    return playerInfoLeft
+
+# Callback to change unit toggle value
+@app.callback(
+    Output('outputMetricToggle', 'children'),
+    [Input('metricToggle', 'value')])
+def update_output(value):
+    if value == False: 
+        return 'Imperial'
+    else:
+        return 'Metric'
+
+########################### Callbacks general evaluation of dropwdowns and buttons stats ###########################
+
+# this callback evaluates player input --> returns button combination and headline
 @app.callback(
     [Output('playerInfoWrapper', 'style'),
     Output('individHeadline', 'children'),
-    Output('radarHeadline', 'children'),
-    ],
+    Output('radarHeadline', 'children')],
     [Input('playerSelection1', 'value'),
-    Input('playerSelection2', 'value')],)
+    Input('playerSelection2', 'value')])
 def evaluatePlayerInput(playerSec1Value, playerSec2Value):
     wrapperstyle = {"display":"None"}
     headline = '',
@@ -184,7 +324,7 @@ def evaluatePlayerInput(playerSec1Value, playerSec2Value):
 
     return wrapperstyle, headline, radarHeadline
 
-# evaluates button press --> stores current button combo in the buttons, updates buttons in case of splits or comparison
+# evaluates button press --> stores current button combo and player ID in the buttons, updates buttons in case of splits or comparison
 @app.callback(
     [Output('career', 'value'),
     Output('careerHitting','value'),
@@ -195,17 +335,14 @@ def evaluatePlayerInput(playerSec1Value, playerSec2Value):
     Output('careerFielding', 'value'),
     Output('careerPitching', 'value'),
     Output('statCagegoryButtons', 'style'),
-    Output('filterGroup', 'style'),
-    ],
-    [
-    Input('careerHitting','n_clicks'),
+    Output('filterGroup', 'style'),],
+    [Input('careerHitting','n_clicks'),
     Input('careerFielding', 'n_clicks'), 
     Input('careerPitching', 'n_clicks'),
     Input('career', 'n_clicks'),
     Input('splits', 'n_clicks'),
     Input('playerSelection1', 'value'),
-    Input('playerSelection2', 'value'),
-    ])
+    Input('playerSelection2', 'value'),])
 def evaluateButtonPress(hittingClicks, fieldingClicks, pitchingClicks, careerClicks, splitsClicks, playerLeft, playerRight):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     statsCategory = 'career'
@@ -228,7 +365,6 @@ def evaluateButtonPress(hittingClicks, fieldingClicks, pitchingClicks, careerCli
         playerIdRight = getPlayerID(playerRight)
         statCategoryVisibility = {"display":"None"}
         filterVisibility = {}
-
     if 'careerHitting' in changed_id:
         statsType = 'hitting'
     if 'careerFielding' in changed_id:
@@ -248,25 +384,6 @@ def evaluateButtonPress(hittingClicks, fieldingClicks, pitchingClicks, careerCli
     playerIdRight = str(playerIdRight)
     return statsCategory, statsType, splitDropdownVisibility, infoButtonVisibility, seasonOptions, seasonValue, playerId, playerIdRight, statCategoryVisibility, filterVisibility
 
-# returns options for level dropdown
-@app.callback(
-    [Output('levelDropdown', 'options'),
-    Output('levelDropdown', 'value')],
-    [
-    Input('seasonDropdown', 'value'),
-    Input('careerFielding', 'value'),
-    ])
-def setLevelValueAndOptions(seasonValue, playerId):
-    listOfOptions = ['', '']
-    levelOptions = [{'label': '{}'.format(i), 'value': i} for i in listOfOptions]
-    levelValue = listOfOptions[0]
-    if isinstance(seasonValue, int):
-        playerId = int(playerId)
-        listOfOptions = getLevelOptions(playerId, seasonValue)
-        levelOptions = [{'label': '{}'.format(i), 'value': i} for i in listOfOptions]
-        levelValue = listOfOptions[len(listOfOptions)-1]
-    return levelOptions, levelValue
-
 # evaluates button state --> returns dropdown list
 @app.callback(
     [Output('individualPlayerInfoDropdown', 'options'),
@@ -277,7 +394,6 @@ def setLevelValueAndOptions(seasonValue, playerId):
     Input('seasonDropdown', 'value'),
     Input('careerPitching', 'value'),])
 def evaluateButtonState(statsCategory, statsType, levelDropdown, seasonDropdown, compareMode):
-
     dropdownOptions = [{'label': 'Name', 'value': 'Name'},{'label': 'Career', 'value': 'Career'},]
     dropdownValues = ['Name']
     if compareMode != '0':
@@ -307,7 +423,28 @@ def evaluateButtonState(statsCategory, statsType, levelDropdown, seasonDropdown,
     
     return dropdownOptions, dropdownValues
 
-# evaluates dropdown and buttons --> returns table
+# returns options for level dropdown
+@app.callback(
+    [Output('levelDropdown', 'options'),
+    Output('levelDropdown', 'value')],
+    [
+    Input('seasonDropdown', 'value'),
+    Input('careerFielding', 'value'),
+    ])
+def setLevelValueAndOptions(seasonValue, playerId):
+    listOfOptions = ['', '']
+    levelOptions = [{'label': '{}'.format(i), 'value': i} for i in listOfOptions]
+    levelValue = listOfOptions[0]
+    if isinstance(seasonValue, int):
+        playerId = int(playerId)
+        listOfOptions = getLevelOptions(playerId, seasonValue)
+        levelOptions = [{'label': '{}'.format(i), 'value': i} for i in listOfOptions]
+        levelValue = listOfOptions[len(listOfOptions)-1]
+    return levelOptions, levelValue
+
+########################### Callbacks for returning the correct table and graph ###########################
+
+# evaluates dropdown and buttons --> returns table and graph
 @app.callback(
     [Output('individualTabpleDiv', 'children'),
     Output('seasonFilter', 'options'),
@@ -438,6 +575,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
 
     return table, seasonOptions, levelOptions, leagueOptions, showRadar, fig, placeholderStyle, placeholder
 
+########################### Callbacks summary table ###########################
 
 # Callback for updating basic table dropdown options and default values
 @app.callback(
@@ -489,133 +627,3 @@ def update_table(dropdownValue, buttonValue):
     columns = [{"name": i, "id": i} for i in displayedData.columns]
     data = displayedData.to_dict('records')
     return columns, data
-
-# Callback to change unit toggle value
-@app.callback(
-    Output('outputMetricToggle', 'children'),
-    [Input('metricToggle', 'value')])
-def update_output(value):
-    if value == False: 
-        return 'Imperial'
-    else:
-        return 'Metric'
-
-# Callback to load player information right
-@app.callback(
-    [Output('playerInfoRight', 'children')],
-    [Input('playerSelection2', 'value'),
-     Input('metricToggle', 'value')],
-)
-def showPlayerInformation2(playerName, toggleValue):
-    if playerName:
-        myData = rawPlayerData.loc[rawPlayerData['fullName'] == playerName]
-        myData.reset_index(drop=True, inplace=True)
-        relevantData = myData.drop(columns = ['id', 'imageLink'])
-        valuesValues = []
-        formattedColumnNames = ['Name', 'Birthdate', 'Age', 'Height', 'Weight', 'Active', 'Position']
-        for playerValue in relevantData.loc[0]:
-            if isinstance(playerValue, str) and "\"" in playerValue:
-                if toggleValue == True:
-                    extracted = []
-                    for digit in playerValue:
-                        if digit.isdigit():
-                            extracted.append(digit)
-                    meters = (float(extracted[0]) * 30.48 + float(extracted[1]) * 2.54) / 100
-                    playerValue = "{:.2f} m".format(meters)
-            if isinstance(playerValue, np.int64) and playerValue >= 99:
-                if toggleValue == False:
-                    playerValue = str(playerValue) + " lbs"
-                if toggleValue == True:
-                    kilos = playerValue * 0.453592
-                    playerValue = "{:.2f} kg".format(kilos)
-            if isinstance(playerValue, np.bool_) and playerValue == True:
-                playerValue = 'Yes'
-            valuesValues.append(playerValue)
-
-        pivotData = {}
-        pivotData['Descriptions'] = formattedColumnNames
-        pivotData['Values'] = valuesValues
-        pivotRelevant = pd.DataFrame(data=pivotData)
-
-        playerInfoRight = html.Div([
-            html.Div([
-                html.Img(src=myData['imageLink'].iloc[0]),
-            ],id='imageDiv2', className="playerImage2"),
-            html.Div([
-                html.Div([
-                    dt.DataTable(
-                        id='table',
-                        columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
-                        data=pivotRelevant.to_dict('records'),
-                        style_cell={'border':'none', 'textAlign': 'left','background-color': 'whitesmoke'},
-                        style_as_list_view=True,
-                        style_header = {'display': 'none'},
-                        
-                    ),
-                ], className="playerInformation2"),   
-            ],id='playerInformation2', className="playerInformation2"),
-        ]),
-    else:
-        playerInfoRight = html.Div(['No player selected'],className="noplayerright"),
-    
-    return playerInfoRight
-
-# Callback to load player information left
-@app.callback(
-    [Output('playerInfoLeft', 'children')],
-    [Input('playerSelection1', 'value'),
-     Input('metricToggle', 'value')],
-)
-def showPlayerInformation(playerName, toggleValue):
-    if playerName:
-        myData = rawPlayerData.loc[rawPlayerData['fullName'] == playerName]
-        myData.reset_index(drop=True, inplace=True)
-        relevantData = myData.drop(columns = ['id', 'imageLink'])
-        valuesValues = []
-        formattedColumnNames = ['Name', 'Birthdate', 'Age', 'Height', 'Weight', 'Active', 'Position']
-        for playerValue in relevantData.loc[0]:
-            if isinstance(playerValue, str) and "\"" in playerValue:
-                if toggleValue == True:
-                    extracted = []
-                    for digit in playerValue:
-                        if digit.isdigit():
-                            extracted.append(digit)
-                    meters = (float(extracted[0]) * 30.48 + float(extracted[1]) * 2.54) / 100
-                    playerValue = "{:.2f} m".format(meters)
-            if isinstance(playerValue, np.int64) and playerValue >= 99:
-                if toggleValue == False:
-                    playerValue = str(playerValue) + " lbs"
-                if toggleValue == True:
-                    kilos = playerValue * 0.453592
-                    playerValue = "{:.2f} kg".format(kilos)
-            if isinstance(playerValue, np.bool_) and playerValue == True:
-                playerValue = 'Yes'
-            valuesValues.append(playerValue)
-
-        pivotData = {}
-        pivotData['Descriptions'] = formattedColumnNames
-        pivotData['Values'] = valuesValues
-        pivotRelevant = pd.DataFrame(data=pivotData)
-
-        playerInfoLeft = html.Div([
-            html.Div([
-                html.Img(src=myData['imageLink'].iloc[0]),
-            ],id='imageDiv', className="playerImage"),
-            html.Div([
-                html.Div([
-                    dt.DataTable(
-                        id='table',
-                        columns=[{"name": i, "id": i, "selectable": True} for i in pivotRelevant.columns],
-                        data=pivotRelevant.to_dict('records'),
-                        style_cell={'border':'none', 'textAlign': 'left','background-color': 'whitesmoke'},
-                        style_as_list_view=True,
-                        style_header = {'display': 'none'},
-                        
-                    ),
-                ], className="playerInformation"),   
-            ],id='playerInformation', className="playerInformation"),
-        ]),
-    else:
-        playerInfoLeft = html.Div(['No player selected'],className="noplayerleft"),     
-    
-    return playerInfoLeft
