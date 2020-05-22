@@ -4,13 +4,9 @@ from dash.dependencies import Input, Output
 from pages.database import getDBRefreshInfo
 
 from app import app
-from pages import player, squads
+from pages import mainPage, squads
 
 updateInfo = getDBRefreshInfo()
-
-#nlbaseball -- link
-# nl logo favicon
-# Name: NL Baseball
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -27,13 +23,15 @@ app.layout = html.Div([
     html.Div(id='page-content')
 ], className = "rootPage")
 
+app.title = 'NL Baseball'
+
 @app.callback(
     [Output('page-content', 'children'),
     Output('navLinkDiv', 'children')],
     [Input('url', 'pathname')])
 def display_page(pathname):
-    if pathname == '/pages/player/':
-        return player.layout, dcc.Link('Squads', href='/pages/squads/',style={'color': '#0580FF'}, id='navLink')
+    if pathname == '/nlbaseball/':
+        return mainPage.layout, dcc.Link('Squads', href='/nlbaseball/',style={'color': '#0580FF'}, id='navLink')
     elif pathname == '/pages/squads/':
         return squads.layout, dcc.Link('Players', href='/pages/player/',style={'color': '#0580FF'}, id='navLink')
     else:
