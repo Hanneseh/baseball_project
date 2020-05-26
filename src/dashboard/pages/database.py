@@ -49,7 +49,7 @@ def getSummedCareerStats(statGroup):
     df = pd.DataFrame(list(careerTable.find({"statGroupe" : statGroup},{"_id" : 0})))
     if statGroup == 'hitting':
         cleanedColumns = df.reindex(columns=['fullName', 'type', 'gamesPlayed', 'atBats', 'runs','hits','totalBases', 'doubles','triples', 'homeRuns', 'rbi', 'baseOnBalls', 'intentionalWalks','strikeOuts','stolenBases','caughtStealing', 'avg', 'obp','slg', 'ops','groundOutsToAirouts','plateAppearances', 'hitByPitch', 'sacBunts', 'sacFlies', 'babip','groundIntoDoublePlay','numberOfPitches','leftOnBase', 'ISO'])
-        cleanedColumns.rename(columns={'fullName': 'Name', 'type':'Career', 'gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
+        cleanedColumns.rename(columns={'fullName': 'Name', 'type':'Career', 'gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/AO','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
         cleanedColumns.sort_values(by=['Name'], inplace=True)
     if statGroup == 'fielding':
         cleanedColumns = df.reindex(columns=['fullName', 'type', 'position','games','gamesStarted', 'innings','chances','putOuts','assists','errors','doublePlays', 'rangeFactorPerGame', 'fielding'])
@@ -79,7 +79,7 @@ def getOptionsBasicTable(statGroup):
             {'label': 'Triples', 'value': '3B'},
             {'label': 'Home Runs', 'value': 'HR'},
             {'label': 'Runs Batted In', 'value': 'RBI'},
-            {'label': 'Bases On Balls', 'value': 'BB'},
+            {'label': 'Base On Balls', 'value': 'BB'},
             {'label': 'Intentional Walks', 'value': 'IBB'},
             {'label': 'Strikeouts', 'value': 'SO'},
             {'label': 'Stolen Bases', 'value': 'SB'},
@@ -88,14 +88,14 @@ def getOptionsBasicTable(statGroup):
             {'label': 'On-Base Percentage', 'value': 'OBP'},
             {'label': 'Slugging Percentage', 'value': 'SLG'},
             {'label': 'On-base plus slugging', 'value': 'OPS'},
-            {'label': 'Ground Outs/Air Outs', 'value': 'GO/GA'},
+            {'label': 'Ground Outs/Air Outs', 'value': 'GO/AO'},
             {'label': 'Plate Appearances', 'value': 'PA'},
             {'label': 'Hit By Pitch', 'value': 'HBP'},
             {'label': 'Sacrifice Bunts', 'value': 'SAC'},
             {'label': 'Sacrifice Flys', 'value': 'SF'},
             {'label': 'Batting Average on Balls in Play', 'value': 'BABIP'},
             {'label': 'Grounded into Double Plays', 'value': 'GIDP'},
-            {'label': 'Number of Pitches seen', 'value': 'NP'},
+            {'label': 'Number of Pitches Seen', 'value': 'NP'},
             {'label': 'Left On Base', 'value': 'LOB'},
             {'label': 'ISO', 'value': 'ISO'},
         ]
@@ -104,7 +104,7 @@ def getOptionsBasicTable(statGroup):
             {'label': 'Name', 'value': 'Name'},
             {'label': 'Career', 'value': 'Career'},
             {'label': 'Position', 'value': 'POS'},
-            {'label': 'Games', 'value': 'G'},
+            {'label': 'Games Played', 'value': 'G'},
             {'label': 'Games Started', 'value': 'GS'},
             {'label': 'Innings At This Position', 'value': 'INN'},
             {'label': 'Total Chances (assists plus putouts plus errors)', 'value': 'TC'},
@@ -122,7 +122,7 @@ def getOptionsBasicTable(statGroup):
             {'label': 'Wins', 'value': 'W'},
             {'label': 'Losses', 'value': 'L'},
             {'label': 'Earned Run Average', 'value': 'ERA'},
-            {'label': 'Games', 'value': 'G'},
+            {'label': 'Games Played', 'value': 'G'},
             {'label': 'Games Started', 'value': 'GS'},
             {'label': 'Complete Games', 'value': 'CG'},
             {'label': 'Shutouts', 'value': 'SHO'},
@@ -134,7 +134,7 @@ def getOptionsBasicTable(statGroup):
             {'label': 'Runs', 'value': 'R'},
             {'label': 'Earned Runs', 'value': 'ER'},
             {'label': 'Home Runs', 'value': 'HR'},
-            {'label': 'Number of Pitches Thrown', 'value': 'NP'},
+            {'label': 'Number of Pitches Seen', 'value': 'NP'},
             {'label': 'Hit Batsmen', 'value': 'HB'},
             {'label': 'Walks', 'value': 'BB'},
             {'label': 'Intentional Walks', 'value': 'IBB'},
@@ -160,7 +160,7 @@ def getIndividualCareerStats(playerID, statGroup):
             df.drop(columns=['type'], inplace=True)
             df = df.astype({'season': 'int32'})
             cleanedColumns = df.reindex(columns=['fullName', 'season', 'gamesPlayed', 'runs', 'doubles', 'triples', 'homeRuns','strikeOuts', 'baseOnBalls', 'intentionalWalks', 'hits', 'hitByPitch','avg', 'atBats', 'obp', 'slg', 'ops', 'caughtStealing', 'stolenBases', 'groundIntoDoublePlay', 'numberOfPitches','plateAppearances', 'totalBases', 'rbi', 'leftOnBase', 'sacBunts','sacFlies', 'babip', 'groundOutsToAirouts', 'team','league', 'sport','ISO'])
-            cleanedColumns.rename(columns={'fullName': 'Name', 'season':'Season', 'gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','league':'League', 'sport':'Level', 'groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
+            cleanedColumns.rename(columns={'fullName': 'Name', 'season':'Season', 'gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/AO','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','league':'League', 'sport':'Level', 'groundIntoDoublePlay':'GIDP','numberOfPitches':'NP','leftOnBase':'LOB'}, inplace=True)
             cleanedColumns.sort_values(by=['Season'],ascending=False, inplace=True)
 
         if statGroup == 'fielding':
@@ -203,7 +203,7 @@ def getOptionsIndividualCareerStatsTable(statGroup):
             {'label': 'Triples', 'value': '3B'},
             {'label': 'Home Runs', 'value': 'HR'},
             {'label': 'Runs Batted In', 'value': 'RBI'},
-            {'label': 'Bases On Balls', 'value': 'BB'},
+            {'label': 'Base On Balls', 'value': 'BB'},
             {'label': 'Intentional Walks', 'value': 'IBB'},
             {'label': 'Strikeouts', 'value': 'SO'},
             {'label': 'Stolen Bases', 'value': 'SB'},
@@ -212,14 +212,14 @@ def getOptionsIndividualCareerStatsTable(statGroup):
             {'label': 'On-Base Percentage', 'value': 'OBP'},
             {'label': 'Slugging Percentage', 'value': 'SLG'},
             {'label': 'On-base plus slugging', 'value': 'OPS'},
-            {'label': 'Ground Outs/Air Outs', 'value': 'GO/GA'},
+            {'label': 'Ground Outs/Air Outs', 'value': 'GO/AO'},
             {'label': 'Plate Appearances', 'value': 'PA'},
             {'label': 'Hit By Pitch', 'value': 'HBP'},
             {'label': 'Sacrifice Bunts', 'value': 'SAC'},
             {'label': 'Sacrifice Flys', 'value': 'SF'},
             {'label': 'Batting Average on Balls in Play', 'value': 'BABIP'},
             {'label': 'Grounded into Double Plays', 'value': 'GIDP'},
-            {'label': 'Number of Pitches seen', 'value': 'NP'},
+            {'label': 'Number of Pitches Seen', 'value': 'NP'},
             {'label': 'Left On Base', 'value': 'LOB'},
             {'label': 'ISO', 'value': 'ISO'},
         ]
@@ -230,7 +230,7 @@ def getOptionsIndividualCareerStatsTable(statGroup):
             {'label': 'Team', 'value': 'Team'},
             {'label': 'League', 'value': 'League'},
             {'label': 'Position', 'value': 'POS'},
-            {'label': 'Games', 'value': 'G'},
+            {'label': 'Games Played', 'value': 'G'},
             {'label': 'Games Started', 'value': 'GS'},
             {'label': 'Innings At This Position', 'value': 'INN'},
             {'label': 'Total Chances (assists plus putouts plus errors)', 'value': 'TC'},
@@ -250,7 +250,7 @@ def getOptionsIndividualCareerStatsTable(statGroup):
             {'label': 'Wins', 'value': 'W'},
             {'label': 'Losses', 'value': 'L'},
             {'label': 'Earned Run Average', 'value': 'ERA'},
-            {'label': 'Games', 'value': 'G'},
+            {'label': 'Games Played', 'value': 'G'},
             {'label': 'Games Started', 'value': 'GS'},
             {'label': 'Complete Games', 'value': 'CG'},
             {'label': 'Shutouts', 'value': 'SHO'},
@@ -262,9 +262,9 @@ def getOptionsIndividualCareerStatsTable(statGroup):
             {'label': 'Runs', 'value': 'R'},
             {'label': 'Earned Runs', 'value': 'ER'},
             {'label': 'Home Runs', 'value': 'HR'},
-            {'label': 'Number of Pitches Thrown', 'value': 'NP'},
+            {'label': 'Number of Pitches Seen', 'value': 'NP'},
             {'label': 'Hit Batsmen', 'value': 'HB'},
-            {'label': 'Walks', 'value': 'BB'},
+            {'label': 'Base On Balls', 'value': 'BB'},
             {'label': 'Intentional Walks', 'value': 'IBB'},
             {'label': 'Strikeouts', 'value': 'SO'},
             {'label': 'Batting Average', 'value': 'AVG'},
@@ -310,7 +310,7 @@ def getSplitStats(playerID, season, level):
         return "No Splits could be found for " + playerName
     else:
         cleanedColumns = df.reindex(columns=['split', 'team', 'gamesPlayed', 'atBats', 'runs','hits','doubles', 'triples', 'homeRuns','rbi','baseOnBalls','intentionalWalks','strikeOuts', 'stolenBases', 'caughtStealing','avg',  'obp', 'slg','ops', 'hitByPitch','groundIntoDoublePlay', 'plateAppearances', 'totalBases','sacBunts', 'sacFlies', 'babip', 'groundOutsToAirouts', 'ISO'])
-        cleanedColumns.rename(columns={'split': 'Split','gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/GA','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','groundIntoDoublePlay':'GIDP'}, inplace=True)
+        cleanedColumns.rename(columns={'split': 'Split','gamesPlayed':'G', 'atBats':'AB', 'runs':'R','hits':'H','totalBases':'TB', 'doubles':'2B','triples':'3B', 'homeRuns':'HR', 'rbi':'RBI', 'baseOnBalls':'BB', 'intentionalWalks':'IBB','strikeOuts':'SO','stolenBases':'SB','caughtStealing':'CS', 'avg':'AVG', 'obp':'OBP','slg':'SLG', 'ops':'OPS','groundOutsToAirouts':'GO/AO','plateAppearances':'PA', 'hitByPitch':'HBP', 'sacBunts':'SAC', 'sacFlies':'SF', 'babip':'BABIP','team':'Team','groundIntoDoublePlay':'GIDP'}, inplace=True)
         cleanedColumns['Split'] = cleanedColumns['Split'].replace({'No Info':'Season'})
     return cleanedColumns
 
@@ -328,7 +328,7 @@ def getOptionsSplitsTable():
         {'label': 'Triples', 'value': '3B'},
         {'label': 'Home Runs', 'value': 'HR'},
         {'label': 'Runs Batted In', 'value': 'RBI'},
-        {'label': 'Bases On Balls', 'value': 'BB'},
+        {'label': 'Base On Balls', 'value': 'BB'},
         {'label': 'Intentional Walks', 'value': 'IBB'},
         {'label': 'Strikeouts', 'value': 'SO'},
         {'label': 'Stolen Bases', 'value': 'SB'},
@@ -345,7 +345,7 @@ def getOptionsSplitsTable():
         {'label': 'Sacrifice Bunts', 'value': 'SAC'},
         {'label': 'Sacrifice Flys', 'value': 'SF'},
         {'label': 'Batting Average on Balls in Play', 'value': 'BABIP'},
-        {'label': 'Ground Outs/Air Outs', 'value': 'GO/GA'},
+        {'label': 'Ground Outs/Air Outs', 'value': 'GO/AO'},
     ]
     return options
 

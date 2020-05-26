@@ -15,7 +15,7 @@ app.layout = html.Div([
             html.Div([
                 html.Div([
                     html.Div(id="navLinkDiv", style={"display":"None"}),
-                    html.Div([updateInfo], id="dbRefreshInfo", style={"float":"left", "font-size":"small","color":"whitesmoke"}),
+                    html.Div([updateInfo], id="dbRefreshInfo", style={"float":"left", "font-size":"small","color":"whitesmoke"}, title="This shows the last date when the database was refreshed"),
                 ], className="row "),
             ],className="placeHolderDiv"),
         ], className="backgroundDiv"),

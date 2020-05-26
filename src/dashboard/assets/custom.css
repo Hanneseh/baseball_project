@@ -218,6 +218,11 @@
 }
 
 /* Css for individual player information */
+.statsWrapper{
+    float: left;
+    width: 100%;
+    margin-bottom: 17em;
+}
 .playerInfoNotDisplayed{
     display: None;
     text-align: right;
@@ -234,7 +239,7 @@
 .statTypeButtons{
     float: left;
     margin-left: 1%;
-    width: 48%;
+    width: 39%;
 }
 .levelDropdown {
     float: left;
@@ -264,7 +269,7 @@
 .filterGroup{
     float: right;
     margin-right: 1%;
-    width: 48%;
+    width: 59%;
 }
 
 /* CSS for Radar Graph */
@@ -272,8 +277,6 @@
     float: left;
     width: 100%;
     margin-right: 1%;
-    margin-bottom: 5em;
-    
 }
 .radarGraph{
     width: 100%;
