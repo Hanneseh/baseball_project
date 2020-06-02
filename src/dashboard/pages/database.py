@@ -362,15 +362,25 @@ def returnCompareDate(playerID1, playerID2, statGroup):
     return playerData1
 
 # return 
-def getRadardiagramData(playerID):
-    df = pd.DataFrame(list(careerTable.find({"id": playerID,"statGroupe" : 'hitting'},{"_id" : 0})))
-    if df.empty:
-        playerName = getPlayerName(playerID)
-        return "No Stats could be found for " + playerName
+def getRadardiagramData(playerID1, playerID2):
+    player1 = getIndividualCareerStats(playerID1, 'hitting')
+    player2 = getIndividualCareerStats(playerID2, 'hitting')
+    returnData = 1
+    if isinstance(player1, str) and isinstance(player2, str):
+        return "No Stats could be found for these players"
+
+    elif isinstance(player1, str):
+        player2 = player2.loc[player2['Season'] == player2['Season'].unique()[0]]
+        returnData = player2
+
+    elif isinstance(player2, str):
+        player1 = player1.loc[player1['Season'] == player1['Season'].unique()[0]]
+        returnData = player1
     else:
-        cleanedData = df.reindex(columns=['fullName','avg', 'obp', 'slg', 'ops','ISO'])
-        cleanedData.reset_index(drop=True, inplace=True)
-        valueArray = []
-        for values in cleanedData.iloc[0]:
-            valueArray.append(values)
-        return valueArray
+        player2 = player2.loc[player2['Season'] == player2['Season'].unique()[0]]
+        player1 = player1.loc[player1['Season'] == player1['Season'].unique()[0]]
+        player1 = player1.append(player2)
+        returnData = player1
+    returnData = returnData.reindex(columns=['Name','Season','League', 'AVG', 'OBP', 'SLG', 'OPS','ISO'])
+    returnData.reset_index(drop=True, inplace=True)
+    return returnData

@@ -187,6 +187,15 @@
     font-style: italic;
     margin-top: 5px;
 }
+
+.HittingStart{
+    color: black;
+    background:lightgray;
+    margin-right: 5px;
+    width: auto;
+    font-style: italic;
+    margin-top: 5px;
+}
 .Hitting:hover{
     background: grey;
 }

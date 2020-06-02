@@ -63,7 +63,7 @@ layout = html.Div([
             html.Div(id="individHeadline", className="Sectio1"),
             html.Div([
                 html.Div([
-                    html.Button('Batting', id='careerHitting', n_clicks=0 ,className='Hitting'),
+                    html.Button('Batting', id='careerHitting', n_clicks=0 ,className='HittingStart'),
                     html.Button('Fielding', id='careerFielding', n_clicks=0 ,className='Fielding'),
                     html.Button('Pitching', id='careerPitching', n_clicks=0,className='Pitching'),
                     ], id='statTypeButtons', className='statTypeButtons' ,style={"display":"None"}),
@@ -107,7 +107,7 @@ layout = html.Div([
                     ], id='filterGroup', className='filterGroup',style={"display":"None"}),
 
                 html.Div([
-                    html.Button('Career', id='career', n_clicks=0 ,className='Hitting'),
+                    html.Button('Career', id='career', n_clicks=0 ,className='HittingStart'),
                     html.Button('Splits', id='splits', n_clicks=0 ,className='Fielding'),
                     ], id='statCagegoryButtons', className='statCategoryButtonGroup')
                 ], id='individualPlayerInfoButtons', className='individualPlayerInfoButtons'),
@@ -138,7 +138,7 @@ layout = html.Div([
 
             # button and dropdowns
             html.Div([
-                html.Button('Batting', id='Hitting', n_clicks=0 ,className='Hitting'),
+                html.Button('Batting', id='Hitting', n_clicks=0 ,className='HittingStart'),
                 html.Button('Fielding', id='Fielding', n_clicks=0 ,className='Fielding'),
                 html.Button('Pitching', id='Pitching', n_clicks=0,className='Pitching')
             ], className='buttonGroup'),
@@ -158,7 +158,7 @@ layout = html.Div([
                         sort_action='native',
                         style_cell={'textAlign': 'left','color': 'black'},
                         style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
-                        tooltip={'Name':'Name','Career':'Career','G':'Games Played','AB':'At Bats','R':'Runs','H':'Hits','TB':'Total Bases','2B':'Douples','3B':'Triples','HR':'Home Runs','RBI':'Runs Batted In','BB':'Base On Balls','IBB':'Intentional Walks','SO':'Strikeouts','SB':'Stolen Bases','CS':'Caught Stealing','AVG':'Batting Average','OBP':'On-BasePercentage','SLG':'Slugging Percentage','OPS':'On-baseplus Slugging','GO/AO':'Ground Outs / Air Outs','PA':'Plate Appearances','HBP':'Hit By Pitch','SAC':'Sacrifice Bunts','SF':'Sacrifice Flys','BABIP':'Batting Average on Balls in Play','GIDP':'Groundedinto Double Plays','NP':'Number of Pitches Seen','LOB':'Left On Base','ISO':'ISO','POS':'Position','GS':'Games Started','INN':'Innings At This Position','TC':'Total Chances(assistsplusputoutspluserrors)','PO':'Putouts','A':'Assists','E':'Errors','DP':'Double Plays','RF':'Range Factor','FPCT':'Fielding Percentage','W':'Wins','L':'Losses','ERA':'Earned Run Average','CG':'Complete Games','SHO':'Shutouts','HLD':'Hold','SV':'Saves','SVO':'Save Opportunities','IP':'Innings Pitched','ER':'Earned Runs','HB':'Hit Batsmen','WHIP':'Walks + Hits / Innings Pitched','Season':'Season','Team':'Team','League':'League','Level':'Level','Split':'Split'},
+                        tooltip={'Name':'Name','Career':'Career','G':'Games Played','AB':'At Bats','R':'Runs','H':'Hits','TB':'Total Bases','2B':'Douples','3B':'Triples','HR':'Home Runs','RBI':'Runs Batted In','BB':'Base On Balls','IBB':'Intentional Walks','SO':'Strikeouts','SB':'Stolen Bases','CS':'Caught Stealing','AVG':'Batting Average','OBP':'On-Base Percentage','SLG':'Slugging Percentage','OPS':'On-base plus Slugging','GO/AO':'Ground Outs / Air Outs','PA':'Plate Appearances','HBP':'Hit By Pitch','SAC':'Sacrifice Bunts','SF':'Sacrifice Flys','BABIP':'Batting Average on Balls in Play','GIDP':'Groundedinto Double Plays','NP':'Number of Pitches Seen','LOB':'Left On Base','ISO':'ISO','POS':'Position','GS':'Games Started','INN':'Innings At This Position','TC':'Total Chances(assistsplusputoutspluserrors)','PO':'Putouts','A':'Assists','E':'Errors','DP':'Double Plays','RF':'Range Factor','FPCT':'Fielding Percentage','W':'Wins','L':'Losses','ERA':'Earned Run Average','CG':'Complete Games','SHO':'Shutouts','HLD':'Hold','SV':'Saves','SVO':'Save Opportunities','IP':'Innings Pitched','ER':'Earned Runs','HB':'Hit Batsmen','WHIP':'Walks + Hits / Innings Pitched','Season':'Season','Team':'Team','League':'League','Level':'Level','Split':'Split'},
                     ),
                 ], className='basicTableDiv')
             ],id='basicTableDivWrapper', className='basicTableDivWrapper')
@@ -348,7 +348,7 @@ def evaluatePlayerInput(playerSec1Value, playerSec2Value):
         statsWrapperStyle = {}
         headline = html.H3(['Player Comparison of ' + playerSec1Value + ' and ' + playerSec2Value], style={"text-align":"center"}, title="The table below shows all the individual stats of " + playerSec1Value + " and " + playerSec2Value + ". The table can be filtered in order to better compare their stats"),
         wrapperstyle = {}
-        radarHeadline = html.H3(['Comparing ' + playerSec1Value + ' and ' + playerSec2Value + ' career summary stats'], style={"text-align":"center"}, title="The radar graph displays the OBP, SLG, OPS, AVG and ISO of " + playerSec1Value + " and " + playerSec2Value + ". The values are taken from the players career average"),
+        radarHeadline = html.H3(['Comparing ' + playerSec1Value + ' and ' + playerSec2Value + ' career summary stats'], style={"text-align":"center"}, title="The radar graph displays the OBP, SLG, OPS, AVG and ISO of " + playerSec1Value + " and " + playerSec2Value + ". The values displayed are from the most recent season. (Double entries are possible if players have played in different leagues in one season)"),
 
     return wrapperstyle, headline, radarHeadline, hittingStyle, filedingStyle, pitchingStyle, headlineStyle,tableStyle,statsWrapperStyle
 
@@ -363,7 +363,10 @@ def evaluatePlayerInput(playerSec1Value, playerSec2Value):
     Output('careerFielding', 'value'),
     Output('careerPitching', 'value'),
     Output('statCagegoryButtons', 'style'),
-    Output('filterGroup', 'style'),],
+    Output('filterGroup', 'style'),
+    Output('careerHitting', 'className'),
+    Output('career', 'className'),
+    ],
     [Input('careerHitting','n_clicks'),
     Input('careerFielding', 'n_clicks'), 
     Input('careerPitching', 'n_clicks'),
@@ -384,6 +387,8 @@ def evaluateButtonPress(hittingClicks, fieldingClicks, pitchingClicks, careerCli
     seasonValue = listOfOptions[0]
     playerId = 0
     playerIdRight = 0
+    battingStyle = "HittingStart"
+    careerStyle = "HittingStart"
     if playerLeft:
         playerId = getPlayerID(playerLeft)
     if playerRight: 
@@ -397,8 +402,10 @@ def evaluateButtonPress(hittingClicks, fieldingClicks, pitchingClicks, careerCli
         statsType = 'hitting'
     if 'careerFielding' in changed_id:
         statsType = 'fielding'
+        battingStyle = "Hitting"
     if 'careerPitching' in changed_id:
         statsType = 'pitching'
+        battingStyle = "Hitting"
     if 'career' in changed_id:
         statsCategory = 'career'
     if 'splits' in changed_id:
@@ -408,9 +415,10 @@ def evaluateButtonPress(hittingClicks, fieldingClicks, pitchingClicks, careerCli
         statsCategory = 'splits'
         infoButtonVisibility = {"display":"None"}
         splitDropdownVisibility = {}
+        careerStyle = "Hitting"
     playerId = str(playerId)
     playerIdRight = str(playerIdRight)
-    return statsCategory, statsType, splitDropdownVisibility, infoButtonVisibility, seasonOptions, seasonValue, playerId, playerIdRight, statCategoryVisibility, filterVisibility
+    return statsCategory, statsType, splitDropdownVisibility, infoButtonVisibility, seasonOptions, seasonValue, playerId, playerIdRight, statCategoryVisibility, filterVisibility, battingStyle, careerStyle
 
 # evaluates button state --> returns dropdown list
 @app.callback(
@@ -508,24 +516,25 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
         playerId = int(playerId)
         playerIdLeft = int(playerIdLeft)
         tableData = returnCompareDate(playerId,playerIdLeft, statsType)
-        radarDataPlayerLeft = getRadardiagramData(playerId)
-        radarDataPlayerRight = getRadardiagramData(playerIdLeft)
-        if len(radarDataPlayerLeft) == 6 and len(radarDataPlayerRight) == 6:
+        
+        radarData = getRadardiagramData(playerId, playerIdLeft)
+
+        if isinstance(radarData, str):
+            placeholderStyle = {}
+            placeholder = html.Div(["No sufficient Data for radar diagram"]),
+
+        else:
             showRadar = {}
             categories = ['AVG','OBP', 'SLG','OPS','ISO']
+            for index, row in radarData.iterrows():
 
-            fig.add_trace(go.Scatterpolar(
-                r=radarDataPlayerLeft[1:6],
-                theta=categories,
-                fill='toself',
-                name=radarDataPlayerLeft[0]
-            ))
-            fig.add_trace(go.Scatterpolar(
-                r=radarDataPlayerRight[1:6],
-                theta=categories,
-                fill='toself',
-                name=radarDataPlayerRight[0]
-            ))
+                fig.add_trace(go.Scatterpolar(
+                    r=row.values[3:8],
+                    theta=categories,
+                    fill='toself',
+                    name=row.values[0] + ' Season '+  str(row.values[1]) + ' '+ row.values[2]
+                ))
+
             fig.update_layout(
                 paper_bgcolor='whitesmoke',
                 plot_bgcolor='whitesmoke',
@@ -536,9 +545,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
                         )),
                         showlegend=True
             )
-        else:
-            placeholderStyle = {}
-            placeholder = html.Div(["No sufficient Data for radar diagram"]),
+
         if isinstance(tableData, str):
             table = html.Div([tableData], className='noDataPlaceholder'),
         else:
@@ -569,7 +576,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
                     style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
                     data=displayedData.to_dict('records'),
                     columns = [{"name": i, "id": i} for i in displayedData.columns],
-                    tooltip={'Name':'Name','Career':'Career','G':'Games Played','AB':'At Bats','R':'Runs','H':'Hits','TB':'Total Bases','2B':'Douples','3B':'Triples','HR':'Home Runs','RBI':'Runs Batted In','BB':'Base On Balls','IBB':'Intentional Walks','SO':'Strikeouts','SB':'Stolen Bases','CS':'Caught Stealing','AVG':'Batting Average','OBP':'On-BasePercentage','SLG':'Slugging Percentage','OPS':'On-baseplus Slugging','GO/AO':'Ground Outs / Air Outs','PA':'Plate Appearances','HBP':'Hit By Pitch','SAC':'Sacrifice Bunts','SF':'Sacrifice Flys','BABIP':'Batting Average on Balls in Play','GIDP':'Groundedinto Double Plays','NP':'Number of Pitches Seen','LOB':'Left On Base','ISO':'ISO','POS':'Position','GS':'Games Started','INN':'Innings At This Position','TC':'Total Chances(assistsplusputoutspluserrors)','PO':'Putouts','A':'Assists','E':'Errors','DP':'Double Plays','RF':'Range Factor','FPCT':'Fielding Percentage','W':'Wins','L':'Losses','ERA':'Earned Run Average','CG':'Complete Games','SHO':'Shutouts','HLD':'Hold','SV':'Saves','SVO':'Save Opportunities','IP':'Innings Pitched','ER':'Earned Runs','HB':'Hit Batsmen','WHIP':'Walks + Hits / Innings Pitched','Season':'Season','Team':'Team','League':'League','Level':'Level','Split':'Split'},
+                    tooltip={'Name':'Name','Career':'Career','G':'Games Played','AB':'At Bats','R':'Runs','H':'Hits','TB':'Total Bases','2B':'Douples','3B':'Triples','HR':'Home Runs','RBI':'Runs Batted In','BB':'Base On Balls','IBB':'Intentional Walks','SO':'Strikeouts','SB':'Stolen Bases','CS':'Caught Stealing','AVG':'Batting Average','OBP':'On-Base Percentage','SLG':'Slugging Percentage','OPS':'On-base plus Slugging','GO/AO':'Ground Outs / Air Outs','PA':'Plate Appearances','HBP':'Hit By Pitch','SAC':'Sacrifice Bunts','SF':'Sacrifice Flys','BABIP':'Batting Average on Balls in Play','GIDP':'Groundedinto Double Plays','NP':'Number of Pitches Seen','LOB':'Left On Base','ISO':'ISO','POS':'Position','GS':'Games Started','INN':'Innings At This Position','TC':'Total Chances(assistsplusputoutspluserrors)','PO':'Putouts','A':'Assists','E':'Errors','DP':'Double Plays','RF':'Range Factor','FPCT':'Fielding Percentage','W':'Wins','L':'Losses','ERA':'Earned Run Average','CG':'Complete Games','SHO':'Shutouts','HLD':'Hold','SV':'Saves','SVO':'Save Opportunities','IP':'Innings Pitched','ER':'Earned Runs','HB':'Hit Batsmen','WHIP':'Walks + Hits / Innings Pitched','Season':'Season','Team':'Team','League':'League','Level':'Level','Split':'Split'},
                     ),
                     ], className='individualPlayerInfoTableDiv'),
 
@@ -596,7 +603,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
                     style_table={'maxHeight': ' 481px', 'overflowY': 'scroll'},
                     data=displayedData.to_dict('records'),
                     columns = [{"name": i, "id": i} for i in displayedData.columns],
-                    tooltip={'Name':'Name','Career':'Career','G':'Games Played','AB':'At Bats','R':'Runs','H':'Hits','TB':'Total Bases','2B':'Douples','3B':'Triples','HR':'Home Runs','RBI':'Runs Batted In','BB':'Base On Balls','IBB':'Intentional Walks','SO':'Strikeouts','SB':'Stolen Bases','CS':'Caught Stealing','AVG':'Batting Average','OBP':'On-BasePercentage','SLG':'Slugging Percentage','OPS':'On-baseplus Slugging','GO/AO':'Ground Outs / Air Outs','PA':'Plate Appearances','HBP':'Hit By Pitch','SAC':'Sacrifice Bunts','SF':'Sacrifice Flys','BABIP':'Batting Average on Balls in Play','GIDP':'Groundedinto Double Plays','NP':'Number of Pitches Seen','LOB':'Left On Base','ISO':'ISO','POS':'Position','GS':'Games Started','INN':'Innings At This Position','TC':'Total Chances(assistsplusputoutspluserrors)','PO':'Putouts','A':'Assists','E':'Errors','DP':'Double Plays','RF':'Range Factor','FPCT':'Fielding Percentage','W':'Wins','L':'Losses','ERA':'Earned Run Average','CG':'Complete Games','SHO':'Shutouts','HLD':'Hold','SV':'Saves','SVO':'Save Opportunities','IP':'Innings Pitched','ER':'Earned Runs','HB':'Hit Batsmen','WHIP':'Walks + Hits / Innings Pitched','Season':'Season','Team':'Team','League':'League','Level':'Level','Split':'Split'},
+                    tooltip={'Name':'Name','Career':'Career','G':'Games Played','AB':'At Bats','R':'Runs','H':'Hits','TB':'Total Bases','2B':'Douples','3B':'Triples','HR':'Home Runs','RBI':'Runs Batted In','BB':'Base On Balls','IBB':'Intentional Walks','SO':'Strikeouts','SB':'Stolen Bases','CS':'Caught Stealing','AVG':'Batting Average','OBP':'On-Base Percentage','SLG':'Slugging Percentage','OPS':'On-base plus Slugging','GO/AO':'Ground Outs / Air Outs','PA':'Plate Appearances','HBP':'Hit By Pitch','SAC':'Sacrifice Bunts','SF':'Sacrifice Flys','BABIP':'Batting Average on Balls in Play','GIDP':'Groundedinto Double Plays','NP':'Number of Pitches Seen','LOB':'Left On Base','ISO':'ISO','POS':'Position','GS':'Games Started','INN':'Innings At This Position','TC':'Total Chances(assistsplusputoutspluserrors)','PO':'Putouts','A':'Assists','E':'Errors','DP':'Double Plays','RF':'Range Factor','FPCT':'Fielding Percentage','W':'Wins','L':'Losses','ERA':'Earned Run Average','CG':'Complete Games','SHO':'Shutouts','HLD':'Hold','SV':'Saves','SVO':'Save Opportunities','IP':'Innings Pitched','ER':'Earned Runs','HB':'Hit Batsmen','WHIP':'Walks + Hits / Innings Pitched','Season':'Season','Team':'Team','League':'League','Level':'Level','Split':'Split'},
 
                     ),
                     ], className='individualPlayerInfoTableDiv'),
@@ -612,12 +619,17 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
 @app.callback(
     [Output('Hitting','value'),
     Output('basicTableDorpdown','value'),
-    Output('basicTableDorpdown', 'options')],
+    Output('basicTableDorpdown', 'options'),
+    Output('Hitting', 'className')],
     [Input('Hitting','n_clicks'),
     Input('Fielding', 'n_clicks'), 
     Input('Pitching', 'n_clicks')])
 def determinButtonPress(hittingClicks, fieldingClicks, pitchingClicks):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    if len(changed_id) == 17:
+        className = "Hitting"
+    else:
+        className = "HittingStart"
     pressedButton = ''
     deafultdropdown=[]
     dropdownOptions = ''
@@ -637,7 +649,7 @@ def determinButtonPress(hittingClicks, fieldingClicks, pitchingClicks):
         pressedButton = '1'
         dropdownOptions = getOptionsBasicTable('hitting')
         deafultdropdown=['Name', 'Career','G','AB','R','H','TB', '2B','3B','HR','AVG', 'OPS','GO/GA']
-    return pressedButton, deafultdropdown, dropdownOptions
+    return pressedButton, deafultdropdown, dropdownOptions, className
 
 # Callback to load the correct "basic table" data and columns
 @app.callback(
