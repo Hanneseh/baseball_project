@@ -532,7 +532,7 @@ def update_Individualtable(dropdownValue, statsCategory, statsType, levelDropdow
                     r=row.values[3:8],
                     theta=categories,
                     fill='toself',
-                    name=row.values[0] + ' Season '+  str(row.values[1]) + ' '+ row.values[2]
+                    name=row.values[0] + ', Season '+  str(row.values[1]) + ', '+ row.values[2]
                 ))
 
             fig.update_layout(
