@@ -1,0 +1,14 @@
+version: "3"
+services:
+  mymongo:
+    image: "mongo"
+
+  mypython:
+    build: ./DataScraper
+    ports:
+      - "8000:8000"
+
+  mydashboard:
+    build: ./Dashboard
+    ports:
+      - "8050:8050"

@@ -3,7 +3,7 @@ import pandas as pd
 from pymongo import MongoClient
 
 # database connection
-client = MongoClient("localhost:27017")
+client = MongoClient("mymongo:27017")
 db=client['baseballmd']
 
 playerInformation = db.players

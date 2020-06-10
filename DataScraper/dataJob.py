@@ -48,7 +48,7 @@ def dataCollection():
 # schedule.every().day.at("3:00").do(job)
 
 # running the script just once
-dataCollection()
+# dataCollection()
 
 # while True:
 #     schedule.run_pending()
