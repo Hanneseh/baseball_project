@@ -1,0 +1,672 @@
+{ 
+    "_id" : ObjectId("5ec00092de88ab57393842d9"), 
+    "id" : NumberInt(465668), 
+    "imageLink" : "http://www.milb.com/images/465668/t400/180x270/465668.jpg", 
+    "fullName" : "Roger Bernadina", 
+    "birthDate" : "1984-06-12", 
+    "currentAge" : NumberInt(35), 
+    "height" : "6' 2\"", 
+    "weight" : NumberInt(210), 
+    "active" : true, 
+    "position" : "LF"
+}
+{ 
+    "_id" : ObjectId("5ec00093de88ab57393842da"), 
+    "id" : NumberInt(636072), 
+    "imageLink" : "http://www.milb.com/images/636072/generic/180x270/636072.jpg", 
+    "fullName" : "Calten Daal", 
+    "birthDate" : "1993-08-01", 
+    "currentAge" : NumberInt(26), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(180), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec00093de88ab57393842db"), 
+    "id" : NumberInt(642720), 
+    "imageLink" : "http://www.milb.com/images/642720/generic/180x270/642720.jpg", 
+    "fullName" : "Ray-Patrick Didder", 
+    "birthDate" : "1994-10-01", 
+    "currentAge" : NumberInt(25), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(170), 
+    "active" : true, 
+    "position" : "OF"
+}
+{ 
+    "_id" : ObjectId("5ec00094de88ab57393842dc"), 
+    "id" : NumberInt(457453), 
+    "imageLink" : "http://www.milb.com/images/457453/generic/180x270/457453.jpg", 
+    "fullName" : "Jair Jurrjens", 
+    "birthDate" : "1986-01-29", 
+    "currentAge" : NumberInt(34), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(200), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec00094de88ab57393842dd"), 
+    "id" : NumberInt(666198), 
+    "imageLink" : "http://www.milb.com/images/666198/generic/180x270/666198.jpg", 
+    "fullName" : "Carter Kieboom", 
+    "birthDate" : "1997-09-03", 
+    "currentAge" : NumberInt(22), 
+    "height" : "6' 2\"", 
+    "weight" : NumberInt(190), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec00095de88ab57393842de"), 
+    "id" : NumberInt(571851), 
+    "imageLink" : "http://www.milb.com/images/571851/generic/180x270/571851.jpg", 
+    "fullName" : "Spencer Kieboom", 
+    "birthDate" : "1991-03-16", 
+    "currentAge" : NumberInt(29), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(210), 
+    "active" : true, 
+    "position" : "C"
+}
+{ 
+    "_id" : ObjectId("5ec00095de88ab57393842df"), 
+    "id" : NumberInt(642488), 
+    "imageLink" : "http://www.milb.com/images/642488/t568/180x270/642488.jpg", 
+    "fullName" : "Ademar Rifaela", 
+    "birthDate" : "1994-11-20", 
+    "currentAge" : NumberInt(25), 
+    "height" : "5' 10\"", 
+    "weight" : NumberInt(180), 
+    "active" : true, 
+    "position" : "LF"
+}
+{ 
+    "_id" : ObjectId("5ec00096de88ab57393842e0"), 
+    "id" : NumberInt(644433), 
+    "imageLink" : "http://www.milb.com/images/644433/generic/180x270/644433.jpg", 
+    "fullName" : "Chadwick Tromp", 
+    "birthDate" : "1995-03-21", 
+    "currentAge" : NumberInt(25), 
+    "height" : "5' 9\"", 
+    "weight" : NumberInt(205), 
+    "active" : true, 
+    "position" : "C"
+}
+{ 
+    "_id" : ObjectId("5ec00096de88ab57393842e1"), 
+    "id" : NumberInt(605530), 
+    "imageLink" : "http://www.milb.com/images/605530/t534/180x270/605530.jpg", 
+    "fullName" : "Zander Wiel", 
+    "birthDate" : "1993-01-11", 
+    "currentAge" : NumberInt(27), 
+    "height" : "6' 3\"", 
+    "weight" : NumberInt(220), 
+    "active" : true, 
+    "position" : "1B"
+}
+{ 
+    "_id" : ObjectId("5ec00096de88ab57393842e2"), 
+    "id" : NumberInt(642282), 
+    "imageLink" : "http://www.milb.com/images/642282/generic/180x270/642282.jpg", 
+    "fullName" : "Juremi Profar", 
+    "birthDate" : "1996-01-30", 
+    "currentAge" : NumberInt(24), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(185), 
+    "active" : true, 
+    "position" : "3B"
+}
+{ 
+    "_id" : ObjectId("5ec00097de88ab57393842e3"), 
+    "id" : NumberInt(669274), 
+    "imageLink" : "http://www.milb.com/images/669274/t461/180x270/669274.jpg", 
+    "fullName" : "Edmond Americaan", 
+    "birthDate" : "1997-03-26", 
+    "currentAge" : NumberInt(23), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(170), 
+    "active" : true, 
+    "position" : "CF"
+}
+{ 
+    "_id" : ObjectId("5ec00097de88ab57393842e4"), 
+    "id" : NumberInt(665947), 
+    "imageLink" : "http://www.milb.com/images/665947/generic/180x270/665947.jpg", 
+    "fullName" : "Sherten Apostel", 
+    "birthDate" : "1999-03-11", 
+    "currentAge" : NumberInt(21), 
+    "height" : "6' 4\"", 
+    "weight" : NumberInt(200), 
+    "active" : true, 
+    "position" : "3B"
+}
+{ 
+    "_id" : ObjectId("5ec0009ade88ab57393842e5"), 
+    "id" : NumberInt(650851), 
+    "imageLink" : "http://www.milb.com/images/650851/t582/180x270/650851.jpg", 
+    "fullName" : "Tom de Blok", 
+    "birthDate" : "1996-05-08", 
+    "currentAge" : NumberInt(24), 
+    "height" : "6' 4\"", 
+    "weight" : NumberInt(240), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec0009bde88ab57393842e6"), 
+    "id" : NumberInt(691829), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Jiorgeny Casimiri", 
+    "birthDate" : "2001-07-12", 
+    "currentAge" : NumberInt(18), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(160), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec0009bde88ab57393842e7"), 
+    "id" : NumberInt(649955), 
+    "imageLink" : "http://www.milb.com/images/649955/generic/180x270/649955.jpg", 
+    "fullName" : "Hendrik Clementina", 
+    "birthDate" : "1997-06-17", 
+    "currentAge" : NumberInt(22), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(250), 
+    "active" : true, 
+    "position" : "C"
+}
+{ 
+    "_id" : ObjectId("5ec0009cde88ab57393842e8"), 
+    "id" : NumberInt(676875), 
+    "imageLink" : "http://www.milb.com/images/676875/t584/180x270/676875.jpg", 
+    "fullName" : "Franklin Van Gurp", 
+    "birthDate" : "1995-10-26", 
+    "currentAge" : NumberInt(24), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(225), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec0009cde88ab57393842e9"), 
+    "id" : NumberInt(645291), 
+    "imageLink" : "http://www.milb.com/images/645291/t503/180x270/645291.jpg", 
+    "fullName" : "Kevin Josephina", 
+    "birthDate" : "1996-10-02", 
+    "currentAge" : NumberInt(23), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(170), 
+    "active" : true, 
+    "position" : "IF"
+}
+{ 
+    "_id" : ObjectId("5ec0009cde88ab57393842ea"), 
+    "id" : NumberInt(689168), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Orsen Josephina", 
+    "birthDate" : "1995-09-08", 
+    "currentAge" : NumberInt(24), 
+    "height" : "6' 2\"", 
+    "weight" : NumberInt(190), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec0009dde88ab57393842eb"), 
+    "id" : NumberInt(687850), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Junior Martina", 
+    "birthDate" : "1997-12-12", 
+    "currentAge" : NumberInt(22), 
+    "height" : "5' 11\"", 
+    "weight" : NumberInt(190), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec0009ede88ab57393842ec"), 
+    "id" : NumberInt(660745), 
+    "imageLink" : "http://www.milb.com/images/660745/generic/180x270/660745.jpg", 
+    "fullName" : "Shean Michel", 
+    "birthDate" : "1997-09-26", 
+    "currentAge" : NumberInt(22), 
+    "height" : "5' 11\"", 
+    "weight" : NumberInt(170), 
+    "active" : true, 
+    "position" : "OF"
+}
+{ 
+    "_id" : ObjectId("5ec0009ede88ab57393842ed"), 
+    "id" : NumberInt(665989), 
+    "imageLink" : "http://www.milb.com/images/665989/t3705/180x270/665989.jpg", 
+    "fullName" : "Shervyen Newton", 
+    "birthDate" : "1999-04-24", 
+    "currentAge" : NumberInt(21), 
+    "height" : "6' 4\"", 
+    "weight" : NumberInt(180), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec0009fde88ab57393842ee"), 
+    "id" : NumberInt(622362), 
+    "imageLink" : "http://www.milb.com/images/622362/t521/180x270/622362.jpg", 
+    "fullName" : "Chris Pieters", 
+    "birthDate" : "1994-09-21", 
+    "currentAge" : NumberInt(25), 
+    "height" : "6' 3\"", 
+    "weight" : NumberInt(185), 
+    "active" : false, 
+    "position" : "OF"
+}
+{ 
+    "_id" : ObjectId("5ec0009fde88ab57393842ef"), 
+    "id" : NumberInt(678882), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Ceddanne Rafaela", 
+    "birthDate" : "2000-09-18", 
+    "currentAge" : NumberInt(19), 
+    "height" : "5' 8\"", 
+    "weight" : NumberInt(145), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec0009fde88ab57393842f0"), 
+    "id" : NumberInt(682516), 
+    "imageLink" : "http://www.milb.com/images/682516/t444/180x270/682516.jpg", 
+    "fullName" : "Stephan Vidal", 
+    "birthDate" : "1996-04-04", 
+    "currentAge" : NumberInt(24), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(215), 
+    "active" : true, 
+    "position" : "C"
+}
+{ 
+    "_id" : ObjectId("5ec000a0de88ab57393842f1"), 
+    "id" : NumberInt(666635), 
+    "imageLink" : "http://www.milb.com/images/666635/t459/180x270/666635.jpg", 
+    "fullName" : "Jonathan Willems", 
+    "birthDate" : "1998-11-07", 
+    "currentAge" : NumberInt(21), 
+    "height" : "5' 11\"", 
+    "weight" : NumberInt(190), 
+    "active" : true, 
+    "position" : "IF"
+}
+{ 
+    "_id" : ObjectId("5ec000a0de88ab57393842f2"), 
+    "id" : NumberInt(661250), 
+    "imageLink" : "http://www.milb.com/images/661250/t2730/180x270/661250.jpg", 
+    "fullName" : "Izzy Wilson", 
+    "birthDate" : "1998-03-06", 
+    "currentAge" : NumberInt(22), 
+    "height" : "6' 3\"", 
+    "weight" : NumberInt(185), 
+    "active" : true, 
+    "position" : "OF"
+}
+{ 
+    "_id" : ObjectId("5ec000a1de88ab57393842f3"), 
+    "id" : NumberInt(677642), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Givaine Basilia", 
+    "birthDate" : "2000-06-22", 
+    "currentAge" : NumberInt(19), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(160), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec000a1de88ab57393842f4"), 
+    "id" : NumberInt(678281), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Donny Breek", 
+    "birthDate" : "1999-11-08", 
+    "currentAge" : NumberInt(20), 
+    "height" : "6' 2\"", 
+    "weight" : NumberInt(205), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec000a1de88ab57393842f5"), 
+    "id" : NumberInt(683666), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Denzel Bryson", 
+    "birthDate" : "2000-09-26", 
+    "currentAge" : NumberInt(19), 
+    "height" : "5' 11\"", 
+    "weight" : NumberInt(185), 
+    "active" : true, 
+    "position" : "C"
+}
+{ 
+    "_id" : ObjectId("5ec000a2de88ab57393842f6"), 
+    "id" : NumberInt(683408), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Darryl Collins", 
+    "birthDate" : "2001-09-16", 
+    "currentAge" : NumberInt(18), 
+    "height" : "6' 2\"", 
+    "weight" : NumberInt(185), 
+    "active" : true, 
+    "position" : "OF"
+}
+{ 
+    "_id" : ObjectId("5ec000a3de88ab57393842f8"), 
+    "id" : NumberInt(680884), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Aldrich De Jongh", 
+    "birthDate" : "1998-09-01", 
+    "currentAge" : NumberInt(21), 
+    "height" : "5' 9\"", 
+    "weight" : NumberInt(160), 
+    "active" : true, 
+    "position" : "OF"
+}
+{ 
+    "_id" : ObjectId("5ec000a4de88ab57393842fa"), 
+    "id" : NumberInt(672561), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Makesiondon Kelkboom", 
+    "birthDate" : "2000-07-12", 
+    "currentAge" : NumberInt(19), 
+    "height" : "5' 11\"", 
+    "weight" : NumberInt(152), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec000a4de88ab57393842fb"), 
+    "id" : NumberInt(677804), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Eric Mendez", 
+    "birthDate" : "1999-12-03", 
+    "currentAge" : NumberInt(20), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(175), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec000a4de88ab57393842fc"), 
+    "id" : NumberInt(680634), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Tilsaimy Melfor", 
+    "birthDate" : "2001-02-14", 
+    "currentAge" : NumberInt(19), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(183), 
+    "active" : true, 
+    "position" : "3B"
+}
+{ 
+    "_id" : ObjectId("5ec000a5de88ab57393842fd"), 
+    "id" : NumberInt(691828), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Sem Robberse", 
+    "birthDate" : "2001-10-12", 
+    "currentAge" : NumberInt(18), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(160), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec000a5de88ab57393842fe"), 
+    "id" : NumberInt(678486), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Shendrik Apostel", 
+    "birthDate" : "2000-04-24", 
+    "currentAge" : NumberInt(20), 
+    "height" : "6' 5\"", 
+    "weight" : NumberInt(245), 
+    "active" : true, 
+    "position" : "1B"
+}
+{ 
+    "_id" : ObjectId("5ec000a6de88ab57393842ff"), 
+    "id" : NumberInt(681606), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Nigel Calmes", 
+    "birthDate" : "1999-09-21", 
+    "currentAge" : NumberInt(20), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(175), 
+    "active" : true, 
+    "position" : "C"
+}
+{ 
+    "_id" : ObjectId("5ec000a6de88ab5739384301"), 
+    "id" : NumberInt(683398), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Faysel Gregorio", 
+    "birthDate" : "2002-05-09", 
+    "currentAge" : NumberInt(18), 
+    "height" : "6' 2\"", 
+    "weight" : NumberInt(150), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec000a7de88ab5739384302"), 
+    "id" : NumberInt(683393), 
+    "imageLink" : "http://www.milb.com/images/683393/t3130/180x270/683393.jpg", 
+    "fullName" : "J'Rudjeanon Isenia", 
+    "birthDate" : "2001-12-07", 
+    "currentAge" : NumberInt(18), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(185), 
+    "active" : true, 
+    "position" : "CF"
+}
+{ 
+    "_id" : ObjectId("5ec000a7de88ab5739384303"), 
+    "id" : NumberInt(682888), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Cal Maduro", 
+    "birthDate" : "2001-10-25", 
+    "currentAge" : NumberInt(18), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(165), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec000a8de88ab5739384305"), 
+    "id" : NumberInt(682654), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Rainer Polonius", 
+    "birthDate" : "2001-09-24", 
+    "currentAge" : NumberInt(18), 
+    "height" : "5' 11\"", 
+    "weight" : NumberInt(147), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec000a8de88ab5739384306"), 
+    "id" : NumberInt(682651), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Ryson Polonius", 
+    "birthDate" : "2001-09-24", 
+    "currentAge" : NumberInt(18), 
+    "height" : "5' 11\"", 
+    "weight" : NumberInt(147), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec000a9de88ab5739384307"), 
+    "id" : NumberInt(678799), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Brandon Rincones", 
+    "birthDate" : "2000-10-01", 
+    "currentAge" : NumberInt(19), 
+    "height" : "5' 9\"", 
+    "weight" : NumberInt(145), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec000a9de88ab5739384308"), 
+    "id" : NumberInt(678751), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Rushenten Tomsjansen", 
+    "birthDate" : "2001-05-14", 
+    "currentAge" : NumberInt(19), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(150), 
+    "active" : true, 
+    "position" : "OF"
+}
+{ 
+    "_id" : ObjectId("5ec000adde88ab5739384309"), 
+    "id" : NumberInt(645277), 
+    "imageLink" : "https://securea.mlb.com/mlb/images/players/head_shot/645277.jpg", 
+    "fullName" : "Ozzie Albies", 
+    "birthDate" : "1997-01-07", 
+    "currentAge" : NumberInt(23), 
+    "height" : "5' 8\"", 
+    "weight" : NumberInt(165), 
+    "active" : true, 
+    "position" : "2B"
+}
+{ 
+    "_id" : ObjectId("5ec000b0de88ab573938430a"), 
+    "id" : NumberInt(593428), 
+    "imageLink" : "https://securea.mlb.com/mlb/images/players/head_shot/593428.jpg", 
+    "fullName" : "Xander Bogaerts", 
+    "birthDate" : "1992-10-01", 
+    "currentAge" : NumberInt(27), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(210), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec000b3de88ab573938430b"), 
+    "id" : NumberInt(544369), 
+    "imageLink" : "https://securea.mlb.com/mlb/images/players/head_shot/544369.jpg", 
+    "fullName" : "Didi Gregorius", 
+    "birthDate" : "1990-02-18", 
+    "currentAge" : NumberInt(30), 
+    "height" : "6' 3\"", 
+    "weight" : NumberInt(205), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec000b6de88ab573938430c"), 
+    "id" : NumberInt(445276), 
+    "imageLink" : "https://securea.mlb.com/mlb/images/players/head_shot/445276.jpg", 
+    "fullName" : "Kenley Jansen", 
+    "birthDate" : "1987-09-30", 
+    "currentAge" : NumberInt(32), 
+    "height" : "6' 5\"", 
+    "weight" : NumberInt(265), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec000b9de88ab573938430d"), 
+    "id" : NumberInt(595777), 
+    "imageLink" : "https://securea.mlb.com/mlb/images/players/head_shot/595777.jpg", 
+    "fullName" : "Jurickson Profar", 
+    "birthDate" : "1993-02-20", 
+    "currentAge" : NumberInt(27), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(190), 
+    "active" : true, 
+    "position" : "2B"
+}
+{ 
+    "_id" : ObjectId("5ec000bbde88ab573938430e"), 
+    "id" : NumberInt(570731), 
+    "imageLink" : "https://securea.mlb.com/mlb/images/players/head_shot/570731.jpg", 
+    "fullName" : "Jonathan Schoop", 
+    "birthDate" : "1991-10-16", 
+    "currentAge" : NumberInt(28), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(225), 
+    "active" : true, 
+    "position" : "2B"
+}
+{ 
+    "_id" : ObjectId("5ec000bede88ab573938430f"), 
+    "id" : NumberInt(592743), 
+    "imageLink" : "https://securea.mlb.com/mlb/images/players/head_shot/592743.jpg", 
+    "fullName" : "Andrelton Simmons", 
+    "birthDate" : "1989-09-04", 
+    "currentAge" : NumberInt(30), 
+    "height" : "6' 2\"", 
+    "weight" : NumberInt(195), 
+    "active" : true, 
+    "position" : "SS"
+}
+{ 
+    "_id" : ObjectId("5ec000c0de88ab5739384310"), 
+    "id" : NumberInt(467008), 
+    "imageLink" : "https://securea.mlb.com/mlb/images/players/head_shot/467008.jpg", 
+    "fullName" : "Pedro Strop", 
+    "birthDate" : "1985-06-13", 
+    "currentAge" : NumberInt(34), 
+    "height" : "6' 1\"", 
+    "weight" : NumberInt(220), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ec4db9b0776fc154f5db955"), 
+    "id" : NumberInt(679968), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Jerrick Francees", 
+    "birthDate" : "2000-05-18", 
+    "currentAge" : NumberInt(20), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(188), 
+    "active" : true, 
+    "position" : "2B"
+}
+{ 
+    "_id" : ObjectId("5ede220fcb96e7b3ebd7c57e"), 
+    "id" : NumberInt(687677), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Arij Fransen", 
+    "birthDate" : "2001-05-20", 
+    "currentAge" : NumberInt(19), 
+    "height" : "6' 3\"", 
+    "weight" : NumberInt(190), 
+    "active" : true, 
+    "position" : "P"
+}
+{ 
+    "_id" : ObjectId("5ede2211cb96e7b3ebd7c57f"), 
+    "id" : NumberInt(678427), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Richgelon Juliana", 
+    "birthDate" : "2000-05-30", 
+    "currentAge" : NumberInt(20), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(170), 
+    "active" : true, 
+    "position" : "CF"
+}
+{ 
+    "_id" : ObjectId("5ede2221cb96e7b3ebd7c580"), 
+    "id" : NumberInt(683430), 
+    "imageLink" : "http://www.milb.com/images/silhouette/180x270.jpg", 
+    "fullName" : "Denverick Martines", 
+    "birthDate" : "2001-05-31", 
+    "currentAge" : NumberInt(19), 
+    "height" : "6' 0\"", 
+    "weight" : NumberInt(170), 
+    "active" : true, 
+    "position" : "P"
+}

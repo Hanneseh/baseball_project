@@ -1,0 +1,72 @@
+{ 
+    "_id" : ObjectId("5ec0014ede88ab57393864d2"), 
+    "fetchCycle" : NumberInt(1), 
+    "fetchStartTime" : "17:02 16.05.2020", 
+    "totalNumberOfDocUpdates" : NumberInt(0), 
+    "totalNumberOfDocInserts" : NumberInt(8697), 
+    "fetchEndTime" : "17:05 16.05.2020"
+}
+{ 
+    "_id" : ObjectId("5ec0056183fc84716626565b"), 
+    "fetchCycle" : NumberInt(2), 
+    "fetchStartTime" : "17:18 16.05.2020", 
+    "totalNumberOfDocUpdates" : NumberInt(0), 
+    "totalNumberOfDocInserts" : NumberInt(0), 
+    "fetchEndTime" : "17:23 16.05.2020"
+}
+{ 
+    "_id" : ObjectId("5ec007e84e1b5d818ca33cee"), 
+    "fetchCycle" : NumberInt(3), 
+    "fetchStartTime" : "17:29 16.05.2020", 
+    "totalNumberOfDocUpdates" : NumberInt(79), 
+    "totalNumberOfDocInserts" : NumberInt(0), 
+    "fetchEndTime" : "17:34 16.05.2020"
+}
+{ 
+    "_id" : ObjectId("5ec00d4e1a171dac53ca3e51"), 
+    "fetchCycle" : NumberInt(4), 
+    "fetchStartTime" : "17:52 16.05.2020", 
+    "totalNumberOfDocUpdates" : NumberInt(5659), 
+    "totalNumberOfDocInserts" : NumberInt(0), 
+    "fetchEndTime" : "17:57 16.05.2020"
+}
+{ 
+    "_id" : ObjectId("5ec00ff747fb57f282b10507"), 
+    "fetchCycle" : NumberInt(5), 
+    "fetchStartTime" : "18:03 16.05.2020", 
+    "totalNumberOfDocUpdates" : NumberInt(1060), 
+    "totalNumberOfDocInserts" : NumberInt(0), 
+    "fetchEndTime" : "18:08 16.05.2020"
+}
+{ 
+    "_id" : ObjectId("5ec4dc2a0776fc154f5db956"), 
+    "fetchCycle" : NumberInt(6), 
+    "fetchStartTime" : "09:24 20.05.2020", 
+    "totalNumberOfDocUpdates" : NumberInt(1), 
+    "totalNumberOfDocInserts" : NumberInt(0), 
+    "fetchEndTime" : "09:28 20.05.2020"
+}
+{ 
+    "_id" : ObjectId("5ede22bdcb96e7b3ebd7c593"), 
+    "fetchCycle" : NumberInt(7), 
+    "fetchStartTime" : "13:32 08.06.2020", 
+    "totalNumberOfDocUpdates" : NumberInt(21), 
+    "totalNumberOfDocInserts" : NumberInt(0), 
+    "fetchEndTime" : "13:36 08.06.2020"
+}
+{ 
+    "_id" : ObjectId("5edf9f1a57c73907b1183875"), 
+    "fetchCycle" : NumberInt(8), 
+    "fetchStartTime" : "16:36 09.06.2020", 
+    "totalNumberOfDocUpdates" : NumberInt(0), 
+    "totalNumberOfDocInserts" : NumberInt(0), 
+    "fetchEndTime" : "16:39 09.06.2020"
+}
+{ 
+    "_id" : ObjectId("5ee0f7ccf0d2abdf78282937"), 
+    "fetchCycle" : NumberInt(9), 
+    "fetchStartTime" : "17:06 10.06.2020", 
+    "totalNumberOfDocUpdates" : NumberInt(0), 
+    "totalNumberOfDocInserts" : NumberInt(0), 
+    "fetchEndTime" : "17:10 10.06.2020"
+}

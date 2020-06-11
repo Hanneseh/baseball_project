@@ -10,6 +10,7 @@ import time
 client = getDB()
 db = client['baseballmd']
 
+# Function that gathers all necessary data to setup or update the database
 def dataCollection():
     print('main start ')
     updateMeta = {}
@@ -40,13 +41,13 @@ def dataCollection():
 
 
 # running the script just once
-# dataCollection()
+dataCollection()
 
 # schedualed to run every night at 3 AM
-schedule.every().day.at("03:00").do(dataCollection)
-while True:
-    schedule.run_pending()
-    now = datetime.datetime.now()
-    nextRun = schedule.next_run()
-    print('Current Time: ', now.strftime("%H:%M:%S"), 'Next Run at: ', nextRun.strftime("%H:%M:%S"))
-    time.sleep(60)
+# schedule.every().day.at("03:00").do(dataCollection)
+# while True:
+#     schedule.run_pending()
+#     now = datetime.datetime.now()
+#     nextRun = schedule.next_run()
+#     print('Current Time: ', now.strftime("%H:%M:%S"), 'Next Run at: ', nextRun.strftime("%H:%M:%S"))
+#     time.sleep(60)
