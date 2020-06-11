@@ -1,5 +1,4 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.6
-LABEL maintainer="maintainer"
+FROM python:3
 
 WORKDIR /usr/src/app
 
@@ -10,5 +9,3 @@ COPY . .
 EXPOSE 8050
 
 CMD [ "python", "index.py" ]
-
-ENV NGINX_WORKER_PROCESSES auto
