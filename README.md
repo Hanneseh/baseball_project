@@ -15,7 +15,7 @@ The project consists out of a dashboard application (“Dashboard” folder) and
 
 This Application can be installed using docker or just pip (the default python package manager)
 
- **In depth installation guides can be found in the “docs” folder**
+--- **In depth installation guides can be found in the “docs” folder** ---
 
 ## Documentation
 
