@@ -1,17 +1,32 @@
-# Welcome to MkDocs
+# Welcome to NL Baseball Docs
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+The goal of this documentation is to provide an overview on how the application works and what design choices were made. It should also help you installing or deploying the application. 
 
-## Commands
+## Structure of the documentation
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+* [Index](index.md) - provides an overview of application and documentation
+* [Installation](installation.md) – provides installations guides
+* [Data Scraper](datascraper.md) – provides information on how the data scraper works
+* [Dashboard](dashboard.md) - provides information on how the dashboard works
+* [About](about.md) - General Info about the project and the process of creating it
 
-## Project layout
+## Project layout level 1
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+    Dashboard/        # folder for all dashboard files
+        ...
+    databaseDump/     # folder for database dump files
+        ...
+    DataScraper/      # folder for all datascraper files
+        ...
+    docs/             # folder for all docs files
+        ...
+    .gitginore
+    docker-compose.yml
+    LICENSE
+    mkdocs.yml
+    README.md
+
+## Application Architecture
+This is a high level model of the application architecture
+
+![Architecture](img/architecture.png)

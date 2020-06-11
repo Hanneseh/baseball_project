@@ -1,4 +1,4 @@
-# Baseball-NL
+# NL Baseball
 
 This Application allows looking at and comparing the career and splits stats of professional Dutch baseball players.
 
@@ -33,4 +33,4 @@ For further questions: hannes.ehringfeld@hva.nl
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the LICENSE file for details

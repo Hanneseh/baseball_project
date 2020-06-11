@@ -1,5 +1,8 @@
 site_name: NL Baseball Docs
 nav:
-    - Home: index.md
+    - Index: index.md
+    - Installation: installation.md
+    - Data Scrpaer: datascraper.md
+    - Dashboard: dashboard.md
     - About: about.md
 theme: readthedocs
