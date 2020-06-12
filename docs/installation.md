@@ -9,7 +9,7 @@ There are two ways to install NL-Baseball on your machine or to deploy it on a s
 -	The steps in this guide describe the process of installing NL-Baseball using docker.
 -	The steps are only tested on a Mac and are guaranteed to work when followed closely and with the given configuration. 
 -	After following this guide, you should have a working project without any security mechanisms in place. Meaning, the database is unprotected and the docker-compose only contains the bare minimum of parameters which might be needed for deploying the project.
--   Keep in mind: The Steps in this guid are designed by a docker newbie. There probably is a better way to do this, but time is money, and I dont get paid for this ;)
+-   Keep in mind: The Steps in this guid are designed by a docker newbie. There probably is a better way to do this.
 
 
 ### Requirements
