@@ -20,7 +20,7 @@ The goal of this documentation is to provide an overview on how the application 
         ...
     docs/             # folder for all docs files
         ...
-    .gitginore
+    .gitignore
     docker-compose.yml
     LICENSE
     mkdocs.yml

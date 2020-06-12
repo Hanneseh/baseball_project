@@ -1,3 +1,3 @@
-# Welcome the Dashboard Docs
+# Welcome to the Dashboard Docs
 
 Content will follow soon

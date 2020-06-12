@@ -13,7 +13,7 @@ db = client['baseballmd']
 
 documentsChange = {"inserts":0,"updates":0}
 
-def getRawDartaFromAPI():
+def getRawDataFromAPI():
     print('get raw Data started')
     # getting the Ids of all players and transforming them to a string
     cursor = db.players.find({})
@@ -182,8 +182,3 @@ def retrieveSplitsData(rawData, sportAbbreviation):
                         else:
                             documentsChange['inserts'] = documentsChange['inserts'] + 1
                             db['splitStats'].insert_one(splitsDict)
-
-
-
-# ### debugging
-#getRawDartaFromAPI()
