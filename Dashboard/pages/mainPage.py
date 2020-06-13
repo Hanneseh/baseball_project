@@ -348,7 +348,7 @@ def evaluatePlayerInput(playerSec1Value, playerSec2Value):
         statsWrapperStyle = {}
         headline = html.H3(['Player Comparison of ' + playerSec1Value + ' and ' + playerSec2Value], style={"text-align":"center"}, title="The table below shows all the individual stats of " + playerSec1Value + " and " + playerSec2Value + ". The table can be filtered in order to better compare their stats"),
         wrapperstyle = {}
-        radarHeadline = html.H3(['Comparing ' + playerSec1Value + ' and ' + playerSec2Value + ' career summary stats'], style={"text-align":"center"}, title="The radar graph displays the OBP, SLG, OPS, AVG and ISO of " + playerSec1Value + " and " + playerSec2Value + ". The values displayed are from the most recent season. (Double entries are possible if players have played in different leagues in one season)"),
+        radarHeadline = html.H3(['Comparing ' + playerSec1Value + ' and ' + playerSec2Value + ' batting career stats'], style={"text-align":"center"}, title="The radar graph displays the OBP, SLG, OPS, AVG and ISO of " + playerSec1Value + " and " + playerSec2Value + ". The values displayed are from the most recent season. (Double entries are possible if players have played in different leagues in one season)"),
 
     return wrapperstyle, headline, radarHeadline, hittingStyle, filedingStyle, pitchingStyle, headlineStyle,tableStyle,statsWrapperStyle
 

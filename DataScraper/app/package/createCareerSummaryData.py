@@ -37,7 +37,7 @@ def getCareerSummaryData():
             mlbDict['type'] = 'MLB Career'
             mlbDict.pop('_id', None)
 
-            # writing to the data base
+            # writing to the database /checking if updating, inserting or going to next document
             alreadyExisting = []
             for i in db["careerTable"].find({"id": mlbDict['id'], "type": mlbDict['type'],"statGroupe": mlbDict['statGroupe'], "sport": mlbDict['sport']}, { "_id": 0}):
                 alreadyExisting.append(i)
@@ -86,7 +86,7 @@ def getCareerSummaryData():
                             calculatedRow[column] = float(columnMean)
                 calculatedRow.pop('_id', None)
 
-                # writing to the data base
+                # writing to the database /checking if updating, inserting or going to next document
                 alreadyExisting = []
                 for i in db["careerTable"].find({"id": calculatedRow['id'], "type": calculatedRow['type'],"statGroupe": calculatedRow['statGroupe'], "sport": calculatedRow['sport']}, { "_id": 0}):
                     alreadyExisting.append(i)
@@ -116,7 +116,7 @@ def getCareerSummaryData():
             mlbDict['type'] = 'MLB Career'
             mlbDict.pop('_id', None)
 
-            # writing to the data base
+            # writing to the database /checking if updating, inserting or going to next document
             alreadyExisting = []
             for i in db["careerTable"].find({"id": mlbDict['id'], "type": mlbDict['type'],"statGroupe": mlbDict['statGroupe'], "sport": mlbDict['sport'], "position": mlbDict['position']}, { "_id": 0}):
                 alreadyExisting.append(i)
@@ -203,7 +203,7 @@ def getCareerSummaryData():
             mlbDict['type'] = 'MLB Career'
             mlbDict.pop('_id', None)
 
-            # writing to the data base
+            # writing to the database / checking if updating, inserting or going to next document
             alreadyExisting = []
             for i in db["careerTable"].find({"id": mlbDict['id'], "type": mlbDict['type'],"statGroupe": mlbDict['statGroupe'], "sport": mlbDict['sport']}, { "_id": 0}):
                 alreadyExisting.append(i)
@@ -252,7 +252,7 @@ def getCareerSummaryData():
                             calculatedRow[column] = float(columnMean)
                 calculatedRow.pop('_id', None)
 
-                # writing to the data base
+                # writing to the data base / checking if updating, inserting or going to next document
                 alreadyExisting = []
                 for i in db["careerTable"].find({"id": calculatedRow['id'], "type": calculatedRow['type'],"statGroupe": calculatedRow['statGroupe'], "sport": calculatedRow['sport']}, { "_id": 0}):
                     alreadyExisting.append(i)

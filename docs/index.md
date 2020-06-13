@@ -8,6 +8,7 @@ The goal of this documentation is to provide an overview on how the application 
 * [Installation](installation.md) – provides installations guides
 * [Data Scraper](datascraper.md) – provides information on how the data scraper works
 * [Dashboard](dashboard.md) - provides information on how the dashboard works
+* [Backlog](backlog.md) - contains descriptions of remaining features.
 * [About](about.md) - General Info about the project and the process of creating it
 
 ## Project layout level 1
@@ -20,7 +21,7 @@ The goal of this documentation is to provide an overview on how the application 
         ...
     docs/             # folder for all docs files
         ...
-    .gitginore
+    .gitignore
     docker-compose.yml
     LICENSE
     mkdocs.yml

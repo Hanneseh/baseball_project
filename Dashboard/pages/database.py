@@ -145,8 +145,6 @@ def getOptionsBasicTable(statGroup):
         ]
     return options
 
-#myData = getIndividualCareerStats(593428, 'hitting')
-
 
 # return Data of individual career stats
 def getIndividualCareerStats(playerID, statGroup):

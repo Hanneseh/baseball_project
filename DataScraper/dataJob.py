@@ -1,6 +1,6 @@
 # Cron job implementation
 from app.package.playerScraping import getPlayerInfo
-from app.package.getRawData import getRawDartaFromAPI
+from app.package.getRawData import getRawDataFromAPI
 from app.package.createCareerSummaryData import getCareerSummaryData
 from app.config import getDB
 import datetime
@@ -26,7 +26,7 @@ def dataCollection():
     now = datetime.datetime.now()
     updateMeta['fetchStartTime'] = now.strftime("%H:%M %d.%m.%Y")
     playerInfoChange = getPlayerInfo()
-    rawDataChange = getRawDartaFromAPI()
+    rawDataChange = getRawDataFromAPI()
     careerSummaryChange = getCareerSummaryData()
 
     updateMeta['totalNumberOfDocUpdates'] = playerInfoChange['updates'] + rawDataChange['updates'] + careerSummaryChange['updates']
