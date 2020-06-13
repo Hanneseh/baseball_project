@@ -67,6 +67,7 @@ def getRawDataFromAPI():
     print('get raw Data stopped')
     return documentsChange
 
+# retrieving career data
 def retrieveCareerData(rawData, sportAbbreviation):
     for player in rawData['people']:
         if 'stats' in player:
@@ -109,7 +110,7 @@ def retrieveCareerData(rawData, sportAbbreviation):
                     if careerDict['statGroupe'] == 'hitting' and isinstance(careerDict['slg'], numbers.Number) and isinstance(careerDict['avg'], numbers.Number):
                         careerDict['ISO'] = round(careerDict['slg'] - careerDict['avg'], 3)
 
-                    # cleaning stats which always cause anwanted update behavior
+                    # cleaning stats which always cause unwanted update behavior
                     if careerDict['statGroupe']=='pitching' and 'slg' in careerDict and 'ops' in careerDict:
                         careerDict['slg'] = 0
                         careerDict['ops'] = 0
@@ -117,7 +118,7 @@ def retrieveCareerData(rawData, sportAbbreviation):
                         careerDict['groundOutsToAirouts'] = ''
 
                     careerDict.pop('_id', None)
-                    # writing to database    
+                    # writing to database / checking if updating, inserting or going to next document
                     alreadyExisting = []
                     if careerDict['statGroupe'] == 'fielding':
                         for i in db["careerStats"].find({"id": careerDict['id'], "type" : careerDict['type'], "statGroupe" : careerDict['statGroupe'], 'season':careerDict['season'], "sport": careerDict['sport'], "position": careerDict['position'], "team": careerDict['team'], "league": careerDict['league'], "gameType": careerDict['gameType'], }, { "_id": 0}):
@@ -134,7 +135,7 @@ def retrieveCareerData(rawData, sportAbbreviation):
                         documentsChange['inserts'] = documentsChange['inserts'] + 1
                         db['careerStats'].insert_one(careerDict)
 
-
+# retrieving splits data
 def retrieveSplitsData(rawData, sportAbbreviation):
     for player in rawData['people']:
         if 'stats' in player:
@@ -170,7 +171,7 @@ def retrieveSplitsData(rawData, sportAbbreviation):
 
                         splitsDict.pop('_id', None)
                         
-                        # writing to the database
+                        # writing to the database / checking if updating, inserting or going to next document
                         alreadyExisting = []
                         for i in db["splitStats"].find({"id": splitsDict['id'], "type" : splitsDict['type'], "statGroupe" : splitsDict['statGroupe'], "sport": splitsDict['sport'], "split": splitsDict['split'], "season": splitsDict['season'],"team": splitsDict['team'],"gameType": splitsDict['gameType'],}, { "_id": 0}):
                             alreadyExisting.append(i)

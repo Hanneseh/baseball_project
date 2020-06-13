@@ -19,6 +19,7 @@ This Application can be installed using docker or just pip (the default python p
 
 **In depth installation guides can be found in "installation.md" file in the “docs” folder**
 
+
 ## Documentation
 
 The Project is documented with MkDocs. You can look at the documentation by either
@@ -30,9 +31,18 @@ The Project is documented with MkDocs. You can look at the documentation by eith
 The MegaData Team: August Carlsson, Basit Kazimi, Marcus Åqvist, Hannes Ehringfeld
 
 ## Contact Info
-For further questions: hannes.ehringfeld@hva.nl
+For further questions: 
+
+hannes.ehringfeld@hva.nl
+august.carlsson@hva.nl
+basit.kazimi@hva.nl
+marcus.aqvist@hva.nl
 
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details
+
+The data used in this project is protected as followed:
+
+"Copyright 2020 MLB Advanced Media, L.P.  Use of any content on this page acknowledges agreement to the terms posted here http://gdx.mlb.com/components/copyright.txt"

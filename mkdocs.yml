@@ -4,5 +4,6 @@ nav:
     - Installation: installation.md
     - Data Scraper: datascraper.md
     - Dashboard: dashboard.md
+    - Backlog: backlog.md
     - About: about.md
 theme: readthedocs

@@ -20,7 +20,7 @@ There are two ways to install NL-Baseball on your machine or to deploy it on a s
 ### Step 1
 -	Clone or download the [repository](https://gitlab.fdmci.hva.nl/ehringh/baseballmd)
 -	Open a terminal in the project folder (baseballmd)
--	Run: `docker-compose up –build`
+-	Run: `docker-compose up --build`
 
 Now the monogdb container gets build and the data scraper script is executed.
 When you see this ouput in the terminal, you know the data scraping has finished:
@@ -48,7 +48,7 @@ This makes the data scraper run only at night and keep the container up.
 
 ### Step 3
 -	Make sure all files you have edited are saved
--	Run: `docker-compose up –build` again
+-	Run: `docker-compose up --build` again
 
 The dashboard container should start up now as well and you should see this output in the terminal:
 ![finishStep3](img/finishStep3.png)
