@@ -33,10 +33,10 @@ The MegaData Team: August Carlsson, Basit Kazimi, Marcus Åqvist, Hannes Ehringf
 ## Contact Info
 For further questions: 
 
-hannes.ehringfeld@hva.nl
-august.carlsson@hva.nl
-basit.kazimi@hva.nl
-marcus.aqvist@hva.nl
+- hannes.ehringfeld@hva.nl
+- august.carlsson@hva.nl
+- basit.kazimi@hva.nl
+- marcus.aqvist@hva.nl
 
 
 ## License
